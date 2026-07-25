@@ -240,10 +240,9 @@
                   <label class="btn btn-outline-danger w-100 fw-bold" for="modeSiswaPulang">SCAN PULANG</label>
               </div>
           </div>
-          <div class="text-center mb-3">
-             <div id="reader">
-                 <span id="readerLoading" class="text-white small d-flex align-items-center justify-content-center h-100 position-absolute w-100">Menyiapkan Kamera...</span>
-             </div>
+          <div class="text-center mb-3 position-relative">
+             <div id="readerLoading" class="text-secondary fw-bold small mb-2 d-none">⏳ Menyiapkan Kamera...</div>
+             <div id="reader"></div>
           </div>
           <div class="text-center"><h4 id="scanResult" class="text-danger fw-bold">Siap memindai...</h4></div>
         </div>
@@ -780,19 +779,25 @@
     function startScanner() {
       if (!html5QrCode) { html5QrCode = new Html5Qrcode("reader"); }
       const config = { fps: 10, qrbox: { width: 250, height: 250 } };
-      document.getElementById("readerLoading").style.display = "flex";
       
+      let loader = document.getElementById("readerLoading");
+      if(loader) loader.classList.remove("d-none");
+      
+      // Jika di laptop tidak ada kamera belakang (environment), secara otomatis library ini akan mencoba
+      // beralih ke kamera default/depan jika environment gagal ditemukan pada beberapa browser.
+      // Namun kita bisa menggunakan objek { facingMode: "environment" } sebagai permintaan utama.
       html5QrCode.start(
           { facingMode: "environment" }, 
           config, onScanSuccess, onScanFailure
       ).then(() => {
-          document.getElementById("readerLoading").style.display = "none";
+          if(loader) loader.classList.add("d-none");
       }).catch((err) => {
+          if(loader) loader.classList.add("d-none");
           document.getElementById("reader").innerHTML = `
             <div class='p-3 text-danger bg-white h-100 d-flex flex-column justify-content-center' style='position:absolute;top:0;width:100%;'>
                <b>Gagal Mengakses Kamera</b><br>
                <small class='text-secondary'>Pastikan Anda klik 'Allow/Izinkan' saat browser meminta izin kamera.</small>
-               <small class='mt-2' style='font-size:10px;'>Detail Error: ${err}</small>
+               <small class='mt-2' style='font-size:10px;'>Detail Error: ${err.message || err}</small>
             </div>`;
       });
     }
