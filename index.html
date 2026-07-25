@@ -244,7 +244,7 @@
              <div id="readerLoading" class="text-secondary fw-bold small mb-2 d-none">⏳ Menyiapkan Kamera...</div>
              <div id="reader"></div>
           </div>
-          <div class="text-center"><h4 id="scanResult" class="text-danger fw-bold">Siap memindai...</h4></div>
+          <div class="text-center"><h4 id="scanResult" class="text-secondary fw-bold">Siap memindai...</h4></div>
         </div>
       </div>
 
@@ -775,7 +775,7 @@
       } else { statusEl.innerText = "Geolocation tidak didukung di perangkat ini."; }
     }
 
-    // ================= FUNGSI SCANNER LIVE =================
+    // ================= FUNGSI SCANNER LIVE YANG TELAH DIPERBAIKI =================
     function startScanner() {
       if (!html5QrCode) { html5QrCode = new Html5Qrcode("reader"); }
       const config = { fps: 10, qrbox: { width: 250, height: 250 } };
@@ -783,9 +783,6 @@
       let loader = document.getElementById("readerLoading");
       if(loader) loader.classList.remove("d-none");
       
-      // Jika di laptop tidak ada kamera belakang (environment), secara otomatis library ini akan mencoba
-      // beralih ke kamera default/depan jika environment gagal ditemukan pada beberapa browser.
-      // Namun kita bisa menggunakan objek { facingMode: "environment" } sebagai permintaan utama.
       html5QrCode.start(
           { facingMode: "environment" }, 
           config, onScanSuccess, onScanFailure
@@ -810,31 +807,52 @@
     
     function onScanSuccess(decodedText, decodedResult) {
       if(isProcessingScan) return; 
-      isProcessingScan = true;
+      // Mengunci gembok digital agar kamera tidak mencoba memindai frame lain
+      isProcessingScan = true; 
+
       let modeAbsen = "Masuk";
       let radioPulang = document.getElementById("modeSiswaPulang");
       if(radioPulang && radioPulang.checked) modeAbsen = "Pulang";
       
       document.getElementById("scanResult").innerText = "Memproses absensi...";
       document.getElementById("scanResult").className = "text-warning fw-bold mt-2";
-      if(html5QrCode && html5QrCode.isScanning) { html5QrCode.pause(); }
       
-      callBackend('absenMuridBackend', {nisn: decodedText, jenisAbsen: modeAbsen}, function(msg){
-         document.getElementById("scanResult").innerText = msg;
-         if(msg.indexOf("Sukses") > -1) {
-             document.getElementById("scanResult").className = "text-success fw-bold mt-2";
-         } else {
+      // Kirim data ke backend Spreadsheet
+      callBackend('absenMuridBackend', {nisn: decodedText, jenisAbsen: modeAbsen}, 
+          function(msg) {
+             document.getElementById("scanResult").innerText = msg;
+             
+             // Peringatan akan memunculkan teks warna merah, Sukses memunculkan hijau
+             if(msg.indexOf("Sukses") > -1) {
+                 document.getElementById("scanResult").className = "text-success fw-bold mt-2";
+             } else {
+                 document.getElementById("scanResult").className = "text-danger fw-bold mt-2";
+             }
+             
+             // Beri jeda 3 detik agar admin/guru bisa membaca tulisan Peringatan/Sukses
+             setTimeout(function() {
+                 document.getElementById("scanResult").innerText = "Siap memindai...";
+                 document.getElementById("scanResult").className = "text-secondary fw-bold mt-2";
+                 isProcessingScan = false; // Membuka gembok agar bisa memindai barcode baru
+             }, 3000);
+          },
+          function(error) {
+             document.getElementById("scanResult").innerText = "Terjadi Kesalahan: " + error.message;
              document.getElementById("scanResult").className = "text-danger fw-bold mt-2";
-         }
-         setTimeout(function() {
-             document.getElementById("scanResult").innerText = "Siap memindai...";
-             document.getElementById("scanResult").className = "text-secondary fw-bold mt-2";
-             isProcessingScan = false;
-             if(html5QrCode && html5QrCode.getState() === 2) { html5QrCode.resume(); }
-         }, 2500);
-      });
+             
+             // Beri jeda 3 detik dan buka gembok meskipun terjadi error koneksi
+             setTimeout(function() {
+                 document.getElementById("scanResult").innerText = "Siap memindai...";
+                 document.getElementById("scanResult").className = "text-secondary fw-bold mt-2";
+                 isProcessingScan = false; 
+             }, 3000);
+          }
+      );
     }
-    function onScanFailure(error) { }
+    
+    function onScanFailure(error) { 
+        // Berjalan senyap, hanya dipanggil ketika qr tidak terdeteksi di frame
+    }
 
     function simpanJurnal(tipe) {
       let data = { nama: session.nama, tipe: tipe };
@@ -1192,7 +1210,7 @@
       let printWin = window.open('', '_blank'); printWin.document.open(); printWin.document.write(html); printWin.document.close();
     }
 
-    // LOGIKA MODAL MAP (DARI ABSENKU_UI.HTML SEBELUMNYA)
+    // LOGIKA MODAL MAP
     document.getElementById('modalTitikAbsen').addEventListener('shown.bs.modal', function () {
       let inputLat = document.getElementById("setLat").value; let inputLng = document.getElementById("setLng").value;
       let lat = parseFloat(inputLat) || 1.2582; let lng = parseFloat(inputLng) || 124.6293;
