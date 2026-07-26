@@ -421,7 +421,7 @@
           <input type="hidden" id="eSiswaRowIndex">
           <div class="row g-2 mb-2">
             <div class="col-4"><label class="small fw-bold">Kelas</label><input type="text" id="eSiswaKelas" class="form-control"></div>
-            <div class="col-8"><label class="small fw-bold">Username Guru</label><input type="text" id="eSiswaGuru" class="form-control"></div>
+            <div class="col-8"><label class="small fw-bold">Nama Wali Kelas</label><input type="text" id="eSiswaGuru" class="form-control"></div>
           </div>
           <div class="mb-2"><label class="small fw-bold">Nama</label><input type="text" id="eSiswaName" class="form-control"></div>
           <div class="mb-2"><label class="small fw-bold">NISN</label><input type="text" id="eSiswaNisn" class="form-control"></div>
@@ -585,8 +585,8 @@
               let ddl = document.getElementById("sGuruAssign");
               if(ddl && guruList) {
                 ddl.innerHTML = '<option value="">-- Pilih Guru --</option>';
-                guruList.forEach(g => ddl.innerHTML += `<option value="${g.username}">${g.nama}</option>`);
-                if(session.role === "guru") { ddl.value = session.username; ddl.disabled = true; }
+                guruList.forEach(g => ddl.innerHTML += `<option value="${g.nama}">${g.nama}</option>`);
+                if(session.role === "guru") { ddl.value = session.nama; ddl.disabled = true; }
               }
             });
             if(res.role === 'admin' || res.role === 'kepsek') {
