@@ -948,7 +948,7 @@
       tbody.innerHTML = html;
     }
 
-    // ================= FUNGSI CETAK REKAPITULASI =================
+    // ================= FUNGSI CETAK REKAPITULASI (DIPERBARUI) =================
     function cetakRekap() {
       let btn = document.getElementById("btnCetakRekap"); let originalText = btn.innerHTML; btn.innerHTML = "Memproses..."; btn.disabled = true;
       callBackend('getPengaturanKop', {}, function(kop) {
@@ -1014,6 +1014,7 @@
                  ttdKanan = `<p style="margin-bottom: 70px;">${tempatCetak}, ${tglCetakFormatted}<br>Kepala Sekolah</p><b><u>${kepsekNama}</u></b><br>NIP. ${kepsekNip}`;
              }
          }
+         
          let html = `
            <html>
            <head><title>Cetak ${title}</title>
@@ -1022,7 +1023,15 @@
                    font-family: 'FuturaBdCnBT';
                    src: url('FUTURA BOLD FONT.TTF') format('truetype');
                }
-               body { font-family: 'Times New Roman', Times, serif; padding: 20px; color: #000; }
+               body { font-family: 'Times New Roman', Times, serif; padding: 20px; color: #000; margin: 0; }
+               
+               /* STRUKTUR MASTER UNTUK REPEAT HEADER DI SETIAP HALAMAN KERTAS */
+               table.master-layout { width: 100%; border-collapse: collapse; border: none; }
+               table.master-layout > thead { display: table-header-group; }
+               table.master-layout > thead > tr > td { border: none; padding: 0; background: transparent; }
+               table.master-layout > tbody > tr > td { border: none; padding: 0; }
+               
+               /* KOP SURAT */
                .kop-surat { display: flex; align-items: center; justify-content: space-between; border-bottom: 4px double black; padding-bottom: 8px; margin-bottom: 20px; font-family: 'FuturaBdCnBT', Arial, sans-serif; }
                .kop-surat img { max-height: 90px; width: auto; }
                .kop-teks { text-align: center; flex-grow: 1; padding: 0 15px; }
@@ -1030,21 +1039,45 @@
                .baris-sekolah { font-size: 30px; font-weight: bold; text-transform: uppercase; margin: 0; line-height: 1.1; letter-spacing: 1px; }
                .baris-alamat, .baris-kontak { font-size: 14px; font-style: italic; font-weight: normal; margin: 4px 0 0 0; line-height: 1.2; text-transform: none; }
                h3 { text-align: center; text-transform: uppercase; margin-bottom: 20px; text-decoration: underline; font-size: 16px; font-family: 'Times New Roman', Times, serif; }
-               table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 12px; font-family: Arial, sans-serif; }
-               table, th, td { border: 1px solid black; } th, td { padding: 8px; text-align: left; } th { background-color: #f2f2f2 !important; text-align: center; font-weight: bold; }
-               .ttd-container { width: 100%; margin-top: 40px; display: flex; justify-content: space-between; text-align: center; font-family: Arial, sans-serif; font-size: 14px; }
+               
+               /* TABEL DATA */
+               table.master-layout > tbody > tr > td > table { width: 100%; border-collapse: collapse; margin-top: 5px; font-size: 12px; font-family: Arial, sans-serif; border: 1px solid black; }
+               table.master-layout > tbody > tr > td > table th, table.master-layout > tbody > tr > td > table td { border: 1px solid black; padding: 8px; text-align: left; }
+               table.master-layout > tbody > tr > td > table th { background-color: #f2f2f2 !important; text-align: center; font-weight: bold; }
+               
+               /* TANDA TANGAN (Biar tidak terpotong saat pindah halaman) */
+               .ttd-container { width: 100%; margin-top: 40px; display: flex; justify-content: space-between; text-align: center; font-family: Arial, sans-serif; font-size: 14px; page-break-inside: avoid; }
                .ttd-kiri { width: 300px; } .ttd-kanan { width: 300px; }
-               @media print { @page { margin: 15mm; } body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } button { display: none; } }
+               
+               @media print { 
+                   @page { margin: 15mm; } 
+                   body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } 
+               }
              </style></head>
            <body>
-             <div class="kop-surat">
-                 <div style="width: 100px; text-align: center;">${logoKiriHTML}</div>
-                 <div class="kop-teks">${kopTeksHTML}</div>
-                 <div style="width: 100px; text-align: center;">${logoKananHTML}</div>
-             </div>
-             <h3>${title}</h3>${divToPrint}
-             <div class="ttd-container"><div class="ttd-kiri">${ttdKiri}</div><div class="ttd-kanan">${ttdKanan}</div></div>
-             <script>window.onload = function() { setTimeout(function() { window.print(); window.close(); }, 750); };</scr` + `ipt>
+             <table class="master-layout">
+               <thead>
+                 <tr>
+                   <td>
+                     <div class="kop-surat">
+                         <div style="width: 100px; text-align: center;">${logoKiriHTML}</div>
+                         <div class="kop-teks">${kopTeksHTML}</div>
+                         <div style="width: 100px; text-align: center;">${logoKananHTML}</div>
+                     </div>
+                     <h3>${title}</h3>
+                   </td>
+                 </tr>
+               </thead>
+               <tbody>
+                 <tr>
+                   <td>
+                     ${divToPrint}
+                     <div class="ttd-container"><div class="ttd-kiri">${ttdKiri}</div><div class="ttd-kanan">${ttdKanan}</div></div>
+                   </td>
+                 </tr>
+               </tbody>
+             </table>
+             <script>window.onload = function() { setTimeout(function() { window.print(); window.close(); }, 750); };</script>
            </body></html>
          `;
          let printWin = window.open('', '_blank'); printWin.document.open(); printWin.document.write(html); printWin.document.close();
