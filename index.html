@@ -1077,7 +1077,7 @@
                  </tr>
                </tbody>
              </table>
-             <script>window.onload = function() { setTimeout(function() { window.print(); window.close(); }, 750); };<\/script>
+             <script>window.onload = function() { setTimeout(function() { window.print(); window.close(); }, 750); };</scr` + `ipt>
            </body></html>
          `;
          let printWin = window.open('', '_blank'); printWin.document.open(); printWin.document.write(html); printWin.document.close();
@@ -1245,7 +1245,7 @@
     }
     function cetakSatuBarcode(str, url) {
       let s = JSON.parse(decodeURIComponent(str));
-      let html = `<html><head><title>Cetak Kartu Hadir - ${s.namaSiswa}</title><style>body { text-align:center; font-family:Arial, sans-serif; padding:20px; } .card { border: 2px dashed #000; display: inline-block; padding: 20px; border-radius: 15px; width: 250px; } h4 { margin: 0 0 15px 0; color: #dc3545; } img { width: 150px; height: 150px; margin-bottom: 10px; } h3 { margin: 0 0 5px 0; font-size: 16px; } p { margin: 0; font-size: 14px; font-weight: bold; } .kls { font-size: 12px; color: #555; margin-top: 5px; } @media print { @page { margin: 0; } button { display: none; } }</style></head><body><div class="card"><h4>KARTU ABSENKU</h4><img src="${url}"><h3>${s.namaSiswa}</h3><p>NISN: ${s.nisn}</p><div class="kls">Kelas: ${s.kelas}</div></div><script>window.onload=function(){setTimeout(function(){window.print();window.close();},750);};<\/script></body></html>`;
+      let html = `<html><head><title>Cetak Kartu Hadir - ${s.namaSiswa}</title><style>body { text-align:center; font-family:Arial, sans-serif; padding:20px; } .card { border: 2px dashed #000; display: inline-block; padding: 20px; border-radius: 15px; width: 250px; } h4 { margin: 0 0 15px 0; color: #dc3545; } img { width: 150px; height: 150px; margin-bottom: 10px; } h3 { margin: 0 0 5px 0; font-size: 16px; } p { margin: 0; font-size: 14px; font-weight: bold; } .kls { font-size: 12px; color: #555; margin-top: 5px; } @media print { @page { margin: 0; } button { display: none; } }</style></head><body><div class="card"><h4>KARTU ABSENKU</h4><img src="${url}"><h3>${s.namaSiswa}</h3><p>NISN: ${s.nisn}</p><div class="kls">Kelas: ${s.kelas}</div></div><script>window.onload=function(){setTimeout(function(){window.print();window.close();},750);};</scr`+`ipt></body></html>`;
       let printWin = window.open('', '_blank'); printWin.document.open(); printWin.document.write(html); printWin.document.close();
     }
     // LOGIKA MODAL MAP
