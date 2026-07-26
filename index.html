@@ -985,11 +985,13 @@
          
          let ttdKiri = ""; let ttdKanan = "";
          if (aktifRekapTab === 'absensi_siswa') {
+             // LOGIKA BARU: KEPSEK SELALU DI KANAN UNTUK CETAK ABSEN SISWA
              if (session.role === 'admin' || session.role === 'kepsek') {
-                 ttdKiri = `<p style="margin-bottom: 70px;">Mengetahui,<br>Kepala Sekolah</p><b><u>${kepsekNama}</u></b><br>NIP. ${kepsekNip}`; ttdKanan = ``; 
+                 ttdKiri = ``; 
+                 ttdKanan = `<p style="margin-bottom: 70px;">${tempatCetak}, ${tglCetakFormatted}<br>Mengetahui,<br>Kepala Sekolah</p><b><u>${kepsekNama}</u></b><br>NIP. ${kepsekNip}`; 
              } else if (session.role === 'guru') {
-                 ttdKiri = `<p style="margin-bottom: 70px;">Mengetahui,<br>Kepala Sekolah</p><b><u>${kepsekNama}</u></b><br>NIP. ${kepsekNip}`;
-                 ttdKanan = `<p style="margin-bottom: 70px;">${tempatCetak}, ${tglCetakFormatted}<br>Wali Kelas</p><b><u>${session.nama}</u></b><br>NIP. ${session.nip || "........................."}`;
+                 ttdKiri = `<p style="margin-bottom: 70px;"><br><br>Wali Kelas</p><b><u>${session.nama}</u></b><br>NIP. ${session.nip || "........................."}`;
+                 ttdKanan = `<p style="margin-bottom: 70px;">${tempatCetak}, ${tglCetakFormatted}<br>Mengetahui,<br>Kepala Sekolah</p><b><u>${kepsekNama}</u></b><br>NIP. ${kepsekNip}`;
              }
          } else {
              if (session.role === 'guru') {
