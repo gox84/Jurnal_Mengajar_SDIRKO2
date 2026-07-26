@@ -12,7 +12,6 @@
   
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
   <style>
     body { background: #f8fafc; font-family: 'Segoe UI', system-ui, sans-serif; color: #1a202c; min-height: 100vh; margin: 0; padding: 0; }
     .box-card { background: #ffffff; padding: 25px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); margin-bottom: 20px; border: 1px solid #e2e8f0; border-top: 5px solid #dc3545; }
@@ -52,7 +51,6 @@
       .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1040; backdrop-filter: blur(2px); }
       .sidebar-overlay.active-mobile { display: block; }
     }
-
     #reader {
         width: 100%;
         max-width: 500px;
@@ -80,7 +78,6 @@
       </div>
       <div id="loginAlert" class="mt-3 text-center small fw-semibold"></div>
     </div>
-
     <div id="registerSection" class="box-card d-none" style="max-width: 420px; margin: 60px auto; border-top-width: 7px; border-top-color: #0d6efd;">
       <h4 class="text-center mb-1 text-primary fw-bold">Registrasi Pegawai</h4>
       <p class="text-center text-muted small mb-3">Daftarkan akun baru Anda</p>
@@ -96,7 +93,6 @@
       </div>
       <div id="regAlert" class="mt-3 text-center small fw-bold"></div>
     </div>
-
     <div id="forgotSection" class="box-card d-none" style="max-width: 420px; margin: 60px auto; border-top-width: 7px; border-top-color: #ffc107;">
       <h4 class="text-center mb-1 text-warning fw-bold text-dark">Lupa Password</h4>
       <p class="text-center text-muted small mb-3">Cari password lama Anda</p>
@@ -109,7 +105,6 @@
       <div id="forgotAlert" class="mt-3 text-center small fw-bold"></div>
     </div>
   </div>
-
   <div id="dashboardSection" class="app-container d-none">
     <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
     <div class="sidebar">
@@ -178,7 +173,6 @@
           </div>
         </div>
       </div>
-
       <div class="view-section" id="siswaKelasView">
         <div class="box-card">
           <div class="d-flex justify-content-between align-items-center mb-3">
@@ -247,7 +241,6 @@
           <div class="text-center"><h4 id="scanResult" class="text-secondary fw-bold">Siap memindai...</h4></div>
         </div>
       </div>
-
       <div class="view-section" id="rekapDataView">
         <div class="box-card" style="border-top-color: #17a2b8;">
           <h5 class="mb-3 fw-bold text-info">🔍 Rekapitulasi Data</h5>
@@ -305,7 +298,6 @@
           </div>
         </div>
       </div>
-
       <div class="view-section" id="manajemenUsersView">
         <div class="box-card" style="border-top-color: #ffc107;">
           <div class="d-flex justify-content-between align-items-center mb-3">
@@ -323,7 +315,6 @@
           </div>
         </div>
       </div>
-
       <div class="view-section" id="approvalMemberView">
         <div class="box-card" style="border-top-color: #28a745;">
           <h5 class="mb-3 fw-bold text-success">🔔 Approval Pendaftaran Baru</h5>
@@ -335,18 +326,27 @@
           </div>
         </div>
       </div>
-
+      
+      <!-- ===== PENGATURAN KOP SURAT (DIPERBARUI) ===== -->
       <div class="view-section" id="pengaturanKopView">
         <div class="box-card" style="border-top-color: #6c757d;">
-          <h5 class="mb-3 fw-bold text-secondary">🔧 Pengaturan Kop Surat</h5>
+          <h5 class="mb-3 fw-bold text-secondary">🔧 Pengaturan Kop Surat (Baris Dinamis)</h5>
           <div class="row g-3">
-            <div class="col-md-12"><label class="small fw-bold">Nama Instansi / Sekolah</label><input type="text" id="kopNama" class="form-control"></div>
-            <div class="col-md-12"><label class="small fw-bold">Alamat Lengkap</label><input type="text" id="kopAlamat" class="form-control"></div>
+            <div class="col-md-12"><label class="small fw-bold">Teks Baris 1 (Pemerintah)</label><input type="text" id="kopPemerintah" class="form-control" placeholder="Contoh: PEMERINTAH KABUPATEN MINAHASA"></div>
+            <div class="col-md-12"><label class="small fw-bold">Teks Baris 2 (Dinas)</label><input type="text" id="kopDinas" class="form-control" placeholder="Contoh: DINAS PENDIDIKAN"></div>
+            <div class="col-md-12"><label class="small fw-bold">Nama Instansi / Sekolah (Baris 3)</label><input type="text" id="kopNama" class="form-control" placeholder="Contoh: SD INPRES RANOWANGKO II"></div>
+            <div class="col-md-12"><label class="small fw-bold">Alamat Lengkap (Baris 4)</label><input type="text" id="kopAlamat" class="form-control" placeholder="Contoh: Alamat: Jaga II, Desa Ranowangko..."></div>
+            <div class="col-md-12"><label class="small fw-bold">Kontak / Email / Website (Baris 5)</label><input type="text" id="kopKontak" class="form-control" placeholder="Contoh: https://... e-mail: ..."></div>
+            
+            <div class="col-md-6"><label class="small fw-bold">URL Logo Kiri</label><input type="text" id="kopLogoKiri" class="form-control" placeholder="Contoh: https://link.com/logo-kiri.png"></div>
+            <div class="col-md-6"><label class="small fw-bold">URL Logo Kanan</label><input type="text" id="kopLogoKanan" class="form-control" placeholder="Contoh: https://link.com/logo-kanan.png"></div>
+            
+            <hr class="mt-4 mb-2">
+            
             <div class="col-md-4"><label class="small fw-bold">Nama Pengawas Sekolah</label><input type="text" id="kopPengawasNama" class="form-control"></div>
             <div class="col-md-4"><label class="small fw-bold">NIP Pengawas Sekolah</label><input type="text" id="kopPengawasNip" class="form-control"></div>
             <div class="col-md-4"><label class="small fw-bold">Pangkat / Golongan</label><input type="text" id="kopPengawasPangkat" class="form-control"></div>
-            <div class="col-md-6"><label class="small fw-bold">URL Logo Kiri</label><input type="text" id="kopLogoKiri" class="form-control" placeholder="Contoh: https://link.com/logo-kiri.png"></div>
-            <div class="col-md-6"><label class="small fw-bold">URL Logo Kanan</label><input type="text" id="kopLogoKanan" class="form-control" placeholder="Contoh: https://link.com/logo-kanan.png"></div>
+            
             <div class="col-12 text-end mt-4"><button class="btn btn-secondary px-4 fw-bold" onclick="simpanKop()">💾 Simpan Pengaturan Kop</button></div>
           </div>
         </div>
@@ -371,7 +371,6 @@
       </div>
     </div>
   </div>
-
   <!-- MODALS -->
   <div class="modal fade" id="modalTitikAbsen" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
@@ -392,7 +391,6 @@
       </div>
     </div>
   </div>
-
   <div class="modal fade" id="modalTambahUser" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content border-0 shadow-lg">
@@ -459,13 +457,11 @@
       </div>
     </div>
   </div>
-
   <script>
     // =========================================================
     // WAJIB DIGANTI: TEMPEL URL WEB APP ANDA DI BAWAH INI
     // =========================================================
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzzAuIvGeuSCCTyJiqRakPNrFM1rGrstIgNPXQmJ92-T8_UQacNe45J0RoFPWtGg3-J/exec";
-
     function callBackend(action, payload, onSuccess, onFailure) {
       fetch(WEB_APP_URL, {
         method: 'POST',
@@ -485,7 +481,6 @@
         else console.error("API Error:", err);
       });
     }
-
     let session = {};
     let dataRekapGlobal = { jurnal: [], absensi: [], absensi_siswa: [] };
     let aktifRekapTab = 'jurnal';
@@ -572,7 +567,6 @@
           }
       }
     }
-
     function prosesLogin() {
       var alertBox = document.getElementById("loginAlert"); 
       alertBox.className = "text-warning mt-3 text-center small fw-bold";
@@ -595,7 +589,6 @@
                 if(session.role === "guru") { ddl.value = session.username; ddl.disabled = true; }
               }
             });
-
             if(res.role === 'admin' || res.role === 'kepsek') {
                 callBackend('getDaftarPegawaiFilter', {}, function(pegawaiList) {
                     window.pegawaiListGlobal = pegawaiList;
@@ -697,7 +690,6 @@
           alertBox.innerText = "Error Sistem: " + error.message;
       });
     }
-
     function prosesDaftar() {
       let alertBox = document.getElementById("regAlert");
       let data = {
@@ -729,7 +721,6 @@
           alertBox.innerText = "Error Sistem: " + error.message;
       });
     }
-
     function prosesCariPassword() {
       let alertBox = document.getElementById("forgotAlert");
       let user = document.getElementById("forgotUsername").value.trim();
@@ -757,9 +748,7 @@
           alertBox.innerText = "Error Sistem: " + error.message;
       });
     }
-
     function logout() { location.reload(); }
-
     function prosesAbsenPegawai(jenis) {
       const statusEl = document.getElementById("lokasiStatus");
       statusEl.innerText = "Mendapatkan titik koordinat GPS Anda...";
@@ -774,7 +763,6 @@
         }, { enableHighAccuracy: true });
       } else { statusEl.innerText = "Geolocation tidak didukung di perangkat ini."; }
     }
-
     // ================= FUNGSI SCANNER LIVE YANG TELAH DIPERBAIKI =================
     function startScanner() {
       if (!html5QrCode) { html5QrCode = new Html5Qrcode("reader"); }
@@ -809,7 +797,6 @@
       if(isProcessingScan) return; 
       // Mengunci gembok digital agar kamera tidak mencoba memindai frame lain
       isProcessingScan = true; 
-
       let modeAbsen = "Masuk";
       let radioPulang = document.getElementById("modeSiswaPulang");
       if(radioPulang && radioPulang.checked) modeAbsen = "Pulang";
@@ -853,7 +840,6 @@
     function onScanFailure(error) { 
         // Berjalan senyap, hanya dipanggil ketika qr tidak terdeteksi di frame
     }
-
     function simpanJurnal(tipe) {
       let data = { nama: session.nama, tipe: tipe };
       if(tipe === 'guru') {
@@ -870,7 +856,6 @@
         document.getElementById("gMateri").value=""; document.getElementById("gUraian").value=""; document.getElementById("kUraian").value=""; 
       });
     }
-
     function updateDropdownVisibility() {
       let colPegawai = document.getElementById("filterPegawaiCol"); let colKelas = document.getElementById("filterKelasCol");
       if (session.role === 'admin') {
@@ -881,7 +866,6 @@
          else if (aktifRekapTab === 'jurnal' || aktifRekapTab === 'absensi') { colPegawai.style.display = "block"; colPegawai.className = "col-md-2"; colKelas.style.display = "none"; }
       } else { colPegawai.style.display = "none"; colKelas.style.display = "none"; }
     }
-
     function muatRekap(jenis) {
       aktifRekapTab = jenis; updateDropdownVisibility();
       let tbodyId = "";
@@ -899,14 +883,12 @@
           });
       }
     }
-
     function terapkanFilterRekap() { renderTabelRekap(); }
     
     function getRoleByName(nama) {
         if(!window.pegawaiListGlobal) return "";
         let p = window.pegawaiListGlobal.find(x => x.nama === nama); return p ? p.role : "";
     }
-
     function renderTabelRekap() {
       let fTgl = document.getElementById("filterTgl").value; let fBulan = document.getElementById("filterBulan").value;
       let fTahun = document.getElementById("filterTahun").value; let fCari = document.getElementById("filterCari").value.toLowerCase();
@@ -966,6 +948,7 @@
       tbody.innerHTML = html;
     }
 
+    // ================= FUNGSI CETAK REKAPITULASI =================
     function cetakRekap() {
       let btn = document.getElementById("btnCetakRekap"); let originalText = btn.innerHTML; btn.innerHTML = "Memproses..."; btn.disabled = true;
       callBackend('getPengaturanKop', {}, function(kop) {
@@ -975,8 +958,23 @@
          else { divToPrintId = "cetakTabelAbsensiSiswa"; title = "REKAPITULASI KEHADIRAN SISWA"; }
          let divToPrint = document.getElementById(divToPrintId).outerHTML;
          
-         let logoKiriHTML = kop && kop.logoKiri ? `<img src="${kop.logoKiri}">` : ''; let logoKananHTML = kop && kop.logoKanan ? `<img src="${kop.logoKanan}">` : '';
-         let namaSekolah = kop && kop.namaSekolah ? kop.namaSekolah : "SD INPRES RANOWANGKO II"; let alamat = kop && kop.alamat ? kop.alamat : "Alamat Instansi Tidak Ditetapkan";
+         let logoKiriHTML = kop && kop.logoKiri ? `<img src="${kop.logoKiri}">` : ''; 
+         let logoKananHTML = kop && kop.logoKanan ? `<img src="${kop.logoKanan}">` : '';
+         
+         // Setup Teks Kop Dinamis Berbaris
+         let tPemerintah = kop && kop.teksPemerintah ? kop.teksPemerintah : "";
+         let tDinas = kop && kop.teksDinas ? kop.teksDinas : "";
+         let tSekolah = kop && kop.namaSekolah ? kop.namaSekolah : "SD INPRES RANOWANGKO II";
+         let tAlamat = kop && kop.alamat ? kop.alamat : "";
+         let tKontak = kop && kop.teksKontak ? kop.teksKontak : "";
+         
+         let kopTeksHTML = "";
+         if (tPemerintah) kopTeksHTML += `<div class="baris-pemerintah">${tPemerintah}</div>`;
+         if (tDinas) kopTeksHTML += `<div class="baris-dinas">${tDinas}</div>`;
+         if (tSekolah) kopTeksHTML += `<div class="baris-sekolah">${tSekolah}</div>`;
+         if (tAlamat) kopTeksHTML += `<div class="baris-alamat">${tAlamat}</div>`;
+         if (tKontak) kopTeksHTML += `<div class="baris-kontak">${tKontak}</div>`;
+         
          let kepsekNama = kop && kop.kepsek ? kop.kepsek : "........................."; let kepsekNip = kop && kop.nipKepsek ? kop.nipKepsek : ".........................";
          
          let tglCetakVal = document.getElementById("cetakTglInput").value; let d = new Date(tglCetakVal);
@@ -985,7 +983,6 @@
          
          let ttdKiri = ""; let ttdKanan = "";
          if (aktifRekapTab === 'absensi_siswa') {
-             // LOGIKA BARU: KEPSEK SELALU DI KANAN UNTUK CETAK ABSEN SISWA
              if (session.role === 'admin' || session.role === 'kepsek') {
                  ttdKiri = ``; 
                  ttdKanan = `<p style="margin-bottom: 70px;">${tempatCetak}, ${tglCetakFormatted}<br>Mengetahui,<br>Kepala Sekolah</p><b><u>${kepsekNama}</u></b><br>NIP. ${kepsekNip}`; 
@@ -1019,12 +1016,20 @@
          }
          let html = `
            <html>
-           <head><title>Cetak ${title}</title><style>
+           <head><title>Cetak ${title}</title>
+           <style>
+               @font-face {
+                   font-family: 'FuturaBdCnBT';
+                   src: url('URL_FONT_ANDA_DI_GITHUB_DISINI') format('truetype');
+               }
                body { font-family: 'Times New Roman', Times, serif; padding: 20px; color: #000; }
-               .kop-surat { display: flex; align-items: center; justify-content: space-between; border-bottom: 4px double black; padding-bottom: 10px; margin-bottom: 20px; }
+               .kop-surat { display: flex; align-items: center; justify-content: space-between; border-bottom: 4px double black; padding-bottom: 8px; margin-bottom: 20px; font-family: 'FuturaBdCnBT', Arial, sans-serif; }
                .kop-surat img { max-height: 90px; width: auto; }
-               .kop-teks { text-align: center; flex-grow: 1; padding: 0 15px; } .kop-teks h2 { margin: 0; font-size: 22px; text-transform: uppercase; font-weight: bold; } .kop-teks p { margin: 4px 0; font-size: 14px; }
-               h3 { text-align: center; text-transform: uppercase; margin-bottom: 20px; text-decoration: underline; font-size: 16px; }
+               .kop-teks { text-align: center; flex-grow: 1; padding: 0 15px; }
+               .baris-pemerintah, .baris-dinas { font-size: 20px; font-weight: bold; text-transform: uppercase; margin: 0; line-height: 1.1; letter-spacing: 0.5px; }
+               .baris-sekolah { font-size: 30px; font-weight: bold; text-transform: uppercase; margin: 0; line-height: 1.1; letter-spacing: 1px; }
+               .baris-alamat, .baris-kontak { font-size: 14px; font-style: italic; font-weight: normal; margin: 4px 0 0 0; line-height: 1.2; text-transform: none; }
+               h3 { text-align: center; text-transform: uppercase; margin-bottom: 20px; text-decoration: underline; font-size: 16px; font-family: 'Times New Roman', Times, serif; }
                table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 12px; font-family: Arial, sans-serif; }
                table, th, td { border: 1px solid black; } th, td { padding: 8px; text-align: left; } th { background-color: #f2f2f2 !important; text-align: center; font-weight: bold; }
                .ttd-container { width: 100%; margin-top: 40px; display: flex; justify-content: space-between; text-align: center; font-family: Arial, sans-serif; font-size: 14px; }
@@ -1032,7 +1037,11 @@
                @media print { @page { margin: 15mm; } body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } button { display: none; } }
              </style></head>
            <body>
-             <div class="kop-surat"><div style="width: 100px; text-align: center;">${logoKiriHTML}</div><div class="kop-teks"><h2>${namaSekolah}</h2><p>${alamat}</p></div><div style="width: 100px; text-align: center;">${logoKananHTML}</div></div>
+             <div class="kop-surat">
+                 <div style="width: 100px; text-align: center;">${logoKiriHTML}</div>
+                 <div class="kop-teks">${kopTeksHTML}</div>
+                 <div style="width: 100px; text-align: center;">${logoKananHTML}</div>
+             </div>
              <h3>${title}</h3>${divToPrint}
              <div class="ttd-container"><div class="ttd-kiri">${ttdKiri}</div><div class="ttd-kanan">${ttdKanan}</div></div>
              <script>window.onload = function() { setTimeout(function() { window.print(); window.close(); }, 750); };</scr` + `ipt>
@@ -1050,6 +1059,10 @@
           document.getElementById("kopLogoKiri").value = data.logoKiri; document.getElementById("kopLogoKanan").value = data.logoKanan;
           document.getElementById("kopPengawasNama").value = data.pengawas; document.getElementById("kopPengawasNip").value = data.nipPengawas;
           document.getElementById("kopPengawasPangkat").value = data.pangkatPengawas;
+          
+          document.getElementById("kopPemerintah").value = data.teksPemerintah || "";
+          document.getElementById("kopDinas").value = data.teksDinas || "";
+          document.getElementById("kopKontak").value = data.teksKontak || "";
         }
       });
     }
@@ -1059,7 +1072,9 @@
         namaSekolah: document.getElementById("kopNama").value, alamat: document.getElementById("kopAlamat").value,
         logoKiri: document.getElementById("kopLogoKiri").value, logoKanan: document.getElementById("kopLogoKanan").value,
         pengawas: document.getElementById("kopPengawasNama").value, nipPengawas: document.getElementById("kopPengawasNip").value,
-        pangkatPengawas: document.getElementById("kopPengawasPangkat").value
+        pangkatPengawas: document.getElementById("kopPengawasPangkat").value,
+        teksPemerintah: document.getElementById("kopPemerintah").value, teksDinas: document.getElementById("kopDinas").value,
+        teksKontak: document.getElementById("kopKontak").value
       };
       callBackend('simpanPengaturanKop', data, function(msg){ alert(msg); });
     }
@@ -1076,7 +1091,6 @@
         tbody.innerHTML = html;
       });
     }
-
     function prosesTambahUserBaru() {
       let data = {
         username: document.getElementById("tUsername").value.trim(), password: document.getElementById("tPassword").value.trim(),
@@ -1092,11 +1106,9 @@
         loadUsersData();
       });
     }
-
     function hapusUser(rowIndex) {
       if(confirm("PERINGATAN: Yakin ingin menghapus user ini?")) { callBackend('hapusUserBackendAdmin', {rowIndex: rowIndex}, function(msg){ alert(msg); loadUsersData(); }); }
     }
-
     function bukaEditUser(str) {
       let u = JSON.parse(decodeURIComponent(str));
       document.getElementById("eUserRowIndex").value = u.rowIndex; document.getElementById("eUserUsername").value = u.username;
@@ -1106,7 +1118,6 @@
       if(!modalEditUserObj) { modalEditUserObj = new bootstrap.Modal(document.getElementById('modalEditUser')); }
       modalEditUserObj.show();
     }
-
     function prosesEditUser() {
       let newData = {
         username: document.getElementById("eUserUsername").value, password: document.getElementById("eUserPassword").value,
@@ -1115,7 +1126,6 @@
       };
       callBackend('updateUserBackendAdmin', {rowIndex: document.getElementById("eUserRowIndex").value, newData: newData}, function(msg){ alert(msg); modalEditUserObj.hide(); loadUsersData(); });
     }
-
     function unggungSiswaManual() {
       let data = {
         kelas: document.getElementById("sKelas").value, guru: document.getElementById("sGuruAssign").value,
@@ -1125,7 +1135,6 @@
       if(!data.nama || !data.guru) return alert("Nama Siswa dan Wali Kelas wajib diisi!");
       callBackend('simpanSiswaManualBackend', data, function(msg) { alert(msg); muatDataSiswaKelasUntukTabel(); });
     }
-
     function prosesUploadExcel() {
       let fileInput = document.getElementById('fileSiswaExcel');
       if (!fileInput.files.length) return alert("Pilih file Excel terlebih dahulu!");
@@ -1139,7 +1148,6 @@
       };
       reader.readAsArrayBuffer(fileInput.files[0]);
     }
-
     function muatDataSiswaKelasUntukTabel() {
       let tbody = document.getElementById("bodyListSiswaKelas"); if(!tbody) return;
       tbody.innerHTML = "<tr><td colspan='9' class='text-center text-muted'>Memuat data...</td></tr>";
@@ -1177,7 +1185,6 @@
     function hapusSiswaKelas(rowIndex) {
       if(confirm("Yakin ingin menghapus data siswa ini?")) { callBackend('hapusSiswaBackend', {rowIndex: rowIndex}, function(msg){ alert(msg); muatDataSiswaKelasUntukTabel(); }); }
     }
-
     function muatBarcodeSiswaHanya() {
       let tbody = document.getElementById("bodyListBarcode"); tbody.innerHTML = "<tr><td colspan='5' class='text-center text-muted'>Memuat data siswa...</td></tr>";
       document.getElementById("btnBuatSemuaBarcode").classList.add("d-none"); 
@@ -1193,25 +1200,21 @@
           tbody.innerHTML = html;
       });
     }
-
     function buatSatuBarcode(idx, str) {
       let s = JSON.parse(decodeURIComponent(str));
       let urlQr = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${s.nisn}`;
       let container = document.getElementById("qrContainer_" + idx);
       if(container) { container.innerHTML = `<img src="${urlQr}" alt="QR" width="60" height="60" class="border rounded p-1 shadow-sm"><br><button class="btn btn-xs btn-outline-primary mt-1 fw-bold" onclick="cetakSatuBarcode('${str}', '${urlQr}')">🖨️ Cetak</button>`; }
     }
-
     function buatSemuaBarcode() {
        if(!window.dataSiswaBarcode) return;
        window.dataSiswaBarcode.forEach((s, idx) => { let str = encodeURIComponent(JSON.stringify(s)); buatSatuBarcode(idx, str); });
     }
-
     function cetakSatuBarcode(str, url) {
       let s = JSON.parse(decodeURIComponent(str));
       let html = `<html><head><title>Cetak Kartu Hadir - ${s.namaSiswa}</title><style>body { text-align:center; font-family:Arial, sans-serif; padding:20px; } .card { border: 2px dashed #000; display: inline-block; padding: 20px; border-radius: 15px; width: 250px; } h4 { margin: 0 0 15px 0; color: #dc3545; } img { width: 150px; height: 150px; margin-bottom: 10px; } h3 { margin: 0 0 5px 0; font-size: 16px; } p { margin: 0; font-size: 14px; font-weight: bold; } .kls { font-size: 12px; color: #555; margin-top: 5px; } @media print { @page { margin: 0; } button { display: none; } }</style></head><body><div class="card"><h4>KARTU ABSENKU</h4><img src="${url}"><h3>${s.namaSiswa}</h3><p>NISN: ${s.nisn}</p><div class="kls">Kelas: ${s.kelas}</div></div><script>window.onload=function(){setTimeout(function(){window.print();window.close();},750);};</scr`+`ipt></body></html>`;
       let printWin = window.open('', '_blank'); printWin.document.open(); printWin.document.write(html); printWin.document.close();
     }
-
     // LOGIKA MODAL MAP
     document.getElementById('modalTitikAbsen').addEventListener('shown.bs.modal', function () {
       let inputLat = document.getElementById("setLat").value; let inputLng = document.getElementById("setLng").value;
@@ -1230,7 +1233,6 @@
         map.invalidateSize(); map.setView([lat, lng], 16); marker.setLatLng([lat, lng]);
       }
     });
-
     function simpanKoordinatSekolah() {
        let lat = document.getElementById("setLat").value;
        let lng = document.getElementById("setLng").value;
