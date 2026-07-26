@@ -485,12 +485,12 @@
     let dataRekapGlobal = { jurnal: [], absensi: [], absensi_siswa: [] };
     let aktifRekapTab = 'jurnal';
     let modalEditSiswaObj, modalEditUserObj, modalTambahUserObj;
-    
+   
     // VARIABEL SCANNER KUSTOM LIVE SCAN
     let html5QrCode = null;
     let isProcessingScan = false;
     let map, marker;
-    
+   
     function initApp() {
       const el = document.getElementById("filterBulan");
       const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
@@ -507,7 +507,7 @@
       let cetakTglInput = document.getElementById("cetakTglInput");
       if(cetakTglInput) { cetakTglInput.value = `${yyyy}-${mm}-${dd}`; }
     }
-    
+   
     function switchAuthView(viewId) {
       document.getElementById('loginSection').classList.add('d-none');
       document.getElementById('registerSection').classList.add('d-none');
@@ -517,7 +517,7 @@
       document.getElementById('regAlert').innerText = "";
       document.getElementById('forgotAlert').innerText = "";
     }
-    
+   
     function toggleSidebar() {
       document.querySelector('.sidebar').classList.toggle('active-mobile'); 
       document.querySelector('.sidebar-overlay').classList.toggle('active-mobile');
@@ -539,12 +539,12 @@
           stopScanner();
       }
     }
-    
+   
     function pindahHalaman(tujuan) {
       document.getElementById("loginSection").classList.add("d-none"); 
       if(tujuan === 'login') { document.getElementById("loginSection").classList.remove("d-none"); } 
     }
-    
+   
     function handleAdminCheckboxes(type) {
       let chkSemua = document.getElementById("chkSemuaGuru");
       let chkKepsek = document.getElementById("chkHanyaKepsek");
@@ -786,13 +786,13 @@
             </div>`;
       });
     }
-    
+   
     function stopScanner() {
         if (html5QrCode && html5QrCode.isScanning) {
             html5QrCode.stop().then(() => { html5QrCode.clear(); }).catch(err => { console.log(err); });
         }
     }
-    
+   
     function onScanSuccess(decodedText, decodedResult) {
       if(isProcessingScan) return; 
       // Mengunci gembok digital agar kamera tidak mencoba memindai frame lain
@@ -836,7 +836,7 @@
           }
       );
     }
-    
+   
     function onScanFailure(error) { 
         // Berjalan senyap, hanya dipanggil ketika qr tidak terdeteksi di frame
     }
@@ -884,7 +884,7 @@
       }
     }
     function terapkanFilterRekap() { renderTabelRekap(); }
-    
+   
     function getRoleByName(nama) {
         if(!window.pegawaiListGlobal) return "";
         let p = window.pegawaiListGlobal.find(x => x.nama === nama); return p ? p.role : "";
@@ -948,7 +948,7 @@
       tbody.innerHTML = html;
     }
 
-    // ================= FUNGSI CETAK REKAPITULASI (DIPERBARUI TOTAL) =================
+    // ================= FUNGSI CETAK REKAPITULASI (DIPERBARUI) =================
     function cetakRekap() {
       let btn = document.getElementById("btnCetakRekap"); let originalText = btn.innerHTML; btn.innerHTML = "Memproses..."; btn.disabled = true;
       callBackend('getPengaturanKop', {}, function(kop) {
@@ -960,7 +960,6 @@
          let logoKiriHTML = kop && kop.logoKiri ? `<img src="${kop.logoKiri}" style="max-height: 90px; width: auto;">` : ''; 
          let logoKananHTML = kop && kop.logoKanan ? `<img src="${kop.logoKanan}" style="max-height: 90px; width: auto;">` : '';
          
-         // Setup Teks Kop Dinamis Berbaris
          let tPemerintah = kop && kop.teksPemerintah ? kop.teksPemerintah : "";
          let tDinas = kop && kop.teksDinas ? kop.teksDinas : "";
          let tSekolah = kop && kop.namaSekolah ? kop.namaSekolah : "SD INPRES RANOWANGKO II";
@@ -1014,31 +1013,30 @@
              }
          }
          
-         // DOM MANIPULATION: Menyuntikkan Kop Surat ke dalam THEAD Tabel Data
+         // PERBAIKAN KOP SURAT: Hapus manipulasi tag <tr> dan tempatkan secara mandiri (Kop di luar Tabel)
          let tableNode = document.getElementById(divToPrintId).cloneNode(true);
          let thead = tableNode.querySelector('thead');
          if(thead) {
-             let colCount = (thead.querySelectorAll('tr:last-child th').length) || 10;
-             let kopRow = document.createElement('tr');
-             kopRow.className = "cetak-kop-row";
-             
-             // Isi baris Kop Surat
-             kopRow.innerHTML = `
-                 <th colspan="${colCount}">
-                     <div class="kop-surat" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 4px double black; padding-bottom: 8px; margin-bottom: 20px; font-family: 'FuturaBdCnBT', Arial, sans-serif;">
-                         <div style="width: 100px; text-align: center;">${logoKiriHTML}</div>
-                         <div class="kop-teks" style="text-align: center; flex-grow: 1; padding: 0 15px;">${kopTeksHTML}</div>
-                         <div style="width: 100px; text-align: center;">${logoKananHTML}</div>
-                     </div>
-                     <h3 style="text-align: center; text-transform: uppercase; margin-bottom: 15px; text-decoration: underline; font-size: 16px; font-family: 'Times New Roman', Times, serif;">${title}</h3>
-                 </th>
-             `;
-             
-             // Masukkan baris Kop Surat ini di urutan teratas dalam header tabel
-             thead.insertBefore(kopRow, thead.firstChild);
+             let ths = thead.querySelectorAll('th');
+             ths.forEach(th => {
+                 th.style.backgroundColor = '#f2f2f2';
+                 th.style.color = 'black';
+                 th.style.textAlign = 'center';
+                 th.style.fontWeight = 'bold';
+             });
          }
          
-         let divToPrint = tableNode.outerHTML;
+         let kopHTML = `
+             <div class="kop-surat" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 4px double black; padding-bottom: 8px; margin-bottom: 20px; font-family: 'FuturaBdCnBT', Arial, sans-serif;">
+                 <div style="width: 100px; text-align: center;">${logoKiriHTML}</div>
+                 <div class="kop-teks" style="text-align: center; flex-grow: 1; padding: 0 15px;">${kopTeksHTML}</div>
+                 <div style="width: 100px; text-align: center;">${logoKananHTML}</div>
+             </div>
+             <h3 style="text-align: center; text-transform: uppercase; margin-bottom: 15px; text-decoration: underline; font-size: 16px; font-family: 'Times New Roman', Times, serif;">${title}</h3>
+         `;
+         
+         // Menggabungkan Kop Surat dengan Tabel
+         let divToPrint = kopHTML + tableNode.outerHTML;
          
          let html = `
            <html>
@@ -1057,23 +1055,15 @@
                /* MENCEGAH BARIS TERPOTONG SAAT PINDAH HALAMAN */
                tr { page-break-inside: avoid; }
                
-               /* ATURAN PENTING: AGAR KOP & HEADER TABEL BERULANG OTOMATIS */
+               /* MENGULANG HEADER KOLOM TABEL */
                thead { display: table-header-group; }
                
-               /* Tampilan untuk Header Kolom Data (Tanggal, Nama, dsb) */
-               thead tr:not(.cetak-kop-row) th { 
+               /* Tampilan untuk Header Kolom Data */
+               thead th { 
                    background-color: #f2f2f2 !important; 
                    color: black !important; 
                    text-align: center; 
                    font-weight: bold; 
-               }
-               
-               /* Override khusus untuk Baris Kop Surat yang disuntikkan */
-               thead tr.cetak-kop-row th {
-                   border: none !important;
-                   background-color: white !important;
-                   color: black !important;
-                   padding: 0 0 10px 0 !important;
                }
                
                /* TANDA TANGAN */
@@ -1206,7 +1196,7 @@
         tbody.innerHTML = html; 
       });
     }
-    
+   
     function bukaEditSiswaKelas(str) {
       let s = JSON.parse(decodeURIComponent(str));
       document.getElementById("eSiswaRowIndex").value = s.rowIndex; document.getElementById("eSiswaKelas").value = s.kelas || "";
@@ -1216,7 +1206,7 @@
       if(!modalEditSiswaObj) { modalEditSiswaObj = new bootstrap.Modal(document.getElementById('modalEditSiswa')); }
       modalEditSiswaObj.show();
     }
-    
+   
     function prosesEditSiswaKelas() {
       let newData = {
         kelas: document.getElementById("eSiswaKelas").value, guru: document.getElementById("eSiswaGuru").value,
@@ -1225,7 +1215,7 @@
       };
       callBackend('updateSiswaBackend', {rowIndex: document.getElementById("eSiswaRowIndex").value, newData: newData}, function(msg){ alert(msg); modalEditSiswaObj.hide(); muatDataSiswaKelasUntukTabel(); });
     }
-    
+   
     function hapusSiswaKelas(rowIndex) {
       if(confirm("Yakin ingin menghapus data siswa ini?")) { callBackend('hapusSiswaBackend', {rowIndex: rowIndex}, function(msg){ alert(msg); muatDataSiswaKelasUntukTabel(); }); }
     }
