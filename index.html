@@ -948,7 +948,7 @@
       tbody.innerHTML = html;
     }
 
-    // ================= FUNGSI CETAK REKAPITULASI (DIPERBARUI FULL) =================
+    // ================= FUNGSI CETAK REKAPITULASI (DIPERBARUI TOTAL) =================
     function cetakRekap() {
       let btn = document.getElementById("btnCetakRekap"); let originalText = btn.innerHTML; btn.innerHTML = "Memproses..."; btn.disabled = true;
       callBackend('getPengaturanKop', {}, function(kop) {
@@ -956,10 +956,9 @@
          if(aktifRekapTab === 'jurnal') { divToPrintId = "cetakTabelJurnal"; title = "REKAPITULASI JURNAL MENGAJAR"; } 
          else if(aktifRekapTab === 'absensi') { divToPrintId = "cetakTabelAbsensi"; title = "REKAPITULASI ABSENSI PEGAWAI"; } 
          else { divToPrintId = "cetakTabelAbsensiSiswa"; title = "REKAPITULASI KEHADIRAN SISWA"; }
-         let divToPrint = document.getElementById(divToPrintId).outerHTML;
          
-         let logoKiriHTML = kop && kop.logoKiri ? `<img src="${kop.logoKiri}">` : ''; 
-         let logoKananHTML = kop && kop.logoKanan ? `<img src="${kop.logoKanan}">` : '';
+         let logoKiriHTML = kop && kop.logoKiri ? `<img src="${kop.logoKiri}" style="max-height: 90px; width: auto;">` : ''; 
+         let logoKananHTML = kop && kop.logoKanan ? `<img src="${kop.logoKanan}" style="max-height: 90px; width: auto;">` : '';
          
          // Setup Teks Kop Dinamis Berbaris
          let tPemerintah = kop && kop.teksPemerintah ? kop.teksPemerintah : "";
@@ -969,29 +968,11 @@
          let tKontak = kop && kop.teksKontak ? kop.teksKontak : "";
          
          let kopTeksHTML = "";
-         if (tPemerintah) kopTeksHTML += `<div class="baris-pemerintah">${tPemerintah}</div>`;
-         if (tDinas) kopTeksHTML += `<div class="baris-dinas">${tDinas}</div>`;
-         if (tSekolah) kopTeksHTML += `<div class="baris-sekolah">${tSekolah}</div>`;
-         if (tAlamat) kopTeksHTML += `<div class="baris-alamat">${tAlamat}</div>`;
-         if (tKontak) kopTeksHTML += `<div class="baris-kontak">${tKontak}</div>`;
-         
-         // Trik agar Kop Surat & Judul Berulang di Setiap Halaman PDF
-         let colCount = (aktifRekapTab === 'absensi_siswa') ? 7 : (aktifRekapTab === 'absensi' ? 5 : 6);
-         let kopHeaderRow = `
-          <tr class="kop-row">
-            <td colspan="${colCount}" class="kop-cell">
-              <div class="kop-surat">
-                 <div style="width: 100px; text-align: center;">${logoKiriHTML}</div>
-                 <div class="kop-teks">${kopTeksHTML}</div>
-                 <div style="width: 100px; text-align: center;">${logoKananHTML}</div>
-              </div>
-              <h3>${title}</h3>
-            </td>
-          </tr>
-         `;
-         
-         // Menyuntikkan (Inject) Kop Surat langsung ke dalam <thead... > dari tabel data
-         divToPrint = divToPrint.replace(/(<thead[^>]*>)/i, '$1' + kopHeaderRow);
+         if (tPemerintah) kopTeksHTML += `<div class="baris-pemerintah" style="font-size: 20px; font-weight: bold; text-transform: uppercase; margin: 0; line-height: 1.1; letter-spacing: 0.5px;">${tPemerintah}</div>`;
+         if (tDinas) kopTeksHTML += `<div class="baris-dinas" style="font-size: 20px; font-weight: bold; text-transform: uppercase; margin: 0; line-height: 1.1; letter-spacing: 0.5px;">${tDinas}</div>`;
+         if (tSekolah) kopTeksHTML += `<div class="baris-sekolah" style="font-size: 30px; font-weight: bold; text-transform: uppercase; margin: 0; line-height: 1.1; letter-spacing: 1px;">${tSekolah}</div>`;
+         if (tAlamat) kopTeksHTML += `<div class="baris-alamat" style="font-size: 14px; font-style: italic; font-weight: normal; margin: 4px 0 0 0; line-height: 1.2; text-transform: none;">${tAlamat}</div>`;
+         if (tKontak) kopTeksHTML += `<div class="baris-kontak" style="font-size: 14px; font-style: italic; font-weight: normal; margin: 4px 0 0 0; line-height: 1.2; text-transform: none;">${tKontak}</div>`;
          
          let kepsekNama = kop && kop.kepsek ? kop.kepsek : "........................."; let kepsekNip = kop && kop.nipKepsek ? kop.nipKepsek : ".........................";
          
@@ -1033,6 +1014,32 @@
              }
          }
          
+         // DOM MANIPULATION: Menyuntikkan Kop Surat ke dalam THEAD Tabel Data
+         let tableNode = document.getElementById(divToPrintId).cloneNode(true);
+         let thead = tableNode.querySelector('thead');
+         if(thead) {
+             let colCount = (thead.querySelectorAll('tr:last-child th').length) || 10;
+             let kopRow = document.createElement('tr');
+             kopRow.className = "cetak-kop-row";
+             
+             // Isi baris Kop Surat
+             kopRow.innerHTML = `
+                 <th colspan="${colCount}">
+                     <div class="kop-surat" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 4px double black; padding-bottom: 8px; margin-bottom: 20px; font-family: 'FuturaBdCnBT', Arial, sans-serif;">
+                         <div style="width: 100px; text-align: center;">${logoKiriHTML}</div>
+                         <div class="kop-teks" style="text-align: center; flex-grow: 1; padding: 0 15px;">${kopTeksHTML}</div>
+                         <div style="width: 100px; text-align: center;">${logoKananHTML}</div>
+                     </div>
+                     <h3 style="text-align: center; text-transform: uppercase; margin-bottom: 15px; text-decoration: underline; font-size: 16px; font-family: 'Times New Roman', Times, serif;">${title}</h3>
+                 </th>
+             `;
+             
+             // Masukkan baris Kop Surat ini di urutan teratas dalam header tabel
+             thead.insertBefore(kopRow, thead.firstChild);
+         }
+         
+         let divToPrint = tableNode.outerHTML;
+         
          let html = `
            <html>
            <head><title>Cetak ${title}</title>
@@ -1043,25 +1050,31 @@
                }
                body { font-family: 'Times New Roman', Times, serif; padding: 20px; color: #000; margin: 0; }
                
-               /* KOP SURAT */
-               .kop-surat { display: flex; align-items: center; justify-content: space-between; border-bottom: 4px double black; padding-bottom: 8px; margin-bottom: 15px; font-family: 'FuturaBdCnBT', Arial, sans-serif; }
-               .kop-surat img { max-height: 90px; width: auto; }
-               .kop-teks { text-align: center; flex-grow: 1; padding: 0 15px; }
-               .baris-pemerintah, .baris-dinas { font-size: 20px; font-weight: bold; text-transform: uppercase; margin: 0; line-height: 1.1; letter-spacing: 0.5px; }
-               .baris-sekolah { font-size: 30px; font-weight: bold; text-transform: uppercase; margin: 0; line-height: 1.1; letter-spacing: 1px; }
-               .baris-alamat, .baris-kontak { font-size: 14px; font-style: italic; font-weight: normal; margin: 4px 0 0 0; line-height: 1.2; text-transform: none; }
-               h3 { text-align: center; text-transform: uppercase; margin-bottom: 15px; text-decoration: underline; font-size: 16px; font-family: 'Times New Roman', Times, serif; }
-               
                /* TABEL DATA */
-               table { width: 100%; border-collapse: collapse; margin-top: 5px; font-size: 12px; font-family: Arial, sans-serif; border: 1px solid black; }
-               thead { display: table-header-group; }
-               tr { page-break-inside: avoid; }
+               table { width: 100%; border-collapse: collapse; font-size: 12px; font-family: Arial, sans-serif; border: 1px solid black; }
                table th, table td { border: 1px solid black; padding: 8px; text-align: left; }
-               table th { background-color: #f2f2f2 !important; text-align: center; font-weight: bold; color: black !important; }
                
-               /* OVERRIDE BORDER UNTUK KOP SURAT */
-               tr.kop-row { background-color: transparent !important; }
-               td.kop-cell { border: none !important; padding: 0 !important; background-color: transparent !important; }
+               /* MENCEGAH BARIS TERPOTONG SAAT PINDAH HALAMAN */
+               tr { page-break-inside: avoid; }
+               
+               /* ATURAN PENTING: AGAR KOP & HEADER TABEL BERULANG OTOMATIS */
+               thead { display: table-header-group; }
+               
+               /* Tampilan untuk Header Kolom Data (Tanggal, Nama, dsb) */
+               thead tr:not(.cetak-kop-row) th { 
+                   background-color: #f2f2f2 !important; 
+                   color: black !important; 
+                   text-align: center; 
+                   font-weight: bold; 
+               }
+               
+               /* Override khusus untuk Baris Kop Surat yang disuntikkan */
+               thead tr.cetak-kop-row th {
+                   border: none !important;
+                   background-color: white !important;
+                   color: black !important;
+                   padding: 0 0 10px 0 !important;
+               }
                
                /* TANDA TANGAN */
                .ttd-container { width: 100%; margin-top: 40px; display: flex; justify-content: space-between; text-align: center; font-family: Arial, sans-serif; font-size: 14px; page-break-inside: avoid; }
