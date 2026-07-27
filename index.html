@@ -1328,37 +1328,40 @@
          let tempatCetak = document.getElementById("cetakTempat").value || "....................";
          
          let ttdKiri = ""; let ttdKanan = "";
+         
+         // PERUBAHAN: Seluruh struktur kolom tanda tangan menggunakan <div style="height:xx px"> 
+         // agar sejajar sempurna kiri dan kanan terlepas dari berapa baris jabatannya.
          if (aktifRekapTab === 'absensi_siswa') {
              if (session.role === 'admin' || session.role === 'kepsek') {
                  ttdKiri = ``; 
-                 ttdKanan = `<p style="margin-bottom: 70px;">${tempatCetak}, ${tglCetakFormatted}<br>Mengetahui,<br>Kepala Sekolah</p><b><u>${kepsekNama}</u></b><br>NIP. ${kepsekNip}`; 
+                 ttdKanan = `<div style="height:20px;">${tempatCetak}, ${tglCetakFormatted}</div><div style="height:40px;">Mengetahui,<br>Kepala Sekolah</div><div style="height:70px;"></div><b><u>${kepsekNama}</u></b><br>NIP. ${kepsekNip}`; 
              } else if (session.role === 'guru') {
-                 // PERUBAHAN DI SINI: KEPSEK DI KIRI, GURU (WALI KELAS) DI KANAN
-                 ttdKiri = `<p style="margin-bottom: 70px;"><br><br>Mengetahui,<br>Kepala Sekolah</p><b><u>${kepsekNama}</u></b><br>NIP. ${kepsekNip}`;
-                 ttdKanan = `<p style="margin-bottom: 70px;">${tempatCetak}, ${tglCetakFormatted}<br>Wali Kelas</p><b><u>${session.nama}</u></b><br>NIP. ${session.nip || "........................."}`;
+                 ttdKiri = `<div style="height:20px;">Mengetahui,</div><div style="height:40px;">Kepala Sekolah</div><div style="height:70px;"></div><b><u>${kepsekNama}</u></b><br>NIP. ${kepsekNip}`;
+                 ttdKanan = `<div style="height:20px;">${tempatCetak}, ${tglCetakFormatted}</div><div style="height:40px;">Wali Kelas</div><div style="height:70px;"></div><b><u>${session.nama}</u></b><br>NIP. ${session.nip || "........................."}`;
              }
          } else {
              if (session.role === 'guru') {
-                 ttdKiri = `<p style="margin-bottom: 70px;">Mengetahui,<br>Kepala Sekolah</p><b><u>${kepsekNama}</u></b><br>NIP. ${kepsekNip}`;
-                 ttdKanan = `<p style="margin-bottom: 70px;">${tempatCetak}, ${tglCetakFormatted}<br>Guru Kelas / Mata Pelajaran</p><b><u>${session.nama}</u></b><br>NIP. ${session.nip || "........................."}`;
+                 ttdKiri = `<div style="height:20px;">Mengetahui,</div><div style="height:40px;">Kepala Sekolah</div><div style="height:70px;"></div><b><u>${kepsekNama}</u></b><br>NIP. ${kepsekNip}`;
+                 ttdKanan = `<div style="height:20px;">${tempatCetak}, ${tglCetakFormatted}</div><div style="height:40px;">Guru Kelas / Mata Pelajaran</div><div style="height:70px;"></div><b><u>${session.nama}</u></b><br>NIP. ${session.nip || "........................."}`;
              } else if (session.role === 'admin') {
                  let pengawasNama = kop && kop.pengawas ? kop.pengawas : "........................."; let pengawasNip = kop && kop.nipPengawas ? kop.nipPengawas : "........................."; let pengawasPangkat = kop && kop.pangkatPengawas ? kop.pangkatPengawas : "";
-                 let pgPangkatHTML = pengawasPangkat ? pengawasPangkat + "<br>" : "";
+                 let pgPangkatHTML = pengawasPangkat ? "<br>" + pengawasPangkat : "";
                  let isSemuaGuru = false; let isHanyaKepsek = false; let selectedNames = [];
                  let chkSemua = document.getElementById("chkSemuaGuru"); let chkKepsek = document.getElementById("chkHanyaKepsek"); let items = document.querySelectorAll(".chk-pegawai-item");
                  if (chkSemua && chkSemua.checked) isSemuaGuru = true; if (chkKepsek && chkKepsek.checked) isHanyaKepsek = true;
                  if (!isSemuaGuru && !isHanyaKepsek) { items.forEach(i => { if (i.checked) selectedNames.push({nama: i.value, nip: i.getAttribute('data-nip')}); }); }
                  
                  if (selectedNames.length === 1 && !isSemuaGuru && !isHanyaKepsek) {
-                     ttdKiri = ``; ttdKanan = `<p style="margin-bottom: 70px;">${tempatCetak}, ${tglCetakFormatted}<br>Guru Kelas / Mata Pelajaran</p><b><u>${selectedNames[0].nama}</u></b><br>NIP. ${selectedNames[0].nip || "........................."}`;
+                     ttdKiri = ``; 
+                     ttdKanan = `<div style="height:20px;">${tempatCetak}, ${tglCetakFormatted}</div><div style="height:40px;">Guru Kelas / Mata Pelajaran</div><div style="height:70px;"></div><b><u>${selectedNames[0].nama}</u></b><br>NIP. ${selectedNames[0].nip || "........................."}`;
                  } else {
-                     ttdKiri = `<p style="margin-bottom: 70px;">Mengetahui,<br>Pengawas Sekolah</p><b><u>${pengawasNama}</u></b><br>NIP. ${pengawasNip}<br>${pgPangkatHTML}`;
-                     ttdKanan = `<p style="margin-bottom: 70px;">${tempatCetak}, ${tglCetakFormatted}<br>Kepala Sekolah</p><b><u>${kepsekNama}</u></b><br>NIP. ${kepsekNip}`;
+                     ttdKiri = `<div style="height:20px;">Mengetahui,</div><div style="height:40px;">Pengawas Sekolah</div><div style="height:70px;"></div><b><u>${pengawasNama}</u></b><br>NIP. ${pengawasNip}${pgPangkatHTML}`;
+                     ttdKanan = `<div style="height:20px;">${tempatCetak}, ${tglCetakFormatted}</div><div style="height:40px;">Kepala Sekolah</div><div style="height:70px;"></div><b><u>${kepsekNama}</u></b><br>NIP. ${kepsekNip}`;
                  }
              } else if (session.role === 'kepsek') {
-                 let pengawasNama = kop && kop.pengawas ? kop.pengawas : "........................."; let pengawasNip = kop && kop.nipPengawas ? kop.nipPengawas : "........................."; let pengawasPangkat = kop && kop.pangkatPengawas ? kop.pangkatPengawas : ""; let pgPangkatHTML = pengawasPangkat ? pengawasPangkat + "<br>" : "";
-                 ttdKiri = `<p style="margin-bottom: 70px;">Mengetahui,<br>Pengawas Sekolah</p><b><u>${pengawasNama}</u></b><br>NIP. ${pengawasNip}<br>${pgPangkatHTML}`;
-                 ttdKanan = `<p style="margin-bottom: 70px;">${tempatCetak}, ${tglCetakFormatted}<br>Kepala Sekolah</p><b><u>${kepsekNama}</u></b><br>NIP. ${kepsekNip}`;
+                 let pengawasNama = kop && kop.pengawas ? kop.pengawas : "........................."; let pengawasNip = kop && kop.nipPengawas ? kop.nipPengawas : "........................."; let pengawasPangkat = kop && kop.pangkatPengawas ? kop.pangkatPengawas : ""; let pgPangkatHTML = pengawasPangkat ? "<br>" + pengawasPangkat : "";
+                 ttdKiri = `<div style="height:20px;">Mengetahui,</div><div style="height:40px;">Pengawas Sekolah</div><div style="height:70px;"></div><b><u>${pengawasNama}</u></b><br>NIP. ${pengawasNip}${pgPangkatHTML}`;
+                 ttdKanan = `<div style="height:20px;">${tempatCetak}, ${tglCetakFormatted}</div><div style="height:40px;">Kepala Sekolah</div><div style="height:70px;"></div><b><u>${kepsekNama}</u></b><br>NIP. ${kepsekNip}`;
              }
          }
          
