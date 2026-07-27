@@ -20,8 +20,8 @@
   <script src="https://unpkg.com/html5-qrcode"></script>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <!-- Library QR Code Offline Client-Side -->
-  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+  <!-- Library QR Code Offline Client-Side (QRious) - Dijamin Stabil -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
   
   <style>
     :root {
@@ -438,7 +438,7 @@
         </div>
       </div>
       
-      <!-- MENU CETAK BARCODE (OFFLINE JS) -->
+      <!-- MENU CETAK BARCODE (OFFLINE JS DENGAN METODE QRIOUS) -->
       <div class="view-section" id="barcodeGeneratorView">
           <div class="box-card border-top-0" style="position:relative;">
             <div style="position:absolute; top:0; left:0; width:100%; height:5px; background: linear-gradient(90deg, #0dcaf0, #0aa2c0);"></div>
@@ -446,6 +446,7 @@
               <h5 class="m-0 fw-bold text-info text-dark"><i class="bi bi-printer-fill me-2"></i>Generator ID Card / QR Code (Lokal)</h5>
               <div class="d-flex gap-2">
                   <button class="btn btn-sm btn-info text-white fw-bold px-3 rounded-pill shadow-sm" onclick="muatBarcodeSiswaHanya()"><i class="bi bi-cloud-arrow-down me-1"></i> Tarik Data (Refresh)</button>
+                  <button class="btn btn-sm btn-success text-white fw-bold px-3 rounded-pill shadow-sm d-none" id="btnBuatSemuaBarcode" onclick="buatSemuaBarcode()"><i class="bi bi-grid-3x3 me-1"></i> Render Semua QR</button>
               </div>
             </div>
             <div class="table-responsive">
@@ -460,7 +461,7 @@
   </div>
 
   <!-- AREA MODAL -->
-  <!-- MODAL MAP GPS (Ditambah Input Radius) -->
+  <!-- MODAL MAP GPS -->
   <div class="modal fade" id="modalTitikAbsen" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content border-0 shadow-lg" style="border-radius: 20px; overflow: hidden;">
@@ -633,6 +634,7 @@
       if(targetViewId === 'pengaturanKopView') muatPengaturanKop();
       if(targetViewId === 'manajemenUsersView') loadUsersData();
       
+      // Efisiensi Memori: Tutup Kamera jika tidak di layar Scanner
       if(targetViewId === 'scannerBarcodeView') { startScanner(); } else { stopScanner(); }
     }
     
@@ -951,7 +953,8 @@
           document.getElementById("kopPengawasPangkat").value = data.pangkatPengawas;
           document.getElementById("kopPemerintah").value = data.teksPemerintah || ""; document.getElementById("kopDinas").value = data.teksDinas || ""; document.getElementById("kopKontak").value = data.teksKontak || "";
           document.getElementById("kopTokenFonnte").value = data.tokenFonnte || ""; document.getElementById("kopWaMasuk").value = data.teksWaMasuk || ""; document.getElementById("kopWaPulang").value = data.teksWaPulang || "";
-          // Load Koordinat & Radius GPS
+          
+          // Load Koordinat & Radius GPS dari kolom E
           if(data.lat) document.getElementById("setLat").value = data.lat;
           if(data.lng) document.getElementById("setLng").value = data.lng;
           if(data.radius) document.getElementById("setRadius").value = data.radius;
@@ -1068,14 +1071,18 @@
       }
     }
     
-    // PEMBUATAN QR CODE OFFLINE & PENYIMPANAN KE SPREADSHEET
+    // PEMBUATAN QR CODE OFFLINE & PENYIMPANAN KE SPREADSHEET MENGGUNAKAN QRIOUS
     function muatBarcodeSiswaHanya() {
       let tbody = document.getElementById("bodyListBarcode"); 
       tbody.innerHTML = "<tr><td colspan='5' class='text-center text-muted py-4'><div class='spinner-border spinner-border-sm me-2'></div>Menarik data siswa...</td></tr>";
       
       callBackend('getSiswaKelasData', {username: 'all', namaUser: 'all'}, function(siswaRows) {
           if(!siswaRows || siswaRows.length === 0) { tbody.innerHTML = "<tr><td colspan='5' class='text-center py-4'><i class='bi bi-inbox me-2'></i>Database kosong.</td></tr>"; return; }
+          
+          window.dataSiswaBarcode = siswaRows;
+          document.getElementById("btnBuatSemuaBarcode").classList.remove("d-none"); 
           let html = "";
+          
           siswaRows.forEach((s, idx) => {
             let str = encodeURIComponent(JSON.stringify(s));
             let qrAksi = "";
@@ -1085,7 +1092,7 @@
                qrAksi = `<img src="${s.qrCode}" width="60" height="60" class="border rounded p-1 shadow-sm bg-white mb-2"><br>
                          <button class="btn btn-sm btn-primary rounded-pill px-3 fw-bold shadow-sm" onclick="cetakSatuBarcode('${str}', '${s.qrCode}')"><i class="bi bi-printer-fill me-1"></i> Cetak Card</button>`;
             } else {
-               qrAksi = `<button class="btn btn-sm btn-outline-success rounded-pill px-3 fw-bold shadow-sm" onclick="renderDanSimpanQR(${idx}, ${s.rowIndex}, '${s.nisn}', '${str}')" id="btnQr_${idx}"><i class="bi bi-qr-code me-1"></i>Render Barcode</button>`;
+               qrAksi = `<button class="btn btn-sm btn-outline-success rounded-pill px-3 fw-bold shadow-sm" onclick="renderDanSimpanQRAsync(${idx}, ${s.rowIndex}, '${s.nisn}', '${str}')" id="btnQr_${idx}"><i class="bi bi-qr-code me-1"></i>Render Barcode</button>`;
             }
             
             html += `<tr>
@@ -1100,22 +1107,62 @@
       });
     }
     
-    function renderDanSimpanQR(idx, sheetRowIndex, nisn, str) {
-      let btn = document.getElementById("btnQr_" + idx);
-      if(btn) { btn.innerHTML = "<div class='spinner-border spinner-border-sm'></div>"; btn.disabled = true; }
+    // Fungsi Generate Massal (Berjalan secara Asinkronus agar UI tidak Hang)
+    async function buatSemuaBarcode() {
+      let unrendered = window.dataSiswaBarcode.filter(s => !s.qrCode || !s.qrCode.startsWith("data:image"));
+      if (unrendered.length === 0) {
+        alert("Pemberitahuan: Semua data QR Code siswa telah selesai di-render."); return;
+      }
       
-      // Library QRCode JS Local Render
-      QRCode.toDataURL(nisn, { width: 150, margin: 1 }, function (err, url) {
-         if (err) { alert("Gagal render QR!"); return; }
-         
-         let container = document.getElementById("qrContainer_" + idx);
-         if(container) { 
-             container.innerHTML = `<img src="${url}" width="60" height="60" class="border rounded p-1 shadow-sm bg-white mb-2"><br>
-                                    <button class="btn btn-sm btn-primary rounded-pill px-3 fw-bold shadow-sm" onclick="cetakSatuBarcode('${str}', '${url}')"><i class="bi bi-printer-fill me-1"></i> Cetak Card</button>`; 
-         }
-         
-         // Simpan ke Google Sheets via Background Process
-         callBackend('simpanQRCode', {rowIndex: sheetRowIndex, qrBase64: url}, function(msg){ console.log("Berhasil disimpan: " + nisn); });
+      let btnAll = document.getElementById("btnBuatSemuaBarcode");
+      let originalText = btnAll.innerHTML;
+      btnAll.innerHTML = "<div class='spinner-border spinner-border-sm me-2'></div>Rendering " + unrendered.length + " data...";
+      btnAll.disabled = true;
+
+      for (let i = 0; i < window.dataSiswaBarcode.length; i++) {
+        let s = window.dataSiswaBarcode[i];
+        if (!s.qrCode || !s.qrCode.startsWith("data:image")) {
+          let str = encodeURIComponent(JSON.stringify(s));
+          await renderDanSimpanQRAsync(i, s.rowIndex, s.nisn, str);
+        }
+      }
+
+      btnAll.innerHTML = originalText;
+      btnAll.disabled = false;
+      alert("Selesai! Seluruh QR Code berhasil di-render dan disimpan ke database.");
+    }
+    
+    function renderDanSimpanQRAsync(idx, sheetRowIndex, nisn, str) {
+      return new Promise((resolve) => {
+        try {
+            if (!nisn) throw new Error("NISN Kosong");
+            let btn = document.getElementById("btnQr_" + idx);
+            if(btn) { btn.innerHTML = "<div class='spinner-border spinner-border-sm'></div>"; btn.disabled = true; }
+
+            // Render Menggunakan QRious (Sinkron dan Stabil)
+            var qr = new QRious({ value: String(nisn), size: 150 });
+            var url = qr.toDataURL('image/png');
+
+            let container = document.getElementById("qrContainer_" + idx);
+            if(container) {
+                container.innerHTML = `<img src="${url}" width="60" height="60" class="border rounded p-1 shadow-sm bg-white mb-2"><br>
+                                       <button class="btn btn-sm btn-primary rounded-pill px-3 fw-bold shadow-sm" onclick="cetakSatuBarcode('${str}', '${url}')"><i class="bi bi-printer-fill me-1"></i> Cetak Card</button>`;
+            }
+            
+            window.dataSiswaBarcode[idx].qrCode = url; // Update data di memori klien
+
+            // Simpan Base64 Image tersebut ke Kolom H (QR Code) Google Sheets
+            callBackend('simpanQRCode', {rowIndex: sheetRowIndex, qrBase64: url}, function(msg){
+                resolve(true);
+            }, function(err){
+                resolve(false); 
+            });
+        } catch(e) {
+            console.error(e);
+            let btn = document.getElementById("btnQr_" + idx);
+            if(btn) { btn.innerHTML = "Gagal"; btn.classList.replace("btn-outline-success", "btn-danger"); }
+            resolve(false);
+        }
       });
     }
     
