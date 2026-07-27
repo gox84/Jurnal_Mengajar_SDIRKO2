@@ -20,7 +20,7 @@
   <script src="https://unpkg.com/html5-qrcode"></script>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <!-- Library QR Code Offline Client-Side (QRious) - Dijamin Stabil -->
+  <!-- Library QR Code Offline Client-Side (QRious) - Diperbarui agar lebih responsif -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
   
   <style>
@@ -408,7 +408,7 @@
         </div>
       </div>
       
-      <!-- MENU PENGATURAN -->
+      <!-- MENU PENGATURAN (Aman dari Tabrakan Sel) -->
       <div class="view-section" id="pengaturanKopView">
         <div class="box-card border-top-0" style="position:relative;">
           <div style="position:absolute; top:0; left:0; width:100%; height:5px; background: linear-gradient(90deg, #6c757d, #343a40);"></div>
@@ -569,10 +569,9 @@
   </div>
 
   <script>
-    // GANTI WEB_APP_URL INI DENGAN URL DEPLOY ANDA YANG BARU
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzzAuIvGeuSCCTyJiqRakPNrFM1rGrstIgNPXQmJ92-T8_UQacNe45J0RoFPWtGg3-J/exec";
     
-    // Keamanan API Level Klien: Selalu kirimkan username aktif ke backend untuk validasi hak akses
+    // Keamanan API Level Klien
     function callBackend(action, payload, onSuccess, onFailure) {
       let requester = session.username ? session.username : ""; 
       fetch(WEB_APP_URL, {
@@ -612,17 +611,11 @@
     }
     
     function switchAuthView(viewId) {
-      document.getElementById('loginSection').classList.add('d-none');
-      document.getElementById('registerSection').classList.add('d-none');
-      document.getElementById('forgotSection').classList.add('d-none');
-      document.getElementById(viewId).classList.remove('d-none');
+      document.getElementById('loginSection').classList.add('d-none'); document.getElementById('registerSection').classList.add('d-none'); document.getElementById('forgotSection').classList.add('d-none'); document.getElementById(viewId).classList.remove('d-none');
       document.getElementById('loginAlert').innerText = ""; document.getElementById('regAlert').innerText = ""; document.getElementById('forgotAlert').innerText = "";
     }
     
-    function toggleSidebar() {
-      document.querySelector('.sidebar-wrapper').classList.toggle('active-mobile'); 
-      document.querySelector('.sidebar-overlay').classList.toggle('active-mobile');
-    }
+    function toggleSidebar() { document.querySelector('.sidebar-wrapper').classList.toggle('active-mobile'); document.querySelector('.sidebar-overlay').classList.toggle('active-mobile'); }
     
     function switchMainView(targetViewId, clickedBtnElement) {
       document.querySelectorAll('.main-viewport .view-section').forEach(v => v.classList.remove('active-view'));
@@ -652,33 +645,23 @@
       
       callBackend('checkLogin', {username: user, password: pass}, function(res) {
           if(res.status === "success") {
-            session = res; 
-            document.getElementById("authWrapper").classList.add("d-none"); 
-            document.getElementById("dashboardSection").classList.remove("d-none");
-            document.getElementById("userNamaWorkspace").innerText = res.nama;
+            session = res; document.getElementById("authWrapper").classList.add("d-none"); document.getElementById("dashboardSection").classList.remove("d-none"); document.getElementById("userNamaWorkspace").innerText = res.nama;
             
             callBackend('getDaftarGuruDropdown', {}, function(guruList) {
               let ddl = document.getElementById("sGuruAssign");
-              if(ddl && guruList) {
-                ddl.innerHTML = '<option value="">-- Pilih Guru --</option>';
-                guruList.forEach(g => ddl.innerHTML += `<option value="${g.nama}">${g.nama}</option>`);
-                if(session.role === "guru") { ddl.value = session.nama; ddl.disabled = true; }
-              }
+              if(ddl && guruList) { ddl.innerHTML = '<option value="">-- Pilih Guru --</option>'; guruList.forEach(g => ddl.innerHTML += `<option value="${g.nama}">${g.nama}</option>`); if(session.role === "guru") { ddl.value = session.nama; ddl.disabled = true; } }
             });
+            
             if(res.role === 'admin' || res.role === 'kepsek') {
                 callBackend('getDaftarPegawaiFilter', {}, function(pegawaiList) {
-                    window.pegawaiListGlobal = pegawaiList;
-                    let container = document.getElementById("filterPegawaiContainer");
+                    window.pegawaiListGlobal = pegawaiList; let container = document.getElementById("filterPegawaiContainer");
                     if(container) {
                         if(session.role === 'admin') {
-                            let html = `<div class="border p-2 bg-white rounded shadow-sm" style="max-height: 120px; overflow-y: auto; font-size: 0.85rem;">
-                                        <div class="form-check mb-1"><input class="form-check-input" type="checkbox" value="SEMUA_GURU" id="chkSemuaGuru" onchange="handleAdminCheckboxes('SEMUA_GURU')"><label class="form-check-label fw-bold text-primary" for="chkSemuaGuru">Semua Guru</label></div>
-                                        <div class="form-check mb-1"><input class="form-check-input" type="checkbox" value="HANYA_KEPSEK" id="chkHanyaKepsek" onchange="handleAdminCheckboxes('HANYA_KEPSEK')"><label class="form-check-label fw-bold text-success" for="chkHanyaKepsek">Hanya Kepsek</label></div><hr class="my-1">`;
+                            let html = `<div class="border p-2 bg-white rounded shadow-sm" style="max-height: 120px; overflow-y: auto; font-size: 0.85rem;"><div class="form-check mb-1"><input class="form-check-input" type="checkbox" value="SEMUA_GURU" id="chkSemuaGuru" onchange="handleAdminCheckboxes('SEMUA_GURU')"><label class="form-check-label fw-bold text-primary" for="chkSemuaGuru">Semua Guru</label></div><div class="form-check mb-1"><input class="form-check-input" type="checkbox" value="HANYA_KEPSEK" id="chkHanyaKepsek" onchange="handleAdminCheckboxes('HANYA_KEPSEK')"><label class="form-check-label fw-bold text-success" for="chkHanyaKepsek">Hanya Kepsek</label></div><hr class="my-1">`;
                             pegawaiList.forEach((p, index) => {
                                 if (p.role !== 'admin' && p.role !== 'kepsek') html += `<div class="form-check"><input class="form-check-input chk-pegawai-item" type="checkbox" value="${p.nama}" data-nip="${p.nip}" id="chkPegawai_${index}" onchange="handleAdminCheckboxes('ITEM')"><label class="form-check-label" for="chkPegawai_${index}">${p.nama}</label></div>`;
                                 else if (p.role === 'kepsek') html += `<div class="form-check"><input class="form-check-input chk-pegawai-item" type="checkbox" value="${p.nama}" data-nip="${p.nip}" id="chkPegawai_${index}" onchange="handleAdminCheckboxes('ITEM')"><label class="form-check-label text-muted" for="chkPegawai_${index}">${p.nama} (Kepsek)</label></div>`;
-                            });
-                            html += `</div>`; container.innerHTML = html;
+                            }); html += `</div>`; container.innerHTML = html;
                         } else if (session.role === 'kepsek') {
                             let html = `<select class="form-select" id="filterPegawaiSelect"><option value="">Semua Pegawai</option>`;
                             pegawaiList.forEach(p => { if (p.role !== 'admin') html += `<option value="${p.nama}">${p.nama}</option>`; });
@@ -687,33 +670,29 @@
                     }
                 });
             }
+            
             document.querySelectorAll('.sidebar-menu .menu-btn').forEach(btn => btn.classList.add('d-none'));
-            document.getElementById("menuLink_Logout").classList.remove("d-none");
-            document.getElementById("menuLink_Scanner").classList.remove("d-none");
-            document.getElementById("menuLink_Scanner").style.display = "flex";
+            document.getElementById("menuLink_Logout").classList.remove("d-none"); document.getElementById("menuLink_Scanner").classList.remove("d-none"); document.getElementById("menuLink_Scanner").style.display = "flex";
             
             if(res.role === "admin") {
               document.getElementById("menuLink_Siswa").classList.remove("d-none"); document.getElementById("menuLink_GPS").classList.remove("d-none");
               document.getElementById("menuLink_GenBarcode").classList.remove("d-none"); document.getElementById("menuLink_Approval").classList.remove("d-none");
               document.getElementById("menuLink_Users").classList.remove("d-none"); document.getElementById("menuLink_Settings").classList.remove("d-none");
-              document.getElementById("menuLink_Rekap").classList.remove("d-none"); document.getElementById("tabNavAbsensi").classList.remove("d-none");
-              document.getElementById("siswaTabs").classList.remove("d-none");
+              document.getElementById("menuLink_Rekap").classList.remove("d-none"); document.getElementById("tabNavAbsensi").classList.remove("d-none"); document.getElementById("siswaTabs").classList.remove("d-none");
               switchMainView('rekapDataView', document.getElementById("menuLink_Rekap"));
             } else if(res.role === "kepsek") {
               document.getElementById("menuLink_AbsenPegawai").classList.remove("d-none"); document.getElementById("menuLink_Jurnal").classList.remove("d-none");
               document.getElementById("menuLink_Siswa").classList.remove("d-none"); document.getElementById("menuLink_Rekap").classList.remove("d-none");
               document.getElementById("formKepsekStructure").classList.remove("d-none"); document.getElementById("formGuruStructure").classList.add("d-none");
               document.getElementById("tabNavAbsensi").classList.remove("d-none"); document.getElementById("judulDataSiswa").innerHTML = "<i class='bi bi-people me-2'></i>Data Seluruh Siswa (Read Only)";
-              document.getElementById("siswaTabs").classList.add("d-none"); document.getElementById("input-siswa-pane").classList.remove("show", "active");
-              document.getElementById("masal-siswa-pane").classList.remove("show", "active"); document.getElementById("list-siswa-pane").classList.add("show", "active"); 
+              document.getElementById("siswaTabs").classList.add("d-none"); document.getElementById("input-siswa-pane").classList.remove("show", "active"); document.getElementById("masal-siswa-pane").classList.remove("show", "active"); document.getElementById("list-siswa-pane").classList.add("show", "active"); 
               muatDataSiswaKelasUntukTabel(); switchMainView('absenPegawaiView', document.getElementById("menuLink_AbsenPegawai"));
             } else { 
               document.getElementById("menuLink_AbsenPegawai").classList.remove("d-none"); document.getElementById("menuLink_Jurnal").classList.remove("d-none");
               document.getElementById("menuLink_Siswa").classList.remove("d-none"); document.getElementById("menuLink_Rekap").classList.remove("d-none");
               document.getElementById("formGuruStructure").classList.remove("d-none"); document.getElementById("formKepsekStructure").classList.add("d-none");
               document.getElementById("tabNavAbsensi").classList.add("d-none"); document.getElementById("judulDataSiswa").innerHTML = "<i class='bi bi-people me-2'></i>Data Siswa Kelas (Read Only)";
-              document.getElementById("siswaTabs").classList.add("d-none"); document.getElementById("input-siswa-pane").classList.remove("show", "active");
-              document.getElementById("masal-siswa-pane").classList.remove("show", "active"); document.getElementById("list-siswa-pane").classList.add("show", "active"); 
+              document.getElementById("siswaTabs").classList.add("d-none"); document.getElementById("input-siswa-pane").classList.remove("show", "active"); document.getElementById("masal-siswa-pane").classList.remove("show", "active"); document.getElementById("list-siswa-pane").classList.add("show", "active"); 
               muatDataSiswaKelasUntukTabel(); switchMainView('absenPegawaiView', document.getElementById("menuLink_AbsenPegawai"));
             }
           } else { alertBox.className = "text-danger mt-3 text-center small fw-bold"; alertBox.innerText = res.message; }
@@ -743,7 +722,7 @@
     
     function logout() { location.reload(); }
     
-    // FUNGSI ABSEN PEGAWAI (Validasi Radius Server-Side)
+    // FUNGSI ABSEN PEGAWAI (Validasi Radius Server-Side Berjalan Sendiri)
     function prosesAbsenPegawai(jenis) {
       const statusEl = document.getElementById("lokasiStatus");
       statusEl.innerHTML = "<div class='spinner-border spinner-border-sm me-2' role='status'></div>Mendapatkan titik koordinat GPS Anda...";
@@ -765,7 +744,7 @@
       } else { statusEl.innerText = "Geolocation tidak didukung di perangkat ini."; }
     }
     
-    // PEMINDAI BARCODE DENGAN EFISIENSI MEMORI
+    // PEMINDAI BARCODE
     function startScanner() {
       if (!html5QrCode) { html5QrCode = new Html5Qrcode("reader"); }
       const config = { fps: 10, qrbox: { width: 250, height: 250 } };
@@ -954,7 +933,7 @@
           document.getElementById("kopPemerintah").value = data.teksPemerintah || ""; document.getElementById("kopDinas").value = data.teksDinas || ""; document.getElementById("kopKontak").value = data.teksKontak || "";
           document.getElementById("kopTokenFonnte").value = data.tokenFonnte || ""; document.getElementById("kopWaMasuk").value = data.teksWaMasuk || ""; document.getElementById("kopWaPulang").value = data.teksWaPulang || "";
           
-          // Load Koordinat & Radius GPS dari kolom E
+          // Load Koordinat & Radius GPS dari kolom B12, B13, B14
           if(data.lat) document.getElementById("setLat").value = data.lat;
           if(data.lng) document.getElementById("setLng").value = data.lng;
           if(data.radius) document.getElementById("setRadius").value = data.radius;
@@ -1071,7 +1050,7 @@
       }
     }
     
-    // PEMBUATAN QR CODE OFFLINE & PENYIMPANAN KE SPREADSHEET MENGGUNAKAN QRIOUS
+    // PEMBUATAN QR CODE OFFLINE & PENYIMPANAN KE SPREADSHEET (Mencegah HTML String Collision)
     function muatBarcodeSiswaHanya() {
       let tbody = document.getElementById("bodyListBarcode"); 
       tbody.innerHTML = "<tr><td colspan='5' class='text-center text-muted py-4'><div class='spinner-border spinner-border-sm me-2'></div>Menarik data siswa...</td></tr>";
@@ -1084,15 +1063,13 @@
           let html = "";
           
           siswaRows.forEach((s, idx) => {
-            let str = encodeURIComponent(JSON.stringify(s));
             let qrAksi = "";
-            
             // Cek apakah QR Code sudah dirender dan tersimpan di database
             if(s.qrCode && s.qrCode.startsWith("data:image")) {
                qrAksi = `<img src="${s.qrCode}" width="60" height="60" class="border rounded p-1 shadow-sm bg-white mb-2"><br>
-                         <button class="btn btn-sm btn-primary rounded-pill px-3 fw-bold shadow-sm" onclick="cetakSatuBarcode('${str}', '${s.qrCode}')"><i class="bi bi-printer-fill me-1"></i> Cetak Card</button>`;
+                         <button class="btn btn-sm btn-primary rounded-pill px-3 fw-bold shadow-sm" onclick="cetakSatuBarcode(${idx})"><i class="bi bi-printer-fill me-1"></i> Cetak Card</button>`;
             } else {
-               qrAksi = `<button class="btn btn-sm btn-outline-success rounded-pill px-3 fw-bold shadow-sm" onclick="renderDanSimpanQRAsync(${idx}, ${s.rowIndex}, '${s.nisn}', '${str}')" id="btnQr_${idx}"><i class="bi bi-qr-code me-1"></i>Render Barcode</button>`;
+               qrAksi = `<button class="btn btn-sm btn-outline-success rounded-pill px-3 fw-bold shadow-sm" onclick="renderDanSimpanQRAsync(${idx}, ${s.rowIndex})" id="btnQr_${idx}"><i class="bi bi-qr-code me-1"></i>Render Barcode</button>`;
             }
             
             html += `<tr>
@@ -1110,31 +1087,29 @@
     // Fungsi Generate Massal (Berjalan secara Asinkronus agar UI tidak Hang)
     async function buatSemuaBarcode() {
       let unrendered = window.dataSiswaBarcode.filter(s => !s.qrCode || !s.qrCode.startsWith("data:image"));
-      if (unrendered.length === 0) {
-        alert("Pemberitahuan: Semua data QR Code siswa telah selesai di-render."); return;
-      }
+      if (unrendered.length === 0) { alert("Pemberitahuan: Semua data QR Code siswa telah selesai di-render."); return; }
       
       let btnAll = document.getElementById("btnBuatSemuaBarcode");
       let originalText = btnAll.innerHTML;
-      btnAll.innerHTML = "<div class='spinner-border spinner-border-sm me-2'></div>Rendering " + unrendered.length + " data...";
-      btnAll.disabled = true;
+      btnAll.innerHTML = "<div class='spinner-border spinner-border-sm me-2'></div>Rendering " + unrendered.length + " data..."; btnAll.disabled = true;
 
       for (let i = 0; i < window.dataSiswaBarcode.length; i++) {
         let s = window.dataSiswaBarcode[i];
         if (!s.qrCode || !s.qrCode.startsWith("data:image")) {
-          let str = encodeURIComponent(JSON.stringify(s));
-          await renderDanSimpanQRAsync(i, s.rowIndex, s.nisn, str);
+          await renderDanSimpanQRAsync(i, s.rowIndex);
         }
       }
-
-      btnAll.innerHTML = originalText;
-      btnAll.disabled = false;
+      btnAll.innerHTML = originalText; btnAll.disabled = false;
       alert("Selesai! Seluruh QR Code berhasil di-render dan disimpan ke database.");
     }
     
-    function renderDanSimpanQRAsync(idx, sheetRowIndex, nisn, str) {
+    // Menggunakan index dari array memori, bukan manipulasi string pada onclick agar tidak bug
+    function renderDanSimpanQRAsync(idx, sheetRowIndex) {
       return new Promise((resolve) => {
         try {
+            let s = window.dataSiswaBarcode[idx];
+            let nisn = s.nisn;
+            
             if (!nisn) throw new Error("NISN Kosong");
             let btn = document.getElementById("btnQr_" + idx);
             if(btn) { btn.innerHTML = "<div class='spinner-border spinner-border-sm'></div>"; btn.disabled = true; }
@@ -1146,15 +1121,16 @@
             let container = document.getElementById("qrContainer_" + idx);
             if(container) {
                 container.innerHTML = `<img src="${url}" width="60" height="60" class="border rounded p-1 shadow-sm bg-white mb-2"><br>
-                                       <button class="btn btn-sm btn-primary rounded-pill px-3 fw-bold shadow-sm" onclick="cetakSatuBarcode('${str}', '${url}')"><i class="bi bi-printer-fill me-1"></i> Cetak Card</button>`;
+                                       <button class="btn btn-sm btn-primary rounded-pill px-3 fw-bold shadow-sm" onclick="cetakSatuBarcode(${idx})"><i class="bi bi-printer-fill me-1"></i> Cetak Card</button>`;
             }
-            
             window.dataSiswaBarcode[idx].qrCode = url; // Update data di memori klien
 
             // Simpan Base64 Image tersebut ke Kolom H (QR Code) Google Sheets
             callBackend('simpanQRCode', {rowIndex: sheetRowIndex, qrBase64: url}, function(msg){
                 resolve(true);
             }, function(err){
+                let b = document.getElementById("btnQr_" + idx);
+                if(b) { b.innerHTML = "Gagal Simpan"; b.classList.replace("btn-outline-success", "btn-danger"); }
                 resolve(false); 
             });
         } catch(e) {
@@ -1166,8 +1142,9 @@
       });
     }
     
-    function cetakSatuBarcode(str, url) {
-      let s = JSON.parse(decodeURIComponent(str));
+    function cetakSatuBarcode(idx) {
+      let s = window.dataSiswaBarcode[idx];
+      let url = s.qrCode;
       let html = `<html><head><title>Cetak Kartu Hadir - ${s.namaSiswa}</title>
       <style>
           body { text-align:center; font-family:'Segoe UI', Arial, sans-serif; padding:20px; background:#f4f7fe; } 
@@ -1192,7 +1169,7 @@
       let printWin = window.open('', '_blank'); printWin.document.open(); printWin.document.write(html); printWin.document.close();
     }
     
-    // LOGIKA MODAL MAP (Penambahan Radius)
+    // LOGIKA MODAL MAP
     document.getElementById('modalTitikAbsen').addEventListener('shown.bs.modal', function () {
       let inputLat = document.getElementById("setLat").value; let inputLng = document.getElementById("setLng").value;
       let lat = parseFloat(inputLat) || 1.2582; let lng = parseFloat(inputLng) || 124.6293;
@@ -1212,12 +1189,8 @@
     });
     
     function simpanKoordinatSekolah() {
-       let lat = document.getElementById("setLat").value;
-       let lng = document.getElementById("setLng").value;
-       let radius = document.getElementById("setRadius").value;
-       
+       let lat = document.getElementById("setLat").value; let lng = document.getElementById("setLng").value; let radius = document.getElementById("setRadius").value;
        if(!lat || !lng || !radius) return alert("Latitude, Longitude, dan Radius wajib diisi!");
-       
        callBackend('simpanKoordinatSekolahBackend', {lat: lat, lng: lng, radius: radius}, function(msg) {
            alert(msg); let m = bootstrap.Modal.getInstance(document.getElementById('modalTitikAbsen')); if(m) m.hide();
        });
