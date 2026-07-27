@@ -828,11 +828,11 @@
     let dataRekapGlobal = { jurnal: [], absensi: [], absensi_siswa: [] };
     let aktifRekapTab = 'jurnal';
     let modalEditSiswaObj, modalEditUserObj, modalTambahUserObj;
-   
+    
     let html5QrCode = null;
     let isProcessingScan = false;
     let map, marker;
-   
+    
     function initApp() {
       const el = document.getElementById("filterBulan");
       const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
@@ -849,7 +849,7 @@
       let cetakTglInput = document.getElementById("cetakTglInput");
       if(cetakTglInput) { cetakTglInput.value = `${yyyy}-${mm}-${dd}`; }
     }
-   
+    
     function switchAuthView(viewId) {
       document.getElementById('loginSection').classList.add('d-none');
       document.getElementById('registerSection').classList.add('d-none');
@@ -859,12 +859,12 @@
       document.getElementById('regAlert').innerText = "";
       document.getElementById('forgotAlert').innerText = "";
     }
-   
+    
     function toggleSidebar() {
       document.querySelector('.sidebar-wrapper').classList.toggle('active-mobile'); 
       document.querySelector('.sidebar-overlay').classList.toggle('active-mobile');
     }
-   
+    
     function switchMainView(targetViewId, clickedBtnElement) {
       document.querySelectorAll('.main-viewport .view-section').forEach(v => v.classList.remove('active-view'));
       document.querySelectorAll('.sidebar-menu .menu-btn').forEach(b => b.classList.remove('active'));
@@ -881,7 +881,7 @@
           stopScanner();
       }
     }
-   
+    
     function handleAdminCheckboxes(type) {
       let chkSemua = document.getElementById("chkSemuaGuru");
       let chkKepsek = document.getElementById("chkHanyaKepsek");
@@ -1333,8 +1333,9 @@
                  ttdKiri = ``; 
                  ttdKanan = `<p style="margin-bottom: 70px;">${tempatCetak}, ${tglCetakFormatted}<br>Mengetahui,<br>Kepala Sekolah</p><b><u>${kepsekNama}</u></b><br>NIP. ${kepsekNip}`; 
              } else if (session.role === 'guru') {
-                 ttdKiri = `<p style="margin-bottom: 70px;"><br><br>Wali Kelas</p><b><u>${session.nama}</u></b><br>NIP. ${session.nip || "........................."}`;
-                 ttdKanan = `<p style="margin-bottom: 70px;">${tempatCetak}, ${tglCetakFormatted}<br>Mengetahui,<br>Kepala Sekolah</p><b><u>${kepsekNama}</u></b><br>NIP. ${kepsekNip}`;
+                 // PERUBAHAN DI SINI: KEPSEK DI KIRI, GURU (WALI KELAS) DI KANAN
+                 ttdKiri = `<p style="margin-bottom: 70px;"><br><br>Mengetahui,<br>Kepala Sekolah</p><b><u>${kepsekNama}</u></b><br>NIP. ${kepsekNip}`;
+                 ttdKanan = `<p style="margin-bottom: 70px;">${tempatCetak}, ${tglCetakFormatted}<br>Wali Kelas</p><b><u>${session.nama}</u></b><br>NIP. ${session.nip || "........................."}`;
              }
          } else {
              if (session.role === 'guru') {
