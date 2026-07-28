@@ -25,7 +25,6 @@
   <style>
     /* ==============================================================
        1. GLOBAL STYLES & LAYOUT BENTO GRID 
-       (Konsep melengkung ekstrem dan jarak rapi antar komponen)
        ============================================================== */
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
@@ -41,7 +40,7 @@
 
     /* Bento Grid Cards Layout */
     .box-card, .auth-card, .premium-header, .sidebar, .modal-content {
-      border-radius: 28px !important; /* Gaya Bento Apple */
+      border-radius: 28px !important; 
       transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
     .box-card {
@@ -51,7 +50,7 @@
       border: 1px solid rgba(255, 255, 255, 0.2);
     }
     .btn, .form-control, .form-select, .nav-tabs-futuristic .nav-link {
-      border-radius: 16px !important; /* Membulatkan elemen input & tombol */
+      border-radius: 16px !important; 
     }
     .btn-lg { border-radius: 20px !important; }
 
@@ -69,7 +68,7 @@
     .view-section { display: none; }
     .view-section.active-view { display: block !important; animation: fadeInUp 0.4s ease-out; }
     
-    /* PERBAIKAN Z-INDEX: Memastikan header dan dropdown berada di atas elemen konten */
+    /* Z-INDEX FIX: Memastikan Header (dan menu dropdown Tema) merender di atas konten Box-Card */
     .premium-header { 
       position: relative; 
       z-index: 1020; 
@@ -136,7 +135,6 @@
 
     /* ==============================================================
        3. TEMA 2 & 3: CYBORG (DARK) & VAPOR (NEON)
-       (Karena menggunakan Bootswatch, kita hanya menyesuaikan efek kacanya)
        ============================================================== */
     body.theme-cyborg, body.theme-vapor {
       background-attachment: fixed;
@@ -149,10 +147,8 @@
       border: 1px solid rgba(255, 255, 255, 0.05);
       box-shadow: 0 10px 40px rgba(0,0,0,0.5);
     }
-    /* Typography Font Space Grotesk untuk Dark Theme agar lebih sci-fi */
     body.theme-cyborg, body.theme-vapor { font-family: 'Space Grotesk', sans-serif; }
     
-    /* Perbaikan Khusus Form Bootswatch agar transparan */
     body.theme-cyborg .form-control, body.theme-cyborg .form-select, body.theme-vapor .form-control, body.theme-vapor .form-select {
         background-color: rgba(0,0,0,0.5); color: #fff;
     }
@@ -660,10 +656,10 @@
              resultEl.innerText = msg;
              if(msg.indexOf("Sukses") > -1) { resultEl.className = "text-success fw-bold bg-success bg-opacity-25 p-3 rounded-4 d-inline-block shadow-sm"; resultEl.innerHTML = "<i class='bi bi-check-circle-fill me-2'></i>" + msg; } 
              else { resultEl.className = "text-danger fw-bold bg-danger bg-opacity-25 p-3 rounded-4 d-inline-block shadow-sm"; resultEl.innerHTML = "<i class='bi bi-exclamation-triangle-fill me-2'></i>" + msg; }
-             setTimeout(function() { resultEl.innerText = "Siap memindai..."; resultEl.className = "fw-bold p-3 rounded-4 d-inline-block shadow-sm"; resultEl.style.background = "rgba(128,128,128,0.1)"; isProcessingScan = false; }, 3000);
+             setTimeout(function() { resultEl.innerText = "Siap memindai..."; resultEl.className = "fw-bold p-3 rounded-4 d-inline-block shadow-sm"; resultEl.style.background = "rgba(128,128,128,0.1)"; isProcessingScan = false; }, 4000);
           }, function(error) {
              resultEl.innerHTML = "<i class='bi bi-x-circle-fill me-2'></i> Terjadi Kesalahan: " + error.message; resultEl.className = "text-danger fw-bold bg-danger bg-opacity-25 p-3 rounded-4 d-inline-block shadow-sm";
-             setTimeout(function() { resultEl.innerText = "Siap memindai..."; resultEl.className = "fw-bold p-3 rounded-4 d-inline-block shadow-sm"; resultEl.style.background = "rgba(128,128,128,0.1)"; isProcessingScan = false; }, 3000);
+             setTimeout(function() { resultEl.innerText = "Siap memindai..."; resultEl.className = "fw-bold p-3 rounded-4 d-inline-block shadow-sm"; resultEl.style.background = "rgba(128,128,128,0.1)"; isProcessingScan = false; }, 4000);
           }
       );
     }
