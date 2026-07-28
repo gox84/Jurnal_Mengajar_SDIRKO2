@@ -32,7 +32,7 @@
       margin: 0;
       padding: 0;
       overflow-x: hidden;
-      transition: background 0.3s ease, color 0.3s ease; /* Transisi dipercepat */
+      transition: background 0.3s ease, color 0.3s ease; 
     }
     
     .hidden { display: none !important; }
@@ -114,12 +114,12 @@
        2. TEMA 1: DEFAULT (MESH GRADIENT + GLASSMORPHISM) - VERSI OPTIMASI RINGAN
        ============================================================== */
     body.theme-default {
-      background: linear-gradient(135deg, #a1c4fd, #c2e9fb); /* Animasi bergerak dihapus agar HP tidak lag */
+      background: linear-gradient(135deg, #a1c4fd, #c2e9fb); 
       color: #1e293b;
     }
     body.theme-default .box-card, body.theme-default .premium-header, body.theme-default .sidebar, body.theme-default .auth-card {
       background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(10px); /* Efek kaca ditipiskan dari 24px ke 10px agar render sangat ringan */
+      backdrop-filter: blur(10px); 
       -webkit-backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.8);
     }
@@ -136,7 +136,7 @@
     body.theme-cyborg .box-card, body.theme-cyborg .premium-header, body.theme-cyborg .sidebar, body.theme-cyborg .auth-card,
     body.theme-vapor .box-card, body.theme-vapor .premium-header, body.theme-vapor .sidebar, body.theme-vapor .auth-card {
       background: rgba(0, 0, 0, 0.4);
-      backdrop-filter: blur(10px); /* Efek kaca ditipiskan agar performa stabil */
+      backdrop-filter: blur(10px); 
       -webkit-backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.05);
       box-shadow: 0 10px 40px rgba(0,0,0,0.5);
@@ -239,7 +239,12 @@
                 <li><button class="dropdown-item py-2" onclick="setAppTheme('vapor')">🟣 Vapor (Neon Cyberpunk)</button></li>
               </ul>
             </div>
-            <div class="d-none d-md-block"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Logo_Tut_Wuri_Handayani.png/120px-Logo_Tut_Wuri_Handayani.png" height="40" alt="Logo"></div>
+            
+            <!-- PERBAIKAN LOGO: Link wikipedia diubah menjadi tautan langsung utama dan ditambahkan kode onerror -->
+            <div class="d-none d-md-block">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a6/Logo_Tut_Wuri_Handayani.png" height="40" alt="Logo" onerror="this.style.display='none'">
+            </div>
+
         </div>
       </div>
       
