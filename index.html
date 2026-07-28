@@ -68,7 +68,19 @@
     .main-viewport { flex-grow: 1; padding: 20px 30px; overflow-y: auto; height: 100vh; min-width: 0; }
     .view-section { display: none; }
     .view-section.active-view { display: block !important; animation: fadeInUp 0.4s ease-out; }
-    .premium-header { padding: 18px 24px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 40px rgba(0,0,0,0.05); }
+    
+    /* PERBAIKAN Z-INDEX: Memastikan header dan dropdown berada di atas elemen konten */
+    .premium-header { 
+      position: relative; 
+      z-index: 1020; 
+      padding: 18px 24px; 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      margin-bottom: 30px; 
+      border: 1px solid rgba(255,255,255,0.1); 
+      box-shadow: 0 10px 40px rgba(0,0,0,0.05); 
+    }
 
     /* Custom Tables */
     .table thead th { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid rgba(128,128,128,0.2); border-top: none; padding: 15px 10px; background: transparent; }
