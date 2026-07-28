@@ -5,13 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Portal SD Inpres Ranowangko II</title>
   
+  <!-- FONTS -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
   
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- DYNAMIC BOOTSTRAP THEME LINK (Diubah oleh JavaScript) -->
+  <link id="theme-stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
   
+  <!-- SCRIPTS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script src="https://unpkg.com/html5-qrcode"></script>
@@ -20,190 +23,136 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
   
   <style>
-    :root {
-      /* DEFAULT THEME VARIABLES (LOGIN & FALLBACK) */
-      --primary-red: #9e1b22; 
-      --secondary-red: #c82333; 
-      --dark-red: #6a1116; 
-      --bg-body: #f4f7fe; 
-      --text-main: #2b3674; 
-      --text-muted: #a3aed1; 
-      --glass-bg: rgba(255, 255, 255, 0.85); 
-      --glass-border: rgba(255, 255, 255, 0.4); 
-      --card-bg: #ffffff;
-      --card-border: none;
-      --card-shadow: 0 15px 40px rgba(0,0,0,0.04);
-      --card-radius: 24px;
-      --btn-radius: 12px;
-      --sidebar-bg: linear-gradient(180deg, var(--primary-red) 0%, var(--dark-red) 100%);
-      --sidebar-text: white;
-      --sidebar-text-muted: rgba(255,255,255,0.7);
-      --sidebar-border: 1px solid rgba(255,255,255,0.1);
-      --font-main: 'Inter', sans-serif;
-      --table-hover-bg: #f8fafc;
-      --table-border-color: #f1f5f9;
-      --primary: #0d6efd; /* Bootstrap default primary */
-      --secondary: #c82333;
+    /* ==============================================================
+       1. GLOBAL STYLES & LAYOUT BENTO GRID 
+       (Konsep melengkung ekstrem dan jarak rapi antar komponen)
+       ============================================================== */
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      transition: background 0.5s ease, color 0.5s ease;
     }
-
-    /* THEME ADMIN - CYBER / HIGH-TECH */
-    body.theme-admin {
-      --bg-body: #050914; 
-      --text-main: #e2e8f0; 
-      --text-muted: #94a3b8; 
-      --primary: #00f0ff; 
-      --secondary: #bf00ff; 
-      --glass-bg: rgba(16, 24, 43, 0.8); 
-      --glass-border: rgba(0, 240, 255, 0.2); 
-      --card-bg: rgba(16, 24, 43, 0.8);
-      --card-border: 1px solid rgba(0, 240, 255, 0.2);
-      --card-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
-      --card-radius: 12px;
-      --btn-radius: 4px;
-      --sidebar-bg: linear-gradient(180deg, #020617 0%, #0f172a 100%);
-      --sidebar-text: #e2e8f0;
-      --sidebar-text-muted: #64748b;
-      --sidebar-border: 1px solid rgba(0, 240, 255, 0.2);
-      --font-main: 'Space Grotesk', sans-serif;
-      --table-hover-bg: rgba(0, 240, 255, 0.05);
-      --table-border-color: rgba(255,255,255,0.1);
-    }
-
-    /* THEME KEPSEK - EXECUTIVE / GLASSMORPHISM */
-    body.theme-kepsek {
-      --bg-body: linear-gradient(135deg, #0f172a, #1e293b); 
-      --text-main: #f8fafc; 
-      --text-muted: #cbd5e1; 
-      --primary: #fbbf24; 
-      --secondary: #d97706; 
-      --glass-bg: rgba(255, 255, 255, 0.05); 
-      --glass-border: rgba(255, 255, 255, 0.1); 
-      --card-bg: rgba(255, 255, 255, 0.05);
-      --card-border: 1px solid rgba(255, 255, 255, 0.1);
-      --card-shadow: 0 10px 30px rgba(0,0,0,0.5);
-      --card-radius: 24px;
-      --btn-radius: 16px;
-      --sidebar-bg: rgba(15, 23, 42, 0.8);
-      --sidebar-text: #f8fafc;
-      --sidebar-text-muted: #94a3b8;
-      --sidebar-border: 1px solid rgba(255,255,255,0.1);
-      --font-main: 'Plus Jakarta Sans', sans-serif;
-      --table-hover-bg: rgba(255,255,255,0.05);
-      --table-border-color: rgba(255,255,255,0.05);
-    }
-
-    /* THEME GURU - NEUMORPHISM / VIBRANT MODERN */
-    body.theme-guru {
-      --bg-body: #e0e5ec; 
-      --text-main: #2d3748; 
-      --text-muted: #718096; 
-      --primary: #e53e3e; 
-      --secondary: #38a169; 
-      --glass-bg: #e0e5ec; 
-      --glass-border: none; 
-      --card-bg: #e0e5ec;
-      --card-border: none;
-      --card-shadow: 9px 9px 16px rgb(163,177,198,0.6), -9px -9px 16px rgba(255,255,255, 0.5);
-      --card-radius: 30px;
-      --btn-radius: 20px;
-      --sidebar-bg: #e0e5ec;
-      --sidebar-text: #2d3748;
-      --sidebar-text-muted: #718096;
-      --sidebar-border: none;
-      --font-main: 'Plus Jakarta Sans', sans-serif;
-      --table-hover-bg: #d1d9e6;
-      --table-border-color: #d1d9e6;
-    }
-
-    /* THEME OVERRIDES UNTUK BOOTSTRAP UTILITIES (Mencegah teks hilang di Dark Mode) */
-    body.theme-admin .bg-light, body.theme-kepsek .bg-light,
-    body.theme-admin .bg-white, body.theme-kepsek .bg-white { background-color: transparent !important; background: var(--card-bg) !important; color: var(--text-main) !important; }
-    body.theme-admin .text-dark, body.theme-kepsek .text-dark { color: var(--text-main) !important; }
-    body.theme-admin .text-muted, body.theme-kepsek .text-muted { color: var(--text-muted) !important; }
-    body.theme-admin .border, body.theme-kepsek .border { border-color: var(--card-border) !important; }
-    body.theme-admin .form-control, body.theme-kepsek .form-control,
-    body.theme-admin .form-select, body.theme-kepsek .form-select { background-color: var(--card-bg); color: var(--text-main); border: var(--card-border); }
-    body.theme-admin .form-control:focus, body.theme-kepsek .form-control:focus { background-color: var(--card-bg); color: var(--text-main); box-shadow: 0 0 0 4px rgba(255,255,255,0.1); }
     
-    /* GURU THEME OVERRIDES (Sidebar Khusus) */
-    body.theme-guru .sidebar-brand h5 { color: var(--text-main) !important; }
-    body.theme-guru .menu-btn { color: var(--text-muted); }
-    body.theme-guru .menu-btn:hover { color: var(--primary); background: transparent; }
-    body.theme-guru .menu-btn.active { color: var(--primary); background: transparent; box-shadow: inset 4px 0 0 var(--primary); }
-    body.theme-guru .box-card::before { display: none; } /* Matikan garis atas default */
-    
-    /* ADMIN & KEPSEK THEME OVERRIDES (Sidebar & Tombol) */
-    body.theme-admin .box-card::before { background: linear-gradient(90deg, var(--primary), var(--secondary)); }
-    body.theme-kepsek .box-card { backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
-    body.theme-kepsek .box-card::before { background: linear-gradient(90deg, var(--primary), var(--secondary)); }
-    
-    /* GLOBAL LAYOUT & UTILITIES */
-    body { font-family: var(--font-main); color: var(--text-main); background: var(--bg-body); min-height: 100vh; margin: 0; padding: 0; overflow-x: hidden; transition: background 0.5s ease, color 0.5s ease; }
     .hidden { display: none !important; }
     @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-    
-    #authWrapper { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(-45deg, var(--dark-red), var(--primary-red), #2b3674, #1a2035); background-size: 400% 400%; animation: gradientBG 12s ease infinite; padding: 20px; }
-    .auth-card { background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--glass-border); border-radius: 24px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); padding: 40px; width: 100%; max-width: 420px; animation: fadeInUp 0.6s ease-out; }
-    .form-floating > .form-control { border-radius: 12px; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.9); }
-    .form-floating > .form-control:focus { border-color: var(--primary-red); box-shadow: 0 0 0 4px rgba(158, 27, 34, 0.1); }
-    
+
+    /* Bento Grid Cards Layout */
+    .box-card, .auth-card, .premium-header, .sidebar, .modal-content {
+      border-radius: 28px !important; /* Gaya Bento Apple */
+      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+    .box-card {
+      padding: 30px;
+      margin-bottom: 24px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .btn, .form-control, .form-select, .nav-tabs-futuristic .nav-link {
+      border-radius: 16px !important; /* Membulatkan elemen input & tombol */
+    }
+    .btn-lg { border-radius: 20px !important; }
+
     .app-container { display: flex; flex-direction: row; min-height: 100vh; width: 100%; position: relative; }
     .sidebar-wrapper { padding: 20px 0 20px 20px; display: flex; }
-    .sidebar { width: 270px; background: var(--sidebar-bg); color: var(--sidebar-text); border-radius: var(--card-radius); display: flex; flex-direction: column; flex-shrink: 0; box-shadow: var(--card-shadow); border: var(--card-border); z-index: 1050; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); overflow: hidden; }
-    .sidebar-brand { padding: 30px 24px; text-align: center; border-bottom: var(--sidebar-border); }
+    .sidebar { width: 270px; display: flex; flex-direction: column; flex-shrink: 0; z-index: 1050; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
+    .sidebar-brand { padding: 30px 24px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
     .sidebar-menu { padding: 20px 14px; flex-grow: 1; display: flex; flex-direction: column; gap: 6px; }
-    .menu-btn { width: 100%; background: transparent; border: none; padding: 12px 18px; color: var(--sidebar-text-muted); text-align: left; font-weight: 500; border-radius: 14px; display: flex; align-items: center; gap: 14px; transition: all 0.3s ease; font-size: 0.95rem; }
+    .menu-btn { width: 100%; background: transparent; border: none; padding: 12px 18px; text-align: left; font-weight: 600; border-radius: 16px; display: flex; align-items: center; gap: 14px; transition: all 0.3s ease; font-size: 0.95rem; }
     .menu-btn i { font-size: 1.2rem; transition: transform 0.3s; }
-    .menu-btn:hover { background: rgba(255,255,255,0.1); color: var(--sidebar-text); transform: translateX(5px); }
-    .menu-btn.active { background: rgba(255,255,255,0.15); color: var(--sidebar-text); font-weight: 600; box-shadow: inset 4px 0 0 var(--sidebar-text); }
-    
+    .menu-btn:hover { transform: translateX(5px); background: rgba(128, 128, 128, 0.2); }
+    .menu-btn.active { font-weight: 700; background: rgba(128, 128, 128, 0.3); }
+
     .main-viewport { flex-grow: 1; padding: 20px 30px; overflow-y: auto; height: 100vh; min-width: 0; }
     .view-section { display: none; }
     .view-section.active-view { display: block !important; animation: fadeInUp 0.4s ease-out; }
-    .premium-header { background: var(--card-bg); backdrop-filter: blur(10px); border-radius: var(--card-radius); padding: 18px 24px; box-shadow: var(--card-shadow); display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border: var(--card-border); }
-    
-    .box-card { background: var(--card-bg); padding: 30px; border-radius: var(--card-radius); box-shadow: var(--card-shadow); margin-bottom: 24px; border: var(--card-border); position: relative; overflow: hidden; transition: all 0.3s ease; }
-    .box-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--primary-red), var(--secondary-red)); opacity: 0.8; }
-    
-    .btn { border-radius: var(--btn-radius); font-weight: 600; padding: 10px 20px; transition: 0.3s; }
-    
-    .form-control, .form-select { border-radius: var(--btn-radius); border: 1px solid #e2e8f0; padding: 10px 14px; font-size: 0.95rem; }
-    
+    .premium-header { padding: 18px 24px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 40px rgba(0,0,0,0.05); }
+
+    /* Custom Tables */
+    .table thead th { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid rgba(128,128,128,0.2); border-top: none; padding: 15px 10px; background: transparent; }
+    .table tbody td { vertical-align: middle; padding: 16px 10px; border-bottom: 1px solid rgba(128,128,128,0.1); }
+    .table-hover tbody tr:hover { background-color: rgba(128,128,128,0.1) !important; }
+
+    /* Custom Tabs */
     .nav-tabs-futuristic { border-bottom: none; gap: 10px; margin-bottom: 20px; }
-    .nav-tabs-futuristic .nav-link { color: var(--text-muted); font-weight: 600; border: var(--card-border); padding: 12px 24px; border-radius: var(--btn-radius); background: var(--card-bg); box-shadow: var(--card-shadow); transition: all 0.3s; }
-    .nav-tabs-futuristic .nav-link:hover { color: var(--text-main); transform: translateY(-2px); }
-    .nav-tabs-futuristic .nav-link.active { color: #fff; background: var(--primary); box-shadow: var(--card-shadow); }
-    
-    .table { margin-bottom: 0; color: var(--text-main); }
-    .table thead th { background-color: transparent !important; color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid var(--table-border-color); border-top: none; padding: 15px 10px; }
-    .table tbody td { vertical-align: middle; border-bottom: 1px solid var(--table-border-color); padding: 16px 10px; font-size: 0.9rem; }
-    .table tbody tr { transition: background-color 0.2s; }
-    .table tbody tr:hover { background-color: var(--table-hover-bg); }
-    
-    .mobile-menu-toggle { display: none; background: transparent; border: 1px solid var(--text-muted); color: var(--text-main); border-radius: 10px; font-size: 1.2rem; padding: 6px 12px; cursor: pointer; transition: 0.3s; margin-right: 15px; box-shadow: var(--card-shadow); }
+    .nav-tabs-futuristic .nav-link { font-weight: 600; border: 1px solid rgba(128,128,128,0.2); padding: 12px 24px; transition: all 0.3s; }
+    .nav-tabs-futuristic .nav-link:hover { transform: translateY(-2px); }
+
+    /* Scanner HUD (Futuristik) */
+    #reader { border: 2px solid var(--bs-primary); border-radius: 20px; overflow: hidden; position: relative; }
+    .scanner-hud::after { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--bs-primary); box-shadow: 0 0 15px var(--bs-primary); animation: scanLaser 2s infinite linear; z-index: 10; pointer-events: none; }
+    @keyframes scanLaser { 0% { top: 0; opacity: 0; } 10% { opacity: 1; } 50% { top: 100%; } 90% { opacity: 1; } 100% { top: 0; opacity: 0; } }
+
+    /* Mobile Toggle */
+    .mobile-menu-toggle { display: none; background: transparent; border: 1px solid rgba(128,128,128,0.3); border-radius: 12px; font-size: 1.2rem; padding: 6px 12px; cursor: pointer; transition: 0.3s; margin-right: 15px; }
     @media (max-width: 992px) {
       .mobile-menu-toggle { display: block; }
       .sidebar-wrapper { position: fixed; left: -320px; top: 0; height: 100vh; padding: 15px; z-index: 1050; transition: left 0.4s ease; background: transparent; }
       .sidebar-wrapper.active-mobile { left: 0; }
       .sidebar { height: 100%; box-shadow: 20px 0 50px rgba(0,0,0,0.5); }
       .main-viewport { padding: 15px; width: 100%; }
-      td, th { font-size: 12px !important; padding: 10px 5px !important; }
-      .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.6); z-index: 1040; backdrop-filter: blur(4px); }
+      .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.6); z-index: 1040; backdrop-filter: blur(4px); }
       .sidebar-overlay.active-mobile { display: block; animation: fadeIn 0.3s; }
     }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    #authWrapper { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+    .auth-card { padding: 40px; width: 100%; max-width: 420px; animation: fadeInUp 0.6s ease-out; }
+
+    /* ==============================================================
+       2. TEMA 1: DEFAULT (MESH GRADIENT + GLASSMORPHISM)
+       ============================================================== */
+    @keyframes meshGradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
     
-    /* EFEK SCANNER HUD (FUTURISTIK) */
-    #reader { border: 2px solid var(--primary); border-radius: var(--btn-radius); overflow: hidden; box-shadow: 0 10px 30px rgba(32, 201, 151, 0.2); position: relative; }
-    .scanner-hud::after { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--primary); box-shadow: 0 0 15px var(--primary); animation: scanLaser 2s infinite linear; z-index: 10; pointer-events: none; }
-    @keyframes scanLaser { 0% { top: 0; opacity: 0; } 10% { opacity: 1; } 50% { top: 100%; } 90% { opacity: 1; } 100% { top: 0; opacity: 0; } }
+    body.theme-default {
+      background: linear-gradient(-45deg, #a1c4fd, #c2e9fb, #fdfbfb, #ebedee);
+      background-size: 400% 400%;
+      animation: meshGradientBG 15s ease infinite;
+      color: #1e293b;
+    }
+    body.theme-default .box-card, body.theme-default .premium-header, body.theme-default .sidebar, body.theme-default .auth-card {
+      background: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+    }
+    body.theme-default .form-control, body.theme-default .form-select { background: rgba(255,255,255,0.7); }
+    body.theme-default .menu-btn { color: #475569; }
+    body.theme-default .menu-btn:hover, body.theme-default .menu-btn.active { color: #0f172a; }
+
+    /* ==============================================================
+       3. TEMA 2 & 3: CYBORG (DARK) & VAPOR (NEON)
+       (Karena menggunakan Bootswatch, kita hanya menyesuaikan efek kacanya)
+       ============================================================== */
+    body.theme-cyborg, body.theme-vapor {
+      background-attachment: fixed;
+    }
+    body.theme-cyborg .box-card, body.theme-cyborg .premium-header, body.theme-cyborg .sidebar, body.theme-cyborg .auth-card,
+    body.theme-vapor .box-card, body.theme-vapor .premium-header, body.theme-vapor .sidebar, body.theme-vapor .auth-card {
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    }
+    /* Typography Font Space Grotesk untuk Dark Theme agar lebih sci-fi */
+    body.theme-cyborg, body.theme-vapor { font-family: 'Space Grotesk', sans-serif; }
+    
+    /* Perbaikan Khusus Form Bootswatch agar transparan */
+    body.theme-cyborg .form-control, body.theme-cyborg .form-select, body.theme-vapor .form-control, body.theme-vapor .form-select {
+        background-color: rgba(0,0,0,0.5); color: #fff;
+    }
+    body.theme-cyborg .nav-tabs-futuristic .nav-link, body.theme-vapor .nav-tabs-futuristic .nav-link {
+        background: rgba(0,0,0,0.3); color: #fff;
+    }
   </style>
 </head>
 <body onload="initApp()">
   
   <div id="authWrapper">
-    <div id="loginSection" class="auth-card">
+    <div id="loginSection" class="auth-card shadow-lg">
       <div class="text-center mb-4">
         <i class="bi bi-shield-lock text-danger" style="font-size: 3rem;"></i>
         <h3 class="mb-1 text-danger fw-bold mt-2" style="letter-spacing: -0.5px;">PORTAL JURNAL</h3>
@@ -217,7 +166,7 @@
         <input type="password" id="password" class="form-control" placeholder="Masukkan Password">
         <label for="password"><i class="bi bi-key me-2"></i>Password</label>
       </div>
-      <button class="btn btn-danger w-100 py-3 mb-3" onclick="prosesLogin()"><i class="bi bi-box-arrow-in-right me-2"></i>Masuk Dashboard</button>
+      <button class="btn btn-danger w-100 py-3 mb-3 fw-bold" onclick="prosesLogin()"><i class="bi bi-box-arrow-in-right me-2"></i>Masuk Dashboard</button>
       <div class="d-flex justify-content-between text-sm mt-4">
           <span onclick="switchAuthView('registerSection')" class="text-primary fw-bold" style="cursor:pointer;"><i class="bi bi-person-plus me-1"></i>Daftar Baru</span>
           <span onclick="switchAuthView('forgotSection')" class="text-secondary fw-medium" style="cursor:pointer;">Lupa Password?</span>
@@ -225,7 +174,7 @@
       <div id="loginAlert" class="mt-3 text-center small fw-semibold"></div>
     </div>
     
-    <div id="registerSection" class="auth-card d-none">
+    <div id="registerSection" class="auth-card shadow-lg d-none">
       <div class="text-center mb-4"><i class="bi bi-person-vcard text-primary" style="font-size: 2.5rem;"></i><h4 class="mb-1 text-primary fw-bold mt-2">Registrasi Pegawai</h4></div>
       <div class="form-floating mb-2"><input type="text" id="regNama" class="form-control" placeholder="Nama"><label>Nama Lengkap & Gelar</label></div>
       <div class="form-floating mb-2"><input type="text" id="regNip" class="form-control" placeholder="NIP"><label>NIP / NIY (Opsional)</label></div>
@@ -233,60 +182,75 @@
       <div class="form-floating mb-2"><input type="text" id="regWa" class="form-control" placeholder="WA"><label>No. WhatsApp</label></div>
       <div class="form-floating mb-2"><input type="text" id="regUsername" class="form-control" placeholder="User"><label>Username</label></div>
       <div class="form-floating mb-4"><input type="password" id="regPassword" class="form-control" placeholder="Pass"><label>Password</label></div>
-      <button class="btn btn-primary w-100 py-3 mb-3" onclick="prosesDaftar()"><i class="bi bi-check-circle me-2"></i>Daftar Sekarang</button>
+      <button class="btn btn-primary w-100 py-3 mb-3 fw-bold" onclick="prosesDaftar()"><i class="bi bi-check-circle me-2"></i>Daftar Sekarang</button>
       <div class="text-center"><span onclick="switchAuthView('loginSection')" class="text-secondary fw-medium" style="cursor:pointer;"><i class="bi bi-arrow-left me-1"></i>Kembali ke Login</span></div>
       <div id="regAlert" class="mt-3 text-center small fw-bold"></div>
     </div>
     
-    <div id="forgotSection" class="auth-card d-none">
-      <div class="text-center mb-4"><i class="bi bi-life-preserver text-warning" style="font-size: 2.5rem;"></i><h4 class="mb-1 text-dark fw-bold mt-2">Lupa Password</h4></div>
+    <div id="forgotSection" class="auth-card shadow-lg d-none">
+      <div class="text-center mb-4"><i class="bi bi-life-preserver text-warning" style="font-size: 2.5rem;"></i><h4 class="mb-1 text-warning fw-bold mt-2">Lupa Password</h4></div>
       <div class="form-floating mb-3"><input type="text" id="forgotUsername" class="form-control" placeholder="User"><label>Username Terdaftar</label></div>
       <div class="form-floating mb-4"><input type="text" id="forgotWa" class="form-control" placeholder="WA"><label>No. WhatsApp Terdaftar</label></div>
-      <button class="btn btn-warning w-100 py-3 mb-3 fw-bold text-dark" onclick="prosesCariPassword()"><i class="bi bi-search me-2"></i>Cari Password Saya</button>
+      <button class="btn btn-warning w-100 py-3 mb-3 fw-bold" onclick="prosesCariPassword()"><i class="bi bi-search me-2"></i>Cari Password Saya</button>
       <div class="text-center"><span onclick="switchAuthView('loginSection')" class="text-secondary fw-medium" style="cursor:pointer;"><i class="bi bi-arrow-left me-1"></i>Kembali ke Login</span></div>
       <div id="forgotAlert" class="mt-3 text-center small fw-bold"></div>
     </div>
   </div>
+
   <div id="dashboardSection" class="app-container d-none">
     <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
     <div class="sidebar-wrapper">
       <div class="sidebar">
-        <div class="sidebar-brand"><h5 class="m-0 fw-bold" style="letter-spacing: 1px;"><i class="bi bi-layers me-2"></i>JURNAL NAV</h5></div>
+        <div class="sidebar-brand"><h5 class="m-0 fw-bold" style="letter-spacing: 1px;"><i class="bi bi-layers text-primary me-2"></i>JURNAL NAV</h5></div>
         <div class="sidebar-menu">
-          <button class="menu-btn d-none" id="menuLink_AbsenPegawai" onclick="switchMainView('absenPegawaiView', this)"><i class="bi bi-clock-history"></i> Presensi Pegawai</button>
-          <button class="menu-btn d-none" id="menuLink_Jurnal" onclick="switchMainView('jurnalFormView', this)"><i class="bi bi-journal-text"></i> Isi Jurnal</button>
-          <button class="menu-btn d-none" id="menuLink_Siswa" onclick="switchMainView('siswaKelasView', this)"><i class="bi bi-people"></i> Data Siswa</button>
-          <button class="menu-btn text-warning fw-bold d-none" id="menuLink_Scanner" onclick="switchMainView('scannerBarcodeView', this)"><i class="bi bi-qr-code-scan"></i> Scanner Absen</button>
-          <button class="menu-btn text-info fw-bold d-none" id="menuLink_GPS" data-bs-toggle="modal" data-bs-target="#modalTitikAbsen"><i class="bi bi-geo-alt"></i> Koordinat GPS</button>
-          <button class="menu-btn d-none" id="menuLink_GenBarcode" onclick="switchMainView('barcodeGeneratorView', this)"><i class="bi bi-printer"></i> Cetak Barcode</button>
-          <button class="menu-btn d-none" id="menuLink_Approval" onclick="switchMainView('approvalMemberView', this)"><i class="bi bi-bell"></i> Approval</button>
-          <button class="menu-btn d-none" id="menuLink_Users" onclick="switchMainView('manajemenUsersView', this)"><i class="bi bi-person-badge"></i> Daftar User</button>
-          <button class="menu-btn d-none" id="menuLink_Settings" onclick="switchMainView('pengaturanKopView', this)"><i class="bi bi-gear"></i> Pengaturan</button>
-          <button class="menu-btn d-none" id="menuLink_Rekap" onclick="switchMainView('rekapDataView', this)"><i class="bi bi-search"></i> Rekap Data</button>
-          <div class="mt-auto pt-4 border-top border-light border-opacity-10"><button class="menu-btn text-light d-none" id="menuLink_Logout" onclick="logout()"><i class="bi bi-box-arrow-left"></i> Keluar Sistem</button></div>
+          <button class="menu-btn d-none" id="menuLink_AbsenPegawai" onclick="switchMainView('absenPegawaiView', this)"><i class="bi bi-clock-history text-primary"></i> Presensi Pegawai</button>
+          <button class="menu-btn d-none" id="menuLink_Jurnal" onclick="switchMainView('jurnalFormView', this)"><i class="bi bi-journal-text text-danger"></i> Isi Jurnal</button>
+          <button class="menu-btn d-none" id="menuLink_Siswa" onclick="switchMainView('siswaKelasView', this)"><i class="bi bi-people text-success"></i> Data Siswa</button>
+          <button class="menu-btn fw-bold d-none" id="menuLink_Scanner" onclick="switchMainView('scannerBarcodeView', this)"><i class="bi bi-qr-code-scan text-warning"></i> Scanner Absen</button>
+          <button class="menu-btn fw-bold d-none" id="menuLink_GPS" data-bs-toggle="modal" data-bs-target="#modalTitikAbsen"><i class="bi bi-geo-alt text-info"></i> Koordinat GPS</button>
+          <button class="menu-btn d-none" id="menuLink_GenBarcode" onclick="switchMainView('barcodeGeneratorView', this)"><i class="bi bi-printer text-primary"></i> Cetak Barcode</button>
+          <button class="menu-btn d-none" id="menuLink_Approval" onclick="switchMainView('approvalMemberView', this)"><i class="bi bi-bell text-warning"></i> Approval</button>
+          <button class="menu-btn d-none" id="menuLink_Users" onclick="switchMainView('manajemenUsersView', this)"><i class="bi bi-person-badge text-primary"></i> Daftar User</button>
+          <button class="menu-btn d-none" id="menuLink_Settings" onclick="switchMainView('pengaturanKopView', this)"><i class="bi bi-gear text-secondary"></i> Pengaturan</button>
+          <button class="menu-btn d-none" id="menuLink_Rekap" onclick="switchMainView('rekapDataView', this)"><i class="bi bi-search text-info"></i> Rekap Data</button>
+          <div class="mt-auto pt-4 border-top opacity-75"><button class="menu-btn text-danger d-none" id="menuLink_Logout" onclick="logout()"><i class="bi bi-box-arrow-left"></i> Keluar Sistem</button></div>
         </div>
       </div>
     </div>
     
     <div class="main-viewport">
+      <!-- HEADER & THEME SWITCHER -->
       <div class="premium-header">
         <div class="d-flex align-items-center">
           <button class="mobile-menu-toggle" onclick="toggleSidebar()"><i class="bi bi-list"></i></button>
-          <div class="d-flex flex-column"><span class="text-muted small fw-semibold mb-1">Selamat datang kembali,</span><h4 class="m-0 fw-bold" style="font-size:1.25rem;"><span id="userNamaWorkspace"></span></h4></div>
+          <div class="d-flex flex-column"><span class="small fw-semibold mb-1 opacity-75">Selamat datang kembali,</span><h4 class="m-0 fw-bold" style="font-size:1.25rem;"><span id="userNamaWorkspace"></span></h4></div>
         </div>
-        <div class="d-none d-md-block"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Logo_Tut_Wuri_Handayani.png/120px-Logo_Tut_Wuri_Handayani.png" height="40" alt="Logo"></div>
+        <div class="d-flex align-items-center gap-3">
+            <!-- TEMA SELECTOR BOOTSWATCH -->
+            <div class="dropdown">
+              <button class="btn btn-sm btn-outline-secondary dropdown-toggle rounded-pill fw-bold" type="button" data-bs-toggle="dropdown">
+                <i class="bi bi-palette me-1"></i> Tema UI
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end shadow border-0" style="border-radius: 16px;">
+                <li><button class="dropdown-item py-2" onclick="setAppTheme('default')">✨ Glassmorphism (Default)</button></li>
+                <li><button class="dropdown-item py-2" onclick="setAppTheme('cyborg')">🌑 Cyborg (Dark Sci-Fi)</button></li>
+                <li><button class="dropdown-item py-2" onclick="setAppTheme('vapor')">🟣 Vapor (Neon Cyberpunk)</button></li>
+              </ul>
+            </div>
+            <div class="d-none d-md-block"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Logo_Tut_Wuri_Handayani.png/120px-Logo_Tut_Wuri_Handayani.png" height="40" alt="Logo"></div>
+        </div>
       </div>
       
       <!-- MENU PRESENSI PEGAWAI -->
       <div class="view-section" id="absenPegawaiView">
         <div class="box-card">
           <h5 class="mb-4 fw-bold text-primary"><i class="bi bi-clock-history me-2"></i>Kehadiran Pegawai</h5>
-          <div class="alert alert-light border-start border-4 border-info small text-muted bg-transparent"><i class="bi bi-info-circle me-1"></i> Pastikan sensor GPS / Lokasi aktif. Sistem akan memvalidasi radius Anda.</div>
+          <div class="alert alert-info border-0 rounded-4 small"><i class="bi bi-info-circle me-1"></i> Pastikan sensor GPS / Lokasi aktif. Sistem akan memvalidasi radius Anda.</div>
           <div class="row text-center mt-4 g-4">
-            <div class="col-md-6"><button class="btn btn-lg btn-primary fw-bold w-100 py-4" onclick="prosesAbsenPegawai('Masuk')" style="border-radius:var(--btn-radius);"><i class="bi bi-box-arrow-in-right d-block mb-2" style="font-size:2rem;"></i> CHECK - IN</button></div>
-            <div class="col-md-6"><button class="btn btn-lg btn-danger fw-bold w-100 py-4" onclick="prosesAbsenPegawai('Pulang')" style="border-radius:var(--btn-radius);"><i class="bi bi-box-arrow-right d-block mb-2" style="font-size:2rem;"></i> CHECK - OUT</button></div>
+            <div class="col-md-6"><button class="btn btn-lg btn-primary fw-bold w-100 py-4 shadow" onclick="prosesAbsenPegawai('Masuk')"><i class="bi bi-box-arrow-in-right d-block mb-2" style="font-size:2rem;"></i> CHECK - IN</button></div>
+            <div class="col-md-6"><button class="btn btn-lg btn-danger fw-bold w-100 py-4 shadow" onclick="prosesAbsenPegawai('Pulang')"><i class="bi bi-box-arrow-right d-block mb-2" style="font-size:2rem;"></i> CHECK - OUT</button></div>
           </div>
-          <div class="text-center mt-5"><h6 id="lokasiStatus" class="fw-bold text-secondary"></h6></div>
+          <div class="text-center mt-5"><h6 id="lokasiStatus" class="fw-bold"></h6></div>
         </div>
       </div>
       
@@ -302,7 +266,7 @@
               <div class="col-md-3"><div class="form-floating"><input type="text" id="gMateri" class="form-control" placeholder="materi"><label>Materi Pokok</label></div></div>
               <div class="col-md-12"><div class="form-floating"><textarea id="gUraian" class="form-control" placeholder="uraian" style="height: 100px"></textarea><label>Uraian Ringkas PBM</label></div></div>
               <div class="col-md-9"><div class="form-floating"><input type="text" id="gKeterangan" class="form-control" placeholder="ket"><label>Keterangan Tambahan</label></div></div>
-              <div class="col-md-3 d-flex align-items-stretch"><button class="btn btn-danger w-100 fw-bold" onclick="simpanJurnal('guru')"><i class="bi bi-send me-2"></i>Kirim Jurnal</button></div>
+              <div class="col-md-3 d-flex align-items-stretch"><button class="btn btn-danger w-100 fw-bold shadow" onclick="simpanJurnal('guru')"><i class="bi bi-send me-2"></i>Kirim Jurnal</button></div>
             </div>
           </div>
           <div id="formKepsekStructure" class="d-none">
@@ -313,7 +277,7 @@
               <div class="col-md-6"><div class="form-floating"><input type="text" id="kTempat" class="form-control" placeholder="tempat"><label>Tempat</label></div></div>
               <div class="col-md-12"><div class="form-floating"><textarea id="kUraian" class="form-control" placeholder="uraian" style="height: 100px"></textarea><label>Uraian Hasil Kegiatan</label></div></div>
               <div class="col-md-9"><div class="form-floating"><input type="text" id="kKeterangan" class="form-control" placeholder="ket"><label>Keterangan</label></div></div>
-              <div class="col-md-3 d-flex align-items-stretch"><button class="btn btn-danger w-100 fw-bold" onclick="simpanJurnal('kepsek')"><i class="bi bi-send me-2"></i>Kirim Jurnal</button></div>
+              <div class="col-md-3 d-flex align-items-stretch"><button class="btn btn-danger w-100 fw-bold shadow" onclick="simpanJurnal('kepsek')"><i class="bi bi-send me-2"></i>Kirim Jurnal</button></div>
             </div>
           </div>
         </div>
@@ -326,7 +290,7 @@
             <h5 class="m-0 fw-bold text-primary" id="judulDataSiswa"><i class="bi bi-people me-2"></i>Manajemen Data Siswa</h5>
             <button class="btn btn-sm btn-outline-primary fw-bold px-3 rounded-pill" onclick="muatDataSiswaKelasUntukTabel()"><i class="bi bi-arrow-clockwise me-1"></i> Refresh Data</button>
           </div>
-          <ul class="nav nav-tabs nav-tabs-futuristic" id="siswaTabs" role="tablist">
+          <ul class="nav nav-tabs nav-tabs-futuristic border-0" id="siswaTabs" role="tablist">
             <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#input-siswa-pane"><i class="bi bi-pencil-square me-1"></i> Input Manual</button></li>
             <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#masal-siswa-pane"><i class="bi bi-file-earmark-excel me-1"></i> Upload Excel</button></li>
             <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#list-siswa-pane" onclick="muatDataSiswaKelasUntukTabel()"><i class="bi bi-list-ul me-1"></i> Daftar Murid</button></li>
@@ -334,22 +298,22 @@
           <div class="tab-content mt-4" id="siswaTabsContent">
             <div class="tab-pane fade show active" id="input-siswa-pane">
               <div class="row g-3">
-                <div class="col-md-2"><label class="small fw-bold text-muted mb-1">Kelas</label><select id="sKelas" class="form-select"><option value="1">Kelas 1</option><option value="2">Kelas 2</option><option value="3">Kelas 3</option><option value="4">Kelas 4</option><option value="5">Kelas 5</option><option value="6">Kelas 6</option></select></div>
-                <div class="col-md-4"><label class="small fw-bold text-muted mb-1">Wali Kelas</label><select id="sGuruAssign" class="form-select"></select></div>
-                <div class="col-md-6"><label class="small fw-bold text-muted mb-1">Nama Lengkap</label><input type="text" id="sName" class="form-control"></div>
-                <div class="col-md-3"><label class="small fw-bold text-muted mb-1">NISN</label><input type="text" id="sNisn" class="form-control"></div>
-                <div class="col-md-3"><label class="small fw-bold text-muted mb-1">Nama Ayah</label><input type="text" id="sAyah" class="form-control"></div>
-                <div class="col-md-3"><label class="small fw-bold text-muted mb-1">Nama Ibu</label><input type="text" id="sIbu" class="form-control"></div>
-                <div class="col-md-3"><label class="small fw-bold text-muted mb-1">WhatsApp Ortu</label><input type="text" id="sWa" class="form-control"></div>
-                <div class="col-12 text-end mt-4"><button class="btn btn-primary px-5 rounded-pill" onclick="unggungSiswaManual()"><i class="bi bi-save me-2"></i>Simpan Data Siswa</button></div>
+                <div class="col-md-2"><label class="small fw-bold opacity-75 mb-1">Kelas</label><select id="sKelas" class="form-select"><option value="1">Kelas 1</option><option value="2">Kelas 2</option><option value="3">Kelas 3</option><option value="4">Kelas 4</option><option value="5">Kelas 5</option><option value="6">Kelas 6</option></select></div>
+                <div class="col-md-4"><label class="small fw-bold opacity-75 mb-1">Wali Kelas</label><select id="sGuruAssign" class="form-select"></select></div>
+                <div class="col-md-6"><label class="small fw-bold opacity-75 mb-1">Nama Lengkap</label><input type="text" id="sName" class="form-control"></div>
+                <div class="col-md-3"><label class="small fw-bold opacity-75 mb-1">NISN</label><input type="text" id="sNisn" class="form-control"></div>
+                <div class="col-md-3"><label class="small fw-bold opacity-75 mb-1">Nama Ayah</label><input type="text" id="sAyah" class="form-control"></div>
+                <div class="col-md-3"><label class="small fw-bold opacity-75 mb-1">Nama Ibu</label><input type="text" id="sIbu" class="form-control"></div>
+                <div class="col-md-3"><label class="small fw-bold opacity-75 mb-1">WhatsApp Ortu</label><input type="text" id="sWa" class="form-control"></div>
+                <div class="col-12 text-end mt-4"><button class="btn btn-primary px-5 rounded-pill shadow" onclick="unggungSiswaManual()"><i class="bi bi-save me-2"></i>Simpan Data Siswa</button></div>
               </div>
             </div>
             <div class="tab-pane fade" id="masal-siswa-pane">
-              <div class="p-4 border rounded-4 bg-light text-center">
-                <i class="bi bi-file-earmark-spreadsheet text-success d-block mb-3" style="font-size: 3rem;"></i>
-                <h6 class="fw-bold mb-3">Upload Data Massal via Excel (.xlsx)</h6>
-                <div class="d-flex gap-2 justify-content-center align-items-center max-w-md mx-auto">
-                  <input class="form-control bg-white" type="file" id="fileSiswaExcel" accept=".xlsx" style="max-width: 300px;"><button class="btn btn-success fw-bold px-4" onclick="prosesUploadExcel()"><i class="bi bi-upload me-2"></i>Upload</button>
+              <div class="p-5 border-0 rounded-4 text-center shadow-sm" style="background: rgba(128,128,128,0.1);">
+                <i class="bi bi-file-earmark-spreadsheet text-success d-block mb-3" style="font-size: 3.5rem;"></i>
+                <h5 class="fw-bold mb-3">Upload Data Massal via Excel (.xlsx)</h5>
+                <div class="d-flex gap-2 justify-content-center align-items-center max-w-md mx-auto mt-4">
+                  <input class="form-control" type="file" id="fileSiswaExcel" accept=".xlsx" style="max-width: 300px;"><button class="btn btn-success fw-bold px-4 shadow" onclick="prosesUploadExcel()"><i class="bi bi-upload me-2"></i>Upload</button>
                 </div>
               </div>
             </div>
@@ -362,18 +326,18 @@
       
       <!-- SCANNER LIVE LANGSUNG -->
       <div class="view-section" id="scannerBarcodeView">
-        <div class="box-card border-top-0" style="position:relative;">
+        <div class="box-card border-top-0 position-relative">
           <div style="position:absolute; top:0; left:0; width:100%; height:5px; background: linear-gradient(90deg, #20c997, #198754);"></div>
           <h5 class="mb-4 fw-bold text-success"><i class="bi bi-qr-code-scan me-2"></i>Scanner Absensi Murid</h5>
           <div class="row mb-4 g-3 justify-content-center">
-              <div class="col-md-5"><input type="radio" class="btn-check" name="modeAbsenSiswa" id="modeSiswaMasuk" value="Masuk" checked autocomplete="off"><label class="btn btn-outline-success w-100 fw-bold py-3 rounded-4" for="modeSiswaMasuk"><i class="bi bi-door-open me-2"></i>SCAN MASUK</label></div>
-              <div class="col-md-5"><input type="radio" class="btn-check" name="modeAbsenSiswa" id="modeSiswaPulang" value="Pulang" autocomplete="off"><label class="btn btn-outline-danger w-100 fw-bold py-3 rounded-4" for="modeSiswaPulang"><i class="bi bi-door-closed me-2"></i>SCAN PULANG</label></div>
+              <div class="col-md-5"><input type="radio" class="btn-check" name="modeAbsenSiswa" id="modeSiswaMasuk" value="Masuk" checked autocomplete="off"><label class="btn btn-outline-success w-100 fw-bold py-3 rounded-4 shadow-sm" for="modeSiswaMasuk"><i class="bi bi-door-open me-2"></i>SCAN MASUK</label></div>
+              <div class="col-md-5"><input type="radio" class="btn-check" name="modeAbsenSiswa" id="modeSiswaPulang" value="Pulang" autocomplete="off"><label class="btn btn-outline-danger w-100 fw-bold py-3 rounded-4 shadow-sm" for="modeSiswaPulang"><i class="bi bi-door-closed me-2"></i>SCAN PULANG</label></div>
           </div>
           <div class="text-center mb-4 position-relative">
-             <div id="readerLoading" class="text-secondary fw-bold small mb-2 d-none"><div class="spinner-border spinner-border-sm me-1" role="status"></div> Menyiapkan Kamera...</div>
-             <div id="reader" class="scanner-hud"></div>
+             <div id="readerLoading" class="fw-bold small mb-2 d-none"><div class="spinner-border spinner-border-sm me-1" role="status"></div> Menyiapkan Kamera...</div>
+             <div id="reader" class="scanner-hud mx-auto" style="max-width: 400px;"></div>
           </div>
-          <div class="text-center"><h4 id="scanResult" class="text-secondary fw-bold bg-light p-3 rounded-4 d-inline-block">Siap memindai...</h4></div>
+          <div class="text-center"><h4 id="scanResult" class="fw-bold p-3 rounded-4 d-inline-block shadow-sm" style="background: rgba(128,128,128,0.1);">Siap memindai...</h4></div>
         </div>
       </div>
       
@@ -381,30 +345,30 @@
       <div class="view-section" id="rekapDataView">
         <div class="box-card">
           <h5 class="mb-4 fw-bold text-info"><i class="bi bi-search me-2"></i>Rekapitulasi Data</h5>
-          <ul class="nav nav-tabs nav-tabs-futuristic" id="rekapTabs">
+          <ul class="nav nav-tabs nav-tabs-futuristic border-0" id="rekapTabs">
             <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#pane-rekap-jurnal" onclick="muatRekap('jurnal')">Jurnal Mengajar</button></li>
             <li class="nav-item d-none" id="tabNavAbsensi"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#pane-rekap-absensi" onclick="muatRekap('absensi')">Absensi Pegawai</button></li>
             <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#pane-rekap-absensi-siswa" onclick="muatRekap('absensi_siswa')">Absensi Siswa</button></li>
           </ul>
-          <div class="row g-3 mb-4 p-4 bg-light rounded-4 border border-light shadow-sm mt-2">
-             <div class="col-md-12 pb-2 border-bottom mb-2"><span class="fw-bold text-secondary small"><i class="bi bi-printer me-2"></i>PENGATURAN CETAK DOKUMEN PDF</span></div>
-             <div class="col-md-4"><label class="small fw-bold text-muted mb-1">Tempat TTD Cetak</label><input type="text" id="cetakTempat" class="form-control" value="Ranowangko"></div>
-             <div class="col-md-4"><label class="small fw-bold text-muted mb-1">Tanggal Cetak Dokumen</label><input type="date" id="cetakTglInput" class="form-control"></div>
-             <div class="col-md-4 d-flex align-items-end"><button id="btnCetakRekap" class="btn btn-success w-100 fw-bold shadow-sm py-2" onclick="cetakRekap()"><i class="bi bi-file-earmark-pdf me-2"></i>Cetak Laporan</button></div>
+          <div class="row g-3 mb-4 p-4 rounded-4 shadow-sm mt-2" style="background: rgba(128,128,128,0.1);">
+             <div class="col-md-12 pb-2 border-bottom mb-2"><span class="fw-bold small opacity-75"><i class="bi bi-printer me-2"></i>PENGATURAN CETAK DOKUMEN PDF</span></div>
+             <div class="col-md-4"><label class="small fw-bold opacity-75 mb-1">Tempat TTD Cetak</label><input type="text" id="cetakTempat" class="form-control" value="Ranowangko"></div>
+             <div class="col-md-4"><label class="small fw-bold opacity-75 mb-1">Tanggal Cetak Dokumen</label><input type="date" id="cetakTglInput" class="form-control"></div>
+             <div class="col-md-4 d-flex align-items-end"><button id="btnCetakRekap" class="btn btn-success w-100 fw-bold shadow py-2" onclick="cetakRekap()"><i class="bi bi-file-earmark-pdf me-2"></i>Cetak Laporan</button></div>
           </div>
           <div class="row g-2 mb-4 align-items-end">
-             <div class="col-md-2"><label class="small fw-bold text-muted mb-1">Pilih Tanggal</label><input type="date" class="form-control" id="filterTgl"></div>
-             <div class="col-md-2"><label class="small fw-bold text-muted mb-1">Bulan</label><select class="form-select" id="filterBulan"></select></div>
-             <div class="col-md-2"><label class="small fw-bold text-muted mb-1">Tahun</label><select class="form-select" id="filterTahun"><option value="2026">2026</option><option value="2025">2025</option></select></div>
-             <div class="col-md-3" id="filterPegawaiCol" style="display:none;"><label class="small fw-bold text-muted mb-1">Filter Pegawai</label><div id="filterPegawaiContainer"></div></div>
-             <div class="col-md-2" id="filterKelasCol" style="display:none;"><label class="small fw-bold text-muted mb-1">Pilih Kelas</label><select class="form-select" id="filterKelasSelect"><option value="">Semua Kelas</option><option value="1">Kelas 1</option><option value="2">Kelas 2</option><option value="3">Kelas 3</option><option value="4">Kelas 4</option><option value="5">Kelas 5</option><option value="6">Kelas 6</option></select></div>
-             <div class="col-md-3"><label class="small fw-bold text-muted mb-1">Pencarian Kata Kunci</label><div class="input-group"><span class="input-group-text bg-white"><i class="bi bi-search"></i></span><input type="text" id="filterCari" class="form-control border-start-0 ps-0" placeholder="Ketik bebas..."></div></div>
-             <div class="col-md-1 d-flex"><button class="btn btn-primary w-100 fw-bold" onclick="terapkanFilterRekap()"><i class="bi bi-funnel"></i></button></div>
+             <div class="col-md-2"><label class="small fw-bold opacity-75 mb-1">Pilih Tanggal</label><input type="date" class="form-control" id="filterTgl"></div>
+             <div class="col-md-2"><label class="small fw-bold opacity-75 mb-1">Bulan</label><select class="form-select" id="filterBulan"></select></div>
+             <div class="col-md-2"><label class="small fw-bold opacity-75 mb-1">Tahun</label><select class="form-select" id="filterTahun"><option value="2026">2026</option><option value="2025">2025</option></select></div>
+             <div class="col-md-3" id="filterPegawaiCol" style="display:none;"><label class="small fw-bold opacity-75 mb-1">Filter Pegawai</label><div id="filterPegawaiContainer"></div></div>
+             <div class="col-md-2" id="filterKelasCol" style="display:none;"><label class="small fw-bold opacity-75 mb-1">Pilih Kelas</label><select class="form-select" id="filterKelasSelect"><option value="">Semua Kelas</option><option value="1">Kelas 1</option><option value="2">Kelas 2</option><option value="3">Kelas 3</option><option value="4">Kelas 4</option><option value="5">Kelas 5</option><option value="6">Kelas 6</option></select></div>
+             <div class="col-md-3"><label class="small fw-bold opacity-75 mb-1">Pencarian Kata Kunci</label><div class="input-group"><span class="input-group-text border-end-0 bg-transparent rounded-start-4"><i class="bi bi-search"></i></span><input type="text" id="filterCari" class="form-control border-start-0 rounded-end-4" placeholder="Ketik bebas..."></div></div>
+             <div class="col-md-1 d-flex"><button class="btn btn-primary w-100 fw-bold shadow" onclick="terapkanFilterRekap()"><i class="bi bi-funnel"></i></button></div>
           </div>
           <div class="tab-content">
-             <div class="tab-pane fade show active" id="pane-rekap-jurnal"><div class="table-responsive"><table class="table table-hover align-middle" id="cetakTabelJurnal"><thead><tr><th>Tanggal</th><th>Nama Pegawai</th><th>Waktu</th><th>Mapel / Tempat</th><th>Uraian Kegiatan</th><th>Keterangan</th></tr></thead><tbody id="tabelRekapJurnal"><tr><td colspan="6" class="text-center text-muted">Sedang memuat data...</td></tr></tbody></table></div></div>
-             <div class="tab-pane fade" id="pane-rekap-absensi"><div class="table-responsive"><table class="table table-hover align-middle" id="cetakTabelAbsensi"><thead><tr><th>Tanggal</th><th>Waktu</th><th>Nama Pegawai</th><th>Presensi</th><th>Info Lokasi</th></tr></thead><tbody id="tabelRekapAbsensi"><tr><td colspan="5" class="text-center text-muted">Sedang memuat data...</td></tr></tbody></table></div></div>
-             <div class="tab-pane fade" id="pane-rekap-absensi-siswa"><div class="table-responsive"><table class="table table-hover align-middle" id="cetakTabelAbsensiSiswa"><thead><tr><th>Tanggal</th><th>Waktu</th><th>Kelas</th><th>NISN</th><th>Nama Siswa</th><th>Wali Kelas</th><th>Status</th></tr></thead><tbody id="tabelRekapAbsensiSiswa"><tr><td colspan="7" class="text-center text-muted">Sedang memuat data...</td></tr></tbody></table></div></div>
+             <div class="tab-pane fade show active" id="pane-rekap-jurnal"><div class="table-responsive"><table class="table table-hover align-middle" id="cetakTabelJurnal"><thead><tr><th>Tanggal</th><th>Nama Pegawai</th><th>Waktu</th><th>Mapel / Tempat</th><th>Uraian Kegiatan</th><th>Keterangan</th></tr></thead><tbody id="tabelRekapJurnal"><tr><td colspan="6" class="text-center opacity-75">Sedang memuat data...</td></tr></tbody></table></div></div>
+             <div class="tab-pane fade" id="pane-rekap-absensi"><div class="table-responsive"><table class="table table-hover align-middle" id="cetakTabelAbsensi"><thead><tr><th>Tanggal</th><th>Waktu</th><th>Nama Pegawai</th><th>Presensi</th><th>Info Lokasi</th></tr></thead><tbody id="tabelRekapAbsensi"><tr><td colspan="5" class="text-center opacity-75">Sedang memuat data...</td></tr></tbody></table></div></div>
+             <div class="tab-pane fade" id="pane-rekap-absensi-siswa"><div class="table-responsive"><table class="table table-hover align-middle" id="cetakTabelAbsensiSiswa"><thead><tr><th>Tanggal</th><th>Waktu</th><th>Kelas</th><th>NISN</th><th>Nama Siswa</th><th>Wali Kelas</th><th>Status</th></tr></thead><tbody id="tabelRekapAbsensiSiswa"><tr><td colspan="7" class="text-center opacity-75">Sedang memuat data...</td></tr></tbody></table></div></div>
           </div>
         </div>
       </div>
@@ -413,25 +377,25 @@
       <div class="view-section" id="manajemenUsersView">
         <div class="box-card">
           <div class="d-flex justify-content-between align-items-center mb-4">
-            <h5 class="m-0 fw-bold text-warning text-dark"><i class="bi bi-person-badge me-2"></i>Daftar Akun Pengguna</h5>
-            <div class="d-flex gap-2"><button class="btn btn-sm btn-danger fw-bold px-3 rounded-pill" data-bs-toggle="modal" data-bs-target="#modalTambahUser"><i class="bi bi-plus-lg me-1"></i> User Baru</button><button class="btn btn-sm btn-outline-secondary fw-bold px-3 rounded-pill" onclick="loadUsersData()"><i class="bi bi-arrow-clockwise me-1"></i> Refresh</button></div>
+            <h5 class="m-0 fw-bold text-warning"><i class="bi bi-person-badge me-2"></i>Daftar Akun Pengguna</h5>
+            <div class="d-flex gap-2"><button class="btn btn-sm btn-danger fw-bold px-3 rounded-pill shadow" data-bs-toggle="modal" data-bs-target="#modalTambahUser"><i class="bi bi-plus-lg me-1"></i> User Baru</button><button class="btn btn-sm btn-outline-secondary fw-bold px-3 rounded-pill" onclick="loadUsersData()"><i class="bi bi-arrow-clockwise me-1"></i> Refresh</button></div>
           </div>
-          <div class="table-responsive"><table class="table table-hover align-middle"><thead><tr><th>Username</th><th>Nama Lengkap</th><th>Role</th><th>NIP</th><th>Tugas/Jenis</th><th>No WA</th><th>Aksi</th></tr></thead><tbody id="tabelUsersBody"><tr><td colspan="7" class="text-center text-muted">Silakan klik refresh untuk memuat pengguna.</td></tr></tbody></table></div>
+          <div class="table-responsive"><table class="table table-hover align-middle"><thead><tr><th>Username</th><th>Nama Lengkap</th><th>Role</th><th>NIP</th><th>Tugas/Jenis</th><th>No WA</th><th>Aksi</th></tr></thead><tbody id="tabelUsersBody"><tr><td colspan="7" class="text-center opacity-75">Silakan klik refresh untuk memuat pengguna.</td></tr></tbody></table></div>
         </div>
       </div>
       
       <!-- MENU APPROVAL -->
       <div class="view-section" id="approvalMemberView">
-        <div class="box-card border-top-0" style="position:relative;">
+        <div class="box-card border-top-0 position-relative">
           <div style="position:absolute; top:0; left:0; width:100%; height:5px; background: linear-gradient(90deg, #fd7e14, #ffc107);"></div>
-          <h5 class="mb-4 fw-bold text-warning text-dark"><i class="bi bi-bell-fill me-2"></i>Antrean Persetujuan Pendaftaran</h5>
-          <div class="table-responsive"><table class="table table-hover align-middle"><thead><tr><th>Nama Lengkap</th><th>Username</th><th>Tugas/Jabatan</th><th>No WA</th><th>Aksi</th></tr></thead><tbody id="approvalBody"><tr><td colspan="5" class="text-center text-muted py-4"><i class="bi bi-check-circle text-success me-2" style="font-size:1.5rem; vertical-align:middle;"></i>Tidak ada antrean pendaftaran baru saat ini.</td></tr></tbody></table></div>
+          <h5 class="mb-4 fw-bold text-warning"><i class="bi bi-bell-fill me-2"></i>Antrean Persetujuan Pendaftaran</h5>
+          <div class="table-responsive"><table class="table table-hover align-middle"><thead><tr><th>Nama Lengkap</th><th>Username</th><th>Tugas/Jabatan</th><th>No WA</th><th>Aksi</th></tr></thead><tbody id="approvalBody"><tr><td colspan="5" class="text-center opacity-75 py-4"><i class="bi bi-check-circle text-success me-2" style="font-size:1.5rem; vertical-align:middle;"></i>Tidak ada antrean pendaftaran baru saat ini.</td></tr></tbody></table></div>
         </div>
       </div>
       
-      <!-- MENU PENGATURAN (Aman dari Tabrakan Sel) -->
+      <!-- MENU PENGATURAN -->
       <div class="view-section" id="pengaturanKopView">
-        <div class="box-card border-top-0" style="position:relative;">
+        <div class="box-card border-top-0 position-relative">
           <div style="position:absolute; top:0; left:0; width:100%; height:5px; background: linear-gradient(90deg, #6c757d, #343a40);"></div>
           <h5 class="mb-4 fw-bold text-secondary"><i class="bi bi-gear-fill me-2"></i>Konfigurasi Sekolah & Sistem</h5>
           <div class="row g-3">
@@ -450,46 +414,47 @@
             <div class="col-md-4"><div class="form-floating"><input type="text" id="kopPengawasPangkat" class="form-control" placeholder="x"><label>Pangkat / Golongan</label></div></div>
             <h6 class="mt-4 fw-bold text-success border-bottom pb-2"><i class="bi bi-whatsapp me-2"></i>Konfigurasi Fonnte WA Gateway</h6>
             <div class="col-md-12"><div class="form-floating"><input type="text" id="kopTokenFonnte" class="form-control border-success" placeholder="x"><label class="text-success fw-bold">Token API Fonnte</label></div></div>
-            <div class="col-md-6"><div class="form-floating"><textarea id="kopWaMasuk" class="form-control" placeholder="x" style="height: 120px"></textarea><label>Template WA Masuk (Tag: [NAMA], [KELAS], [WAKTU], [TANGGAL])</label></div></div>
-            <div class="col-md-6"><div class="form-floating"><textarea id="kopWaPulang" class="form-control" placeholder="x" style="height: 120px"></textarea><label>Template WA Pulang (Tag: [NAMA], [KELAS], [WAKTU], [TANGGAL])</label></div></div>
+            <div class="col-md-6"><div class="form-floating"><textarea id="kopWaMasuk" class="form-control" placeholder="x" style="height: 120px; border-radius: 20px;"></textarea><label>Template WA Masuk (Tag: [NAMA], [KELAS], [WAKTU], [TANGGAL])</label></div></div>
+            <div class="col-md-6"><div class="form-floating"><textarea id="kopWaPulang" class="form-control" placeholder="x" style="height: 120px; border-radius: 20px;"></textarea><label>Template WA Pulang (Tag: [NAMA], [KELAS], [WAKTU], [TANGGAL])</label></div></div>
             
-            <div class="col-12 text-end mt-4"><button class="btn btn-secondary px-5 py-2 rounded-pill fw-bold shadow-sm" onclick="simpanKop()"><i class="bi bi-floppy me-2"></i>Simpan Seluruh Konfigurasi</button></div>
+            <div class="col-12 text-end mt-4"><button class="btn btn-secondary px-5 py-2 rounded-pill fw-bold shadow" onclick="simpanKop()"><i class="bi bi-floppy me-2"></i>Simpan Seluruh Konfigurasi</button></div>
           </div>
         </div>
       </div>
       
       <!-- MENU CETAK BARCODE (OFFLINE JS DENGAN METODE QRIOUS) -->
       <div class="view-section" id="barcodeGeneratorView">
-          <div class="box-card border-top-0" style="position:relative;">
+          <div class="box-card border-top-0 position-relative">
             <div style="position:absolute; top:0; left:0; width:100%; height:5px; background: linear-gradient(90deg, #0dcaf0, #0aa2c0);"></div>
             <div class="d-flex justify-content-between align-items-center mb-4">
-              <h5 class="m-0 fw-bold text-info text-dark"><i class="bi bi-printer-fill me-2"></i>Generator ID Card / QR Code (Lokal)</h5>
+              <h5 class="m-0 fw-bold text-info"><i class="bi bi-printer-fill me-2"></i>Generator ID Card / QR Code (Lokal)</h5>
               <div class="d-flex gap-2">
-                  <button class="btn btn-sm btn-info text-white fw-bold px-3 rounded-pill shadow-sm" onclick="muatBarcodeSiswaHanya()"><i class="bi bi-cloud-arrow-down me-1"></i> Tarik Data (Refresh)</button>
-                  <button class="btn btn-sm btn-success text-white fw-bold px-3 rounded-pill shadow-sm d-none" id="btnBuatSemuaBarcode" onclick="buatSemuaBarcode()"><i class="bi bi-grid-3x3 me-1"></i> Render Semua QR</button>
+                  <button class="btn btn-sm btn-info text-white fw-bold px-3 rounded-pill shadow" onclick="muatBarcodeSiswaHanya()"><i class="bi bi-cloud-arrow-down me-1"></i> Tarik Data (Refresh)</button>
+                  <button class="btn btn-sm btn-success text-white fw-bold px-3 rounded-pill shadow d-none" id="btnBuatSemuaBarcode" onclick="buatSemuaBarcode()"><i class="bi bi-grid-3x3 me-1"></i> Render Semua QR</button>
               </div>
             </div>
             <div class="table-responsive">
               <table class="table table-hover align-middle">
                 <thead><tr><th>No</th><th>Kelas</th><th>Nama Siswa</th><th>NISN</th><th class="text-center">Aksi & Pratinjau</th></tr></thead>
-                <tbody id="bodyListBarcode"><tr><td colspan='5' class='text-center py-4 text-muted'><i class="bi bi-inbox me-2" style="font-size:1.5rem; vertical-align:middle;"></i>Klik 'Tarik Data' untuk mengambil data dari server.</td></tr></tbody>
+                <tbody id="bodyListBarcode"><tr><td colspan='5' class='text-center py-4 opacity-75'><i class="bi bi-inbox me-2" style="font-size:1.5rem; vertical-align:middle;"></i>Klik 'Tarik Data' untuk mengambil data dari server.</td></tr></tbody>
               </table>
             </div>
           </div>
       </div>
     </div>
   </div>
+  
   <!-- AREA MODAL MAP GPS -->
   <div class="modal fade" id="modalTitikAbsen" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content border-0 shadow-lg" style="border-radius: 20px; overflow: hidden;">
+      <div class="modal-content border-0 shadow-lg">
         <div class="modal-header bg-warning border-0 p-4">
             <h5 class="modal-title fw-bold text-dark"><i class="bi bi-geo-alt-fill me-2"></i>Setup Koordinat Pusat Sekolah & Radius</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body p-4">
-          <div class="alert alert-light border border-warning small text-muted bg-transparent mb-4">Geser pin merah pada peta di bawah, atau klik tap langsung pada lokasi presisi gedung sekolah Anda.</div>
-          <div id="mapSekolah" style="height: 280px; width: 100%; border-radius: 14px; margin-bottom: 20px; box-shadow: inset 0 2px 10px rgba(0,0,0,0.1); z-index: 10;"></div>
+          <div class="alert alert-light border border-warning small text-dark mb-4">Geser pin merah pada peta di bawah, atau klik tap langsung pada lokasi presisi gedung sekolah Anda.</div>
+          <div id="mapSekolah" style="height: 280px; width: 100%; border-radius: 20px; margin-bottom: 20px; box-shadow: inset 0 2px 10px rgba(0,0,0,0.1); z-index: 10;"></div>
           <div class="row g-3">
             <div class="col-6"><div class="form-floating"><input type="text" id="setLat" class="form-control font-monospace fw-bold text-primary" placeholder="x"><label>Latitude (X)</label></div></div>
             <div class="col-6"><div class="form-floating"><input type="text" id="setLng" class="form-control font-monospace fw-bold text-primary" placeholder="x"><label>Longitude (Y)</label></div></div>
@@ -498,7 +463,7 @@
         </div>
         <div class="modal-footer border-0 p-4 pt-0">
           <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Batal</button>
-          <button type="button" class="btn btn-warning rounded-pill fw-bold text-dark px-4 shadow-sm" onclick="simpanKoordinatSekolah()"><i class="bi bi-floppy me-2"></i>Simpan Konfigurasi GPS</button>
+          <button type="button" class="btn btn-warning rounded-pill fw-bold text-dark px-4 shadow" onclick="simpanKoordinatSekolah()"><i class="bi bi-floppy me-2"></i>Simpan Konfigurasi GPS</button>
         </div>
       </div>
     </div>
@@ -507,32 +472,47 @@
   <!-- MODAL TAMBAH USER -->
   <div class="modal fade" id="modalTambahUser" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content border-0 shadow-lg" style="border-radius: 20px; overflow: hidden;"><div class="modal-header bg-danger text-white border-0 p-4"><h5 class="modal-title fw-bold"><i class="bi bi-person-plus-fill me-2"></i>Tambah Pengguna Baru</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
+      <div class="modal-content border-0 shadow-lg"><div class="modal-header bg-danger text-white border-0 p-4"><h5 class="modal-title fw-bold"><i class="bi bi-person-plus-fill me-2"></i>Tambah Pengguna Baru</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
         <div class="modal-body p-4"><div class="row g-3"><div class="col-md-6"><div class="form-floating"><input type="text" id="tUsername" class="form-control" placeholder="x"><label>Username Akun</label></div></div><div class="col-md-6"><div class="form-floating"><input type="text" id="tPassword" class="form-control" placeholder="x"><label>Password</label></div></div><div class="col-md-12"><div class="form-floating"><input type="text" id="tNama" class="form-control" placeholder="x"><label>Nama Lengkap (Beserta Gelar)</label></div></div><div class="col-md-12"><div class="form-floating"><select id="tRole" class="form-select"><option value="guru">Guru</option><option value="kepsek">Kepsek</option><option value="admin">Admin</option></select><label>Hak Akses / Role</label></div></div><div class="col-md-12"><div class="form-floating"><input type="text" id="tNip" class="form-control" placeholder="x"><label>NIP / NIY (Kosongkan jika honorer)</label></div></div><div class="col-md-6"><div class="form-floating"><input type="text" id="tJenisGuru" class="form-control" placeholder="x"><label>Tugas Spesifik</label></div></div><div class="col-md-6"><div class="form-floating"><input type="text" id="tWa" class="form-control" placeholder="x"><label>Nomor WhatsApp</label></div></div></div></div>
-        <div class="modal-footer border-0 p-4 pt-0"><button type="button" class="btn btn-danger rounded-pill fw-bold px-4 shadow-sm" onclick="prosesTambahUserBaru()"><i class="bi bi-check-lg me-2"></i>Buat Akun</button></div>
+        <div class="modal-footer border-0 p-4 pt-0"><button type="button" class="btn btn-danger rounded-pill fw-bold px-4 shadow" onclick="prosesTambahUserBaru()"><i class="bi bi-check-lg me-2"></i>Buat Akun</button></div>
       </div>
     </div>
   </div>
   <!-- MODAL EDIT DATA SISWA -->
   <div class="modal fade" id="modalEditSiswa" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content border-0 shadow-lg" style="border-radius: 20px; overflow: hidden;"><div class="modal-header bg-primary text-white border-0 p-4"><h5 class="modal-title fw-bold"><i class="bi bi-pencil-square me-2"></i>Edit Biodata Murid</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
+      <div class="modal-content border-0 shadow-lg"><div class="modal-header bg-primary text-white border-0 p-4"><h5 class="modal-title fw-bold"><i class="bi bi-pencil-square me-2"></i>Edit Biodata Murid</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
         <div class="modal-body p-4"><input type="hidden" id="eSiswaRowIndex"><div class="row g-3"><div class="col-4"><div class="form-floating"><input type="text" id="eSiswaKelas" class="form-control text-center fw-bold" placeholder="x"><label>Kelas</label></div></div><div class="col-8"><div class="form-floating"><input type="text" id="eSiswaGuru" class="form-control" placeholder="x"><label>Nama Wali Kelas</label></div></div><div class="col-12"><div class="form-floating"><input type="text" id="eSiswaName" class="form-control" placeholder="x"><label>Nama Lengkap Siswa</label></div></div><div class="col-12"><div class="form-floating"><input type="text" id="eSiswaNisn" class="form-control" placeholder="x"><label>Nomor Induk (NISN)</label></div></div><div class="col-6"><div class="form-floating"><input type="text" id="eSiswaAyah" class="form-control" placeholder="x"><label>Nama Ayah</label></div></div><div class="col-6"><div class="form-floating"><input type="text" id="eSiswaIbu" class="form-control" placeholder="x"><label>Nama Ibu</label></div></div><div class="col-12"><div class="form-floating"><input type="text" id="eSiswaWa" class="form-control" placeholder="x"><label>Kontak Darurat / WA Ortu</label></div></div></div></div>
-        <div class="modal-footer border-0 p-4 pt-0"><button type="button" class="btn btn-primary rounded-pill px-5 fw-bold shadow-sm" onclick="prosesEditSiswaKelas()"><i class="bi bi-cloud-check me-2"></i>Terapkan Perubahan</button></div>
+        <div class="modal-footer border-0 p-4 pt-0"><button type="button" class="btn btn-primary rounded-pill px-5 fw-bold shadow" onclick="prosesEditSiswaKelas()"><i class="bi bi-cloud-check me-2"></i>Terapkan Perubahan</button></div>
       </div>
     </div>
   </div>
   <!-- MODAL EDIT USER/PEGAWAI -->
   <div class="modal fade" id="modalEditUser" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content border-0 shadow-lg" style="border-radius: 20px; overflow: hidden;"><div class="modal-header bg-warning text-dark border-0 p-4"><h5 class="modal-title fw-bold"><i class="bi bi-person-gear me-2"></i>Edit Informasi Akun</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-        <div class="modal-body p-4"><input type="hidden" id="eUserRowIndex"><div class="row g-3"><div class="col-md-6"><div class="form-floating"><input type="text" id="eUserUsername" class="form-control bg-light" readonly placeholder="x"><label>Username</label></div></div><div class="col-md-6"><div class="form-floating"><input type="text" id="eUserPassword" class="form-control" placeholder="x"><label>Ganti Password Baru?</label></div></div><div class="col-md-12"><div class="form-floating"><input type="text" id="eUserNama" class="form-control" placeholder="x"><label>Nama Lengkap Revisi</label></div></div><div class="col-md-12"><div class="form-floating"><select id="eUserRole" class="form-select"><option value="guru">Guru</option><option value="kepsek">Kepsek</option><option value="admin">Admin</option></select><label>Ubah Hak Akses</label></div></div><div class="col-md-12"><div class="form-floating"><input type="text" id="eUserNip" class="form-control" placeholder="x"><label>Perbarui NIP</label></div></div><div class="col-md-6"><div class="form-floating"><input type="text" id="eUserJenis" class="form-control" placeholder="x"><label>Tugas Mengajar</label></div></div><div class="col-md-6"><div class="form-floating"><input type="text" id="eUserWa" class="form-control" placeholder="x"><label>Ubah No WhatsApp</label></div></div></div></div>
-        <div class="modal-footer border-0 p-4 pt-0"><button type="button" class="btn btn-warning rounded-pill fw-bold text-dark px-5 shadow-sm" onclick="prosesEditUser()"><i class="bi bi-floppy me-2"></i>Simpan Database</button></div>
+      <div class="modal-content border-0 shadow-lg"><div class="modal-header bg-warning text-dark border-0 p-4"><h5 class="modal-title fw-bold"><i class="bi bi-person-gear me-2"></i>Edit Informasi Akun</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+        <div class="modal-body p-4"><input type="hidden" id="eUserRowIndex"><div class="row g-3"><div class="col-md-6"><div class="form-floating"><input type="text" id="eUserUsername" class="form-control bg-light text-dark" readonly placeholder="x"><label>Username</label></div></div><div class="col-md-6"><div class="form-floating"><input type="text" id="eUserPassword" class="form-control" placeholder="x"><label>Ganti Password Baru?</label></div></div><div class="col-md-12"><div class="form-floating"><input type="text" id="eUserNama" class="form-control" placeholder="x"><label>Nama Lengkap Revisi</label></div></div><div class="col-md-12"><div class="form-floating"><select id="eUserRole" class="form-select"><option value="guru">Guru</option><option value="kepsek">Kepsek</option><option value="admin">Admin</option></select><label>Ubah Hak Akses</label></div></div><div class="col-md-12"><div class="form-floating"><input type="text" id="eUserNip" class="form-control" placeholder="x"><label>Perbarui NIP</label></div></div><div class="col-md-6"><div class="form-floating"><input type="text" id="eUserJenis" class="form-control" placeholder="x"><label>Tugas Mengajar</label></div></div><div class="col-md-6"><div class="form-floating"><input type="text" id="eUserWa" class="form-control" placeholder="x"><label>Ubah No WhatsApp</label></div></div></div></div>
+        <div class="modal-footer border-0 p-4 pt-0"><button type="button" class="btn btn-warning rounded-pill fw-bold text-dark px-5 shadow" onclick="prosesEditUser()"><i class="bi bi-floppy me-2"></i>Simpan Database</button></div>
       </div>
     </div>
   </div>
   <script>
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbydQjP3YwTSWIdluKda_GiGKgcCkYymuznz1G3C-TQ3PGtA7gnWYljSJFGjcbAhxC0J/exec";
+    
+    // ================= FUNGSI TEMA DINAMIS (BOOTSWATCH) =================
+    function setAppTheme(themeName) {
+        const link = document.getElementById('theme-stylesheet');
+        if (themeName === 'cyborg') {
+            link.href = 'https://cdn.jsdelivr.net/npm/bootswatch@5.3.0/dist/cyborg/bootstrap.min.css';
+        } else if (themeName === 'vapor') {
+            link.href = 'https://cdn.jsdelivr.net/npm/bootswatch@5.3.0/dist/vapor/bootstrap.min.css';
+        } else {
+            // Default kembali ke standar Bootstrap ringan
+            link.href = 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css';
+        }
+        document.body.className = 'theme-' + themeName;
+        localStorage.setItem('absensiUITheme', themeName);
+    }
     
     function callBackend(action, payload, onSuccess, onFailure) {
       let requester = session.username ? session.username : ""; 
@@ -548,6 +528,10 @@
     let session = {}; let dataRekapGlobal = { jurnal: [], absensi: [], absensi_siswa: [] }; let aktifRekapTab = 'jurnal'; let modalEditSiswaObj, modalEditUserObj, modalTambahUserObj; let html5QrCode = null; let isProcessingScan = false; let map, marker;
     
     function initApp() {
+      // Terapkan Tema yang Tersimpan
+      let savedTheme = localStorage.getItem('absensiUITheme') || 'default';
+      setAppTheme(savedTheme);
+        
       const el = document.getElementById("filterBulan"); const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"]; const today = new Date();
       let html = '<option value="">Semua Bulan</option>'; for(let i=0; i<=today.getMonth(); i++) { html += `<option value="${String(i+1).padStart(2, '0')}">${months[i]}</option>`; }
       if(el) el.innerHTML = html;
@@ -580,11 +564,6 @@
       callBackend('checkLogin', {username: user, password: pass}, function(res) {
           if(res.status === "success") {
             session = res; 
-            
-            // --- TERAPKAN TEMA BERDASARKAN ROLE DI SINI ---
-            document.body.className = "theme-" + res.role;
-            // ----------------------------------------------
-            
             document.getElementById("authWrapper").classList.add("d-none"); document.getElementById("dashboardSection").classList.remove("d-none"); document.getElementById("userNamaWorkspace").innerText = res.nama;
             callBackend('getDaftarGuruDropdown', {}, function(guruList) {
               let ddl = document.getElementById("sGuruAssign");
@@ -595,8 +574,8 @@
                     window.pegawaiListGlobal = pegawaiList; let container = document.getElementById("filterPegawaiContainer");
                     if(container) {
                         if(session.role === 'admin') {
-                            let html = `<div class="border p-2 rounded shadow-sm" style="max-height: 120px; overflow-y: auto; font-size: 0.85rem;"><div class="form-check mb-1"><input class="form-check-input" type="checkbox" value="SEMUA_GURU" id="chkSemuaGuru" onchange="handleAdminCheckboxes('SEMUA_GURU')"><label class="form-check-label fw-bold text-primary" for="chkSemuaGuru">Semua Guru</label></div><div class="form-check mb-1"><input class="form-check-input" type="checkbox" value="HANYA_KEPSEK" id="chkHanyaKepsek" onchange="handleAdminCheckboxes('HANYA_KEPSEK')"><label class="form-check-label fw-bold text-success" for="chkHanyaKepsek">Hanya Kepsek</label></div><hr class="my-1">`;
-                            pegawaiList.forEach((p, index) => { if (p.role !== 'admin' && p.role !== 'kepsek') html += `<div class="form-check"><input class="form-check-input chk-pegawai-item" type="checkbox" value="${p.nama}" data-nip="${p.nip}" id="chkPegawai_${index}" onchange="handleAdminCheckboxes('ITEM')"><label class="form-check-label" for="chkPegawai_${index}">${p.nama}</label></div>`; else if (p.role === 'kepsek') html += `<div class="form-check"><input class="form-check-input chk-pegawai-item" type="checkbox" value="${p.nama}" data-nip="${p.nip}" id="chkPegawai_${index}" onchange="handleAdminCheckboxes('ITEM')"><label class="form-check-label text-muted" for="chkPegawai_${index}">${p.nama} (Kepsek)</label></div>`; }); html += `</div>`; container.innerHTML = html;
+                            let html = `<div class="p-3 rounded-4 shadow-sm" style="max-height: 120px; overflow-y: auto; font-size: 0.85rem; background: rgba(128,128,128,0.1);"><div class="form-check mb-1"><input class="form-check-input" type="checkbox" value="SEMUA_GURU" id="chkSemuaGuru" onchange="handleAdminCheckboxes('SEMUA_GURU')"><label class="form-check-label fw-bold text-primary" for="chkSemuaGuru">Semua Guru</label></div><div class="form-check mb-1"><input class="form-check-input" type="checkbox" value="HANYA_KEPSEK" id="chkHanyaKepsek" onchange="handleAdminCheckboxes('HANYA_KEPSEK')"><label class="form-check-label fw-bold text-success" for="chkHanyaKepsek">Hanya Kepsek</label></div><hr class="my-1 border-secondary opacity-25">`;
+                            pegawaiList.forEach((p, index) => { if (p.role !== 'admin' && p.role !== 'kepsek') html += `<div class="form-check"><input class="form-check-input chk-pegawai-item" type="checkbox" value="${p.nama}" data-nip="${p.nip}" id="chkPegawai_${index}" onchange="handleAdminCheckboxes('ITEM')"><label class="form-check-label" for="chkPegawai_${index}">${p.nama}</label></div>`; else if (p.role === 'kepsek') html += `<div class="form-check"><input class="form-check-input chk-pegawai-item" type="checkbox" value="${p.nama}" data-nip="${p.nip}" id="chkPegawai_${index}" onchange="handleAdminCheckboxes('ITEM')"><label class="form-check-label opacity-75" for="chkPegawai_${index}">${p.nama} (Kepsek)</label></div>`; }); html += `</div>`; container.innerHTML = html;
                         } else if (session.role === 'kepsek') {
                             let html = `<select class="form-select" id="filterPegawaiSelect"><option value="">Semua Pegawai</option>`; pegawaiList.forEach(p => { if (p.role !== 'admin') html += `<option value="${p.nama}">${p.nama}</option>`; }); html += `</select>`; container.innerHTML = html;
                         }
@@ -635,7 +614,7 @@
       }, function(error) { alertBox.className = "mt-3 text-center small fw-bold text-danger"; alertBox.innerText = "Error Sistem: " + error.message; });
     }
     
-    function logout() { document.body.className = ""; location.reload(); }
+    function logout() { location.reload(); }
     
     function prosesAbsenPegawai(jenis) {
       const statusEl = document.getElementById("lokasiStatus"); statusEl.innerHTML = "<div class='spinner-border spinner-border-sm me-2' role='status'></div>Mendapatkan titik koordinat GPS Anda...";
@@ -643,8 +622,8 @@
         navigator.geolocation.getCurrentPosition(function(pos) {
           let data = { nama: session.nama, jenis: jenis, lat: pos.coords.latitude, lng: pos.coords.longitude };
           callBackend('simpanAbsenPegawaiBackend', data, function(msg){
-              if(msg.indexOf("Gagal") > -1) { statusEl.innerHTML = "<i class='bi bi-exclamation-triangle me-1'></i> " + msg; statusEl.classList.remove("text-secondary", "text-success"); statusEl.classList.add("text-danger"); } 
-              else { statusEl.innerHTML = "<i class='bi bi-check-circle me-1'></i> " + msg; statusEl.classList.remove("text-secondary", "text-danger"); statusEl.classList.add("text-success"); }
+              if(msg.indexOf("Gagal") > -1) { statusEl.innerHTML = "<i class='bi bi-exclamation-triangle me-1'></i> " + msg; statusEl.classList.add("text-danger"); } 
+              else { statusEl.innerHTML = "<i class='bi bi-check-circle me-1'></i> " + msg; statusEl.classList.remove("text-danger"); statusEl.classList.add("text-success"); }
           });
         }, function(error) { statusEl.innerHTML = "<i class='bi bi-exclamation-triangle me-1'></i> Gagal: Izinkan akses lokasi / GPS di browser Anda."; statusEl.classList.add("text-danger"); }, { enableHighAccuracy: true });
       } else { statusEl.innerText = "Geolocation tidak didukung di perangkat ini."; }
@@ -654,7 +633,7 @@
       if (!html5QrCode) { html5QrCode = new Html5Qrcode("reader"); } const config = { fps: 10, qrbox: { width: 250, height: 250 } };
       let loader = document.getElementById("readerLoading"); if(loader) loader.classList.remove("d-none");
       html5QrCode.start( { facingMode: "environment" }, config, onScanSuccess, onScanFailure ).then(() => { if(loader) loader.classList.add("d-none"); }).catch((err) => {
-          if(loader) loader.classList.add("d-none"); document.getElementById("reader").innerHTML = `<div class='p-4 text-danger bg-white h-100 d-flex flex-column justify-content-center text-center' style='position:absolute;top:0;width:100%;'><i class='bi bi-camera-video-off display-1 mb-3 text-muted'></i><b class='fs-5 mb-2'>Gagal Mengakses Kamera</b><small class='text-secondary'>Pastikan Anda klik 'Allow' kamera.</small></div>`;
+          if(loader) loader.classList.add("d-none"); document.getElementById("reader").innerHTML = `<div class='p-4 text-danger h-100 d-flex flex-column justify-content-center text-center' style='position:absolute;top:0;width:100%; background:rgba(0,0,0,0.8);'><i class='bi bi-camera-video-off display-1 mb-3 opacity-75'></i><b class='fs-5 mb-2'>Gagal Mengakses Kamera</b><small class='opacity-75'>Pastikan Anda klik 'Allow' kamera.</small></div>`;
       });
     }
    
@@ -662,17 +641,17 @@
    
     function onScanSuccess(decodedText, decodedResult) {
       if(isProcessingScan) return; isProcessingScan = true; let modeAbsen = "Masuk"; let radioPulang = document.getElementById("modeSiswaPulang"); if(radioPulang && radioPulang.checked) modeAbsen = "Pulang";
-      let resultEl = document.getElementById("scanResult"); resultEl.innerHTML = "<div class='spinner-border spinner-border-sm me-2'></div> Memproses absensi..."; resultEl.className = "text-warning fw-bold bg-light p-3 rounded-4 d-inline-block";
+      let resultEl = document.getElementById("scanResult"); resultEl.innerHTML = "<div class='spinner-border spinner-border-sm me-2'></div> Memproses absensi..."; resultEl.className = "text-warning fw-bold p-3 rounded-4 d-inline-block shadow";
       
       callBackend('absenMuridBackend', {nisn: decodedText, jenisAbsen: modeAbsen}, 
           function(msg) {
              resultEl.innerText = msg;
-             if(msg.indexOf("Sukses") > -1) { resultEl.className = "text-success fw-bold bg-success bg-opacity-10 p-3 rounded-4 d-inline-block shadow-sm"; resultEl.innerHTML = "<i class='bi bi-check-circle-fill me-2'></i>" + msg; } 
-             else { resultEl.className = "text-danger fw-bold bg-danger bg-opacity-10 p-3 rounded-4 d-inline-block shadow-sm"; resultEl.innerHTML = "<i class='bi bi-exclamation-triangle-fill me-2'></i>" + msg; }
-             setTimeout(function() { resultEl.innerText = "Siap memindai..."; resultEl.className = "text-secondary fw-bold bg-light p-3 rounded-4 d-inline-block"; isProcessingScan = false; }, 3000);
+             if(msg.indexOf("Sukses") > -1) { resultEl.className = "text-success fw-bold bg-success bg-opacity-25 p-3 rounded-4 d-inline-block shadow-sm"; resultEl.innerHTML = "<i class='bi bi-check-circle-fill me-2'></i>" + msg; } 
+             else { resultEl.className = "text-danger fw-bold bg-danger bg-opacity-25 p-3 rounded-4 d-inline-block shadow-sm"; resultEl.innerHTML = "<i class='bi bi-exclamation-triangle-fill me-2'></i>" + msg; }
+             setTimeout(function() { resultEl.innerText = "Siap memindai..."; resultEl.className = "fw-bold p-3 rounded-4 d-inline-block shadow-sm"; resultEl.style.background = "rgba(128,128,128,0.1)"; isProcessingScan = false; }, 3000);
           }, function(error) {
-             resultEl.innerHTML = "<i class='bi bi-x-circle-fill me-2'></i> Terjadi Kesalahan: " + error.message; resultEl.className = "text-danger fw-bold bg-danger bg-opacity-10 p-3 rounded-4 d-inline-block shadow-sm";
-             setTimeout(function() { resultEl.innerText = "Siap memindai..."; resultEl.className = "text-secondary fw-bold bg-light p-3 rounded-4 d-inline-block"; isProcessingScan = false; }, 3000);
+             resultEl.innerHTML = "<i class='bi bi-x-circle-fill me-2'></i> Terjadi Kesalahan: " + error.message; resultEl.className = "text-danger fw-bold bg-danger bg-opacity-25 p-3 rounded-4 d-inline-block shadow-sm";
+             setTimeout(function() { resultEl.innerText = "Siap memindai..."; resultEl.className = "fw-bold p-3 rounded-4 d-inline-block shadow-sm"; resultEl.style.background = "rgba(128,128,128,0.1)"; isProcessingScan = false; }, 3000);
           }
       );
     }
@@ -696,7 +675,7 @@
       aktifRekapTab = jenis; updateDropdownVisibility();
       let tbodyId = ""; if(jenis === 'jurnal') tbodyId = "tabelRekapJurnal"; else if(jenis === 'absensi') tbodyId = "tabelRekapAbsensi"; else tbodyId = "tabelRekapAbsensiSiswa";
       let colCount = (jenis === 'absensi_siswa') ? 7 : (jenis === 'absensi' ? 5 : 6);
-      document.getElementById(tbodyId).innerHTML = `<tr><td colspan="${colCount}" class="text-center py-4 text-muted"><div class="spinner-border spinner-border-sm me-2"></div>Mengambil data ${jenis}...</td></tr>`;
+      document.getElementById(tbodyId).innerHTML = `<tr><td colspan="${colCount}" class="text-center py-4 opacity-75"><div class="spinner-border spinner-border-sm me-2"></div>Mengambil data ${jenis}...</td></tr>`;
       if (jenis === 'absensi_siswa') { callBackend('getRekapAbsenMuridBackend', {role: session.role, targetUser: session.username, targetNama: session.nama}, function(res){ dataRekapGlobal[jenis] = res; renderTabelRekap(); }); } 
       else { callBackend('getRekapBackend', {jenis: jenis, role: session.role, namaUserAktif: session.nama}, function(res){ dataRekapGlobal[jenis] = res; renderTabelRekap(); }); }
     }
@@ -722,13 +701,13 @@
       });
       
       let tbodyId = ""; if(aktifRekapTab === 'jurnal') tbodyId = "tabelRekapJurnal"; else if(aktifRekapTab === 'absensi') tbodyId = "tabelRekapAbsensi"; else tbodyId = "tabelRekapAbsensiSiswa"; let tbody = document.getElementById(tbodyId);
-      if(dataFiltered.length === 0) { let colCount = (aktifRekapTab === 'absensi_siswa') ? 7 : (aktifRekapTab === 'absensi' ? 5 : 6); tbody.innerHTML = `<tr><td colspan="${colCount}" class="text-center text-muted py-5"><i class="bi bi-file-earmark-x d-block mb-2" style="font-size:2rem;"></i>Tidak ada data rekaman yang cocok.</td></tr>`; return; }
+      if(dataFiltered.length === 0) { let colCount = (aktifRekapTab === 'absensi_siswa') ? 7 : (aktifRekapTab === 'absensi' ? 5 : 6); tbody.innerHTML = `<tr><td colspan="${colCount}" class="text-center opacity-75 py-5"><i class="bi bi-file-earmark-x d-block mb-2" style="font-size:2rem;"></i>Tidak ada data rekaman yang cocok.</td></tr>`; return; }
       
       let html = "";
       dataFiltered.forEach(r => {
         if(aktifRekapTab === 'jurnal') { html += `<tr><td>${r.tglTampil}</td><td><b class="text-primary">${r.nama}</b></td><td>${r.jam}</td><td>${r.mapel}</td><td>${r.kegiatan}</td><td>${r.ket}</td></tr>`; } 
-        else if (aktifRekapTab === 'absensi') { html += `<tr><td>${r.tglTampil}</td><td>${r.waktu}</td><td><b class="text-primary">${r.nama}</b></td><td><span class="badge rounded-pill px-3 ${r.jenis === 'Masuk' ? 'bg-success':'bg-danger'}">${r.jenis}</span></td><td><small class="text-muted"><i class="bi bi-pin-map me-1"></i>Lat: ${r.lat}<br><i class="bi bi-geo me-1"></i>Lng: ${r.lng}</small></td></tr>`; } 
-        else if (aktifRekapTab === 'absensi_siswa') { let badgeClass = r.status === 'Masuk' ? 'bg-success' : (r.status === 'Pulang' ? 'bg-danger' : 'bg-secondary'); html += `<tr><td>${r.tglTampil}</td><td>${r.waktu}</td><td class="text-center fw-bold"><span class="badge bg-light text-dark border">${r.kelas}</span></td><td><span class="font-monospace text-muted">${r.nisn}</span></td><td><b class="text-primary">${r.nama}</b></td><td>${r.guru}</td><td><span class="badge rounded-pill px-3 ${badgeClass}">${r.status}</span></td></tr>`; }
+        else if (aktifRekapTab === 'absensi') { html += `<tr><td>${r.tglTampil}</td><td>${r.waktu}</td><td><b class="text-primary">${r.nama}</b></td><td><span class="badge rounded-pill px-3 ${r.jenis === 'Masuk' ? 'bg-success':'bg-danger'}">${r.jenis}</span></td><td><small class="opacity-75"><i class="bi bi-pin-map me-1"></i>Lat: ${r.lat}<br><i class="bi bi-geo me-1"></i>Lng: ${r.lng}</small></td></tr>`; } 
+        else if (aktifRekapTab === 'absensi_siswa') { let badgeClass = r.status === 'Masuk' ? 'bg-success' : (r.status === 'Pulang' ? 'bg-danger' : 'bg-secondary'); html += `<tr><td>${r.tglTampil}</td><td>${r.waktu}</td><td class="text-center fw-bold"><span class="badge bg-secondary bg-opacity-25 border-0">${r.kelas}</span></td><td><span class="font-monospace opacity-75">${r.nisn}</span></td><td><b class="text-primary">${r.nama}</b></td><td>${r.guru}</td><td><span class="badge rounded-pill px-3 ${badgeClass}">${r.status}</span></td></tr>`; }
       });
       tbody.innerHTML = html;
     }
@@ -821,13 +800,13 @@
       callBackend('simpanPengaturanKop', data, function(msg){ alert(msg); });
     }
     function loadUsersData() {
-      let tbody = document.getElementById("tabelUsersBody"); tbody.innerHTML = "<tr><td colspan='7' class='text-center text-muted py-4'><div class='spinner-border spinner-border-sm me-2'></div>Memuat data pengguna...</td></tr>";
+      let tbody = document.getElementById("tabelUsersBody"); tbody.innerHTML = "<tr><td colspan='7' class='text-center opacity-75 py-4'><div class='spinner-border spinner-border-sm me-2'></div>Memuat data pengguna...</td></tr>";
       callBackend('getUsersDataAdmin', {}, function(users) {
         if(!users || users.length === 0) { tbody.innerHTML = "<tr><td colspan='7' class='text-center py-4'><i class='bi bi-inbox me-2'></i>Belum ada data user.</td></tr>"; return; }
         let html = "";
         users.forEach((u) => {
           let strUser = encodeURIComponent(JSON.stringify(u));
-          html += `<tr><td><span class="font-monospace text-primary fw-bold">${u.username}</span></td><td class="fw-semibold">${u.nama}</td><td><span class="badge rounded-pill bg-dark bg-opacity-10 text-dark border">${u.role.toUpperCase()}</span></td><td class="text-muted small">${u.nip || '-'}</td><td class="text-muted small">${u.jenisGuru || '-'}</td><td class="text-muted small">${u.wa}</td><td style="white-space: nowrap;"><button class="btn btn-sm btn-light border text-primary rounded-circle shadow-sm me-1" title="Edit User" onclick="bukaEditUser('${strUser}')"><i class="bi bi-pencil"></i></button><button class="btn btn-sm btn-light border text-danger rounded-circle shadow-sm" title="Hapus User" onclick="hapusUser(${u.rowIndex})"><i class="bi bi-trash"></i></button></td></tr>`;
+          html += `<tr><td><span class="font-monospace text-primary fw-bold">${u.username}</span></td><td class="fw-semibold">${u.nama}</td><td><span class="badge rounded-pill bg-secondary bg-opacity-25 border-0">${u.role.toUpperCase()}</span></td><td class="opacity-75 small">${u.nip || '-'}</td><td class="opacity-75 small">${u.jenisGuru || '-'}</td><td class="opacity-75 small">${u.wa}</td><td style="white-space: nowrap;"><button class="btn btn-sm btn-outline-primary rounded-circle shadow-sm me-1" title="Edit User" onclick="bukaEditUser('${strUser}')"><i class="bi bi-pencil"></i></button><button class="btn btn-sm btn-outline-danger rounded-circle shadow-sm" title="Hapus User" onclick="hapusUser(${u.rowIndex})"><i class="bi bi-trash"></i></button></td></tr>`;
         });
         tbody.innerHTML = html;
       });
@@ -865,14 +844,14 @@
       }; reader.readAsArrayBuffer(fileInput.files[0]);
     }
     function muatDataSiswaKelasUntukTabel() {
-      let tbody = document.getElementById("bodyListSiswaKelas"); if(!tbody) return; tbody.innerHTML = "<tr><td colspan='9' class='text-center text-muted py-4'><div class='spinner-border spinner-border-sm me-2'></div>Menyelaraskan data dari server...</td></tr>";
+      let tbody = document.getElementById("bodyListSiswaKelas"); if(!tbody) return; tbody.innerHTML = "<tr><td colspan='9' class='text-center opacity-75 py-4'><div class='spinner-border spinner-border-sm me-2'></div>Menyelaraskan data dari server...</td></tr>";
       callBackend('getSiswaKelasData', {username: (session.role === 'admin' || session.role === 'kepsek' ? 'all' : session.username), namaUser: session.nama}, function(siswaRows) {
-        if(!siswaRows || siswaRows.length === 0) { tbody.innerHTML = "<tr><td colspan='9' class='text-center py-4 text-muted'><i class='bi bi-inbox me-2'></i>Database kosong.</td></tr>"; return; }
+        if(!siswaRows || siswaRows.length === 0) { tbody.innerHTML = "<tr><td colspan='9' class='text-center py-4 opacity-75'><i class='bi bi-inbox me-2'></i>Database kosong.</td></tr>"; return; }
         let html = ""; let isAdmin = (session.role === 'admin');
         siswaRows.forEach((s, idx) => {
           let str = encodeURIComponent(JSON.stringify(s));
-          let btnOpsi = isAdmin ? `<button class="btn btn-sm btn-light border text-primary rounded-circle shadow-sm me-1" title="Edit" onclick="bukaEditSiswaKelas('${str}')"><i class="bi bi-pencil"></i></button><button class="btn btn-sm btn-light border text-danger rounded-circle shadow-sm" title="Hapus" onclick="hapusSiswaKelas(${s.rowIndex})"><i class="bi bi-trash"></i></button>` : `<span class="badge bg-light text-dark border rounded-pill px-3"><i class="bi bi-eye me-1"></i>Read Only</span>`;
-          html += `<tr><td class="text-muted small">${idx+1}</td><td class="text-center fw-bold"><span class="badge bg-primary bg-opacity-10 text-primary border border-primary-subtle">${s.kelas || '-'}</span></td><td class="text-muted small">${s.guru || '-'}</td><td class="fw-semibold text-dark">${s.namaSiswa}</td><td><span class="font-monospace text-secondary small">${s.nisn}</span></td><td class="text-muted small">${s.namaAyah}</td><td class="text-muted small">${s.namaIbu}</td><td class="text-muted small">${s.noWa}</td><td style="white-space: nowrap;">${btnOpsi}</td></tr>`;
+          let btnOpsi = isAdmin ? `<button class="btn btn-sm btn-outline-primary rounded-circle shadow-sm me-1" title="Edit" onclick="bukaEditSiswaKelas('${str}')"><i class="bi bi-pencil"></i></button><button class="btn btn-sm btn-outline-danger rounded-circle shadow-sm" title="Hapus" onclick="hapusSiswaKelas(${s.rowIndex})"><i class="bi bi-trash"></i></button>` : `<span class="badge bg-secondary bg-opacity-25 border-0 rounded-pill px-3"><i class="bi bi-eye me-1"></i>Read Only</span>`;
+          html += `<tr><td class="opacity-75 small">${idx+1}</td><td class="text-center fw-bold"><span class="badge bg-primary bg-opacity-25 text-primary border-0">${s.kelas || '-'}</span></td><td class="opacity-75 small">${s.guru || '-'}</td><td class="fw-semibold">${s.namaSiswa}</td><td><span class="font-monospace opacity-75 small">${s.nisn}</span></td><td class="opacity-75 small">${s.namaAyah}</td><td class="opacity-75 small">${s.namaIbu}</td><td class="opacity-75 small">${s.noWa}</td><td style="white-space: nowrap;">${btnOpsi}</td></tr>`;
         }); tbody.innerHTML = html; 
       });
     }
@@ -890,7 +869,7 @@
     // ================== PEMBUATAN QR CODE OFFLINE & PENYIMPANAN KE DATABASE (ANTI HANG) ==================
     function muatBarcodeSiswaHanya() {
       let tbody = document.getElementById("bodyListBarcode"); 
-      tbody.innerHTML = "<tr><td colspan='5' class='text-center text-muted py-4'><div class='spinner-border spinner-border-sm me-2'></div>Menarik data siswa...</td></tr>";
+      tbody.innerHTML = "<tr><td colspan='5' class='text-center opacity-75 py-4'><div class='spinner-border spinner-border-sm me-2'></div>Menarik data siswa...</td></tr>";
       callBackend('getSiswaKelasData', {username: 'all', namaUser: 'all'}, function(siswaRows) {
           if(!siswaRows || siswaRows.length === 0) { tbody.innerHTML = "<tr><td colspan='5' class='text-center py-4'><i class='bi bi-inbox me-2'></i>Database kosong.</td></tr>"; return; }
           window.dataSiswaBarcode = siswaRows; document.getElementById("btnBuatSemuaBarcode").classList.remove("d-none"); 
@@ -903,7 +882,7 @@
             } else {
                qrAksi = `<button class="btn btn-sm btn-outline-success rounded-pill px-3 fw-bold shadow-sm" onclick="renderDanSimpanQRAsync(${idx}, ${s.rowIndex})" id="btnQr_${idx}"><i class="bi bi-qr-code me-1"></i>Render Barcode</button>`;
             }
-            html += `<tr><td class="text-muted">${idx+1}</td><td class="text-center fw-bold"><span class="badge bg-light text-dark border">${s.kelas || '-'}</span></td><td class="fw-semibold">${s.namaSiswa}</td><td><span class="font-monospace text-muted">${s.nisn}</span></td><td class="text-center" id="qrContainer_${idx}">${qrAksi}</td></tr>`;
+            html += `<tr><td class="opacity-75">${idx+1}</td><td class="text-center fw-bold"><span class="badge bg-secondary bg-opacity-25 border-0">${s.kelas || '-'}</span></td><td class="fw-semibold">${s.namaSiswa}</td><td><span class="font-monospace opacity-75">${s.nisn}</span></td><td class="text-center" id="qrContainer_${idx}">${qrAksi}</td></tr>`;
           });
           tbody.innerHTML = html;
       });
