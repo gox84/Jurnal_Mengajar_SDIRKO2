@@ -32,7 +32,7 @@
       margin: 0;
       padding: 0;
       overflow-x: hidden;
-      transition: background 0.5s ease, color 0.5s ease;
+      transition: background 0.3s ease, color 0.3s ease; /* Transisi dipercepat */
     }
     
     .hidden { display: none !important; }
@@ -41,7 +41,6 @@
     /* Bento Grid Cards Layout */
     .box-card, .auth-card, .premium-header, .sidebar, .modal-content {
       border-radius: 28px !important; 
-      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
     .box-card {
       padding: 30px;
@@ -59,16 +58,15 @@
     .sidebar { width: 270px; display: flex; flex-direction: column; flex-shrink: 0; z-index: 1050; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
     .sidebar-brand { padding: 30px 24px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
     .sidebar-menu { padding: 20px 14px; flex-grow: 1; display: flex; flex-direction: column; gap: 6px; }
-    .menu-btn { width: 100%; background: transparent; border: none; padding: 12px 18px; text-align: left; font-weight: 600; border-radius: 16px; display: flex; align-items: center; gap: 14px; transition: all 0.3s ease; font-size: 0.95rem; }
-    .menu-btn i { font-size: 1.2rem; transition: transform 0.3s; }
+    .menu-btn { width: 100%; background: transparent; border: none; padding: 12px 18px; text-align: left; font-weight: 600; border-radius: 16px; display: flex; align-items: center; gap: 14px; transition: all 0.2s ease; font-size: 0.95rem; }
+    .menu-btn i { font-size: 1.2rem; transition: transform 0.2s; }
     .menu-btn:hover { transform: translateX(5px); background: rgba(128, 128, 128, 0.2); }
     .menu-btn.active { font-weight: 700; background: rgba(128, 128, 128, 0.3); }
 
     .main-viewport { flex-grow: 1; padding: 20px 30px; overflow-y: auto; height: 100vh; min-width: 0; }
     .view-section { display: none; }
-    .view-section.active-view { display: block !important; animation: fadeInUp 0.4s ease-out; }
+    .view-section.active-view { display: block !important; animation: fadeInUp 0.3s ease-out; }
     
-    /* Z-INDEX FIX: Memastikan Header (dan menu dropdown Tema) merender di atas konten Box-Card */
     .premium-header { 
       position: relative; 
       z-index: 1020; 
@@ -88,7 +86,7 @@
 
     /* Custom Tabs */
     .nav-tabs-futuristic { border-bottom: none; gap: 10px; margin-bottom: 20px; }
-    .nav-tabs-futuristic .nav-link { font-weight: 600; border: 1px solid rgba(128,128,128,0.2); padding: 12px 24px; transition: all 0.3s; }
+    .nav-tabs-futuristic .nav-link { font-weight: 600; border: 1px solid rgba(128,128,128,0.2); padding: 12px 24px; transition: all 0.2s; }
     .nav-tabs-futuristic .nav-link:hover { transform: translateY(-2px); }
 
     /* Scanner HUD (Futuristik) */
@@ -97,36 +95,32 @@
     @keyframes scanLaser { 0% { top: 0; opacity: 0; } 10% { opacity: 1; } 50% { top: 100%; } 90% { opacity: 1; } 100% { top: 0; opacity: 0; } }
 
     /* Mobile Toggle */
-    .mobile-menu-toggle { display: none; background: transparent; border: 1px solid rgba(128,128,128,0.3); border-radius: 12px; font-size: 1.2rem; padding: 6px 12px; cursor: pointer; transition: 0.3s; margin-right: 15px; }
+    .mobile-menu-toggle { display: none; background: transparent; border: 1px solid rgba(128,128,128,0.3); border-radius: 12px; font-size: 1.2rem; padding: 6px 12px; cursor: pointer; transition: 0.2s; margin-right: 15px; }
     @media (max-width: 992px) {
       .mobile-menu-toggle { display: block; }
-      .sidebar-wrapper { position: fixed; left: -320px; top: 0; height: 100vh; padding: 15px; z-index: 1050; transition: left 0.4s ease; background: transparent; }
+      .sidebar-wrapper { position: fixed; left: -320px; top: 0; height: 100vh; padding: 15px; z-index: 1050; transition: left 0.3s ease; background: transparent; }
       .sidebar-wrapper.active-mobile { left: 0; }
       .sidebar { height: 100%; box-shadow: 20px 0 50px rgba(0,0,0,0.5); }
       .main-viewport { padding: 15px; width: 100%; }
       .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.6); z-index: 1040; backdrop-filter: blur(4px); }
-      .sidebar-overlay.active-mobile { display: block; animation: fadeIn 0.3s; }
+      .sidebar-overlay.active-mobile { display: block; animation: fadeIn 0.2s; }
     }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
     #authWrapper { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
-    .auth-card { padding: 40px; width: 100%; max-width: 420px; animation: fadeInUp 0.6s ease-out; }
+    .auth-card { padding: 40px; width: 100%; max-width: 420px; animation: fadeInUp 0.4s ease-out; }
 
     /* ==============================================================
-       2. TEMA 1: DEFAULT (MESH GRADIENT + GLASSMORPHISM)
+       2. TEMA 1: DEFAULT (MESH GRADIENT + GLASSMORPHISM) - VERSI OPTIMASI RINGAN
        ============================================================== */
-    @keyframes meshGradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-    
     body.theme-default {
-      background: linear-gradient(-45deg, #a1c4fd, #c2e9fb, #fdfbfb, #ebedee);
-      background-size: 400% 400%;
-      animation: meshGradientBG 15s ease infinite;
+      background: linear-gradient(135deg, #a1c4fd, #c2e9fb); /* Animasi bergerak dihapus agar HP tidak lag */
       color: #1e293b;
     }
     body.theme-default .box-card, body.theme-default .premium-header, body.theme-default .sidebar, body.theme-default .auth-card {
-      background: rgba(255, 255, 255, 0.65);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px); /* Efek kaca ditipiskan dari 24px ke 10px agar render sangat ringan */
+      -webkit-backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.8);
     }
     body.theme-default .form-control, body.theme-default .form-select { background: rgba(255,255,255,0.7); }
@@ -142,8 +136,8 @@
     body.theme-cyborg .box-card, body.theme-cyborg .premium-header, body.theme-cyborg .sidebar, body.theme-cyborg .auth-card,
     body.theme-vapor .box-card, body.theme-vapor .premium-header, body.theme-vapor .sidebar, body.theme-vapor .auth-card {
       background: rgba(0, 0, 0, 0.4);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(10px); /* Efek kaca ditipiskan agar performa stabil */
+      -webkit-backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.05);
       box-shadow: 0 10px 40px rgba(0,0,0,0.5);
     }
@@ -656,10 +650,10 @@
              resultEl.innerText = msg;
              if(msg.indexOf("Sukses") > -1) { resultEl.className = "text-success fw-bold bg-success bg-opacity-25 p-3 rounded-4 d-inline-block shadow-sm"; resultEl.innerHTML = "<i class='bi bi-check-circle-fill me-2'></i>" + msg; } 
              else { resultEl.className = "text-danger fw-bold bg-danger bg-opacity-25 p-3 rounded-4 d-inline-block shadow-sm"; resultEl.innerHTML = "<i class='bi bi-exclamation-triangle-fill me-2'></i>" + msg; }
-             setTimeout(function() { resultEl.innerText = "Siap memindai..."; resultEl.className = "fw-bold p-3 rounded-4 d-inline-block shadow-sm"; resultEl.style.background = "rgba(128,128,128,0.1)"; isProcessingScan = false; }, 4000);
+             setTimeout(function() { resultEl.innerText = "Siap memindai..."; resultEl.className = "fw-bold p-3 rounded-4 d-inline-block shadow-sm"; resultEl.style.background = "rgba(128,128,128,0.1)"; isProcessingScan = false; }, 2000);
           }, function(error) {
              resultEl.innerHTML = "<i class='bi bi-x-circle-fill me-2'></i> Terjadi Kesalahan: " + error.message; resultEl.className = "text-danger fw-bold bg-danger bg-opacity-25 p-3 rounded-4 d-inline-block shadow-sm";
-             setTimeout(function() { resultEl.innerText = "Siap memindai..."; resultEl.className = "fw-bold p-3 rounded-4 d-inline-block shadow-sm"; resultEl.style.background = "rgba(128,128,128,0.1)"; isProcessingScan = false; }, 4000);
+             setTimeout(function() { resultEl.innerText = "Siap memindai..."; resultEl.className = "fw-bold p-3 rounded-4 d-inline-block shadow-sm"; resultEl.style.background = "rgba(128,128,128,0.1)"; isProcessingScan = false; }, 2000);
           }
       );
     }
