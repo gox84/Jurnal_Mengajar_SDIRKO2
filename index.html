@@ -7,7 +7,7 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
   
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
@@ -20,47 +20,168 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
   
   <style>
-    :root { --primary-red: #9e1b22; --secondary-red: #c82333; --dark-red: #6a1116; --bg-body: #f4f7fe; --text-main: #2b3674; --text-muted: #a3aed1; --glass-bg: rgba(255, 255, 255, 0.85); --glass-border: rgba(255, 255, 255, 0.4); }
-    body { font-family: 'Inter', sans-serif; color: var(--text-main); background: var(--bg-body); min-height: 100vh; margin: 0; padding: 0; overflow-x: hidden; }
+    :root {
+      /* DEFAULT THEME VARIABLES (LOGIN & FALLBACK) */
+      --primary-red: #9e1b22; 
+      --secondary-red: #c82333; 
+      --dark-red: #6a1116; 
+      --bg-body: #f4f7fe; 
+      --text-main: #2b3674; 
+      --text-muted: #a3aed1; 
+      --glass-bg: rgba(255, 255, 255, 0.85); 
+      --glass-border: rgba(255, 255, 255, 0.4); 
+      --card-bg: #ffffff;
+      --card-border: none;
+      --card-shadow: 0 15px 40px rgba(0,0,0,0.04);
+      --card-radius: 24px;
+      --btn-radius: 12px;
+      --sidebar-bg: linear-gradient(180deg, var(--primary-red) 0%, var(--dark-red) 100%);
+      --sidebar-text: white;
+      --sidebar-text-muted: rgba(255,255,255,0.7);
+      --sidebar-border: 1px solid rgba(255,255,255,0.1);
+      --font-main: 'Inter', sans-serif;
+      --table-hover-bg: #f8fafc;
+      --table-border-color: #f1f5f9;
+      --primary: #0d6efd; /* Bootstrap default primary */
+      --secondary: #c82333;
+    }
+
+    /* THEME ADMIN - CYBER / HIGH-TECH */
+    body.theme-admin {
+      --bg-body: #050914; 
+      --text-main: #e2e8f0; 
+      --text-muted: #94a3b8; 
+      --primary: #00f0ff; 
+      --secondary: #bf00ff; 
+      --glass-bg: rgba(16, 24, 43, 0.8); 
+      --glass-border: rgba(0, 240, 255, 0.2); 
+      --card-bg: rgba(16, 24, 43, 0.8);
+      --card-border: 1px solid rgba(0, 240, 255, 0.2);
+      --card-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
+      --card-radius: 12px;
+      --btn-radius: 4px;
+      --sidebar-bg: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      --sidebar-text: #e2e8f0;
+      --sidebar-text-muted: #64748b;
+      --sidebar-border: 1px solid rgba(0, 240, 255, 0.2);
+      --font-main: 'Space Grotesk', sans-serif;
+      --table-hover-bg: rgba(0, 240, 255, 0.05);
+      --table-border-color: rgba(255,255,255,0.1);
+    }
+
+    /* THEME KEPSEK - EXECUTIVE / GLASSMORPHISM */
+    body.theme-kepsek {
+      --bg-body: linear-gradient(135deg, #0f172a, #1e293b); 
+      --text-main: #f8fafc; 
+      --text-muted: #cbd5e1; 
+      --primary: #fbbf24; 
+      --secondary: #d97706; 
+      --glass-bg: rgba(255, 255, 255, 0.05); 
+      --glass-border: rgba(255, 255, 255, 0.1); 
+      --card-bg: rgba(255, 255, 255, 0.05);
+      --card-border: 1px solid rgba(255, 255, 255, 0.1);
+      --card-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      --card-radius: 24px;
+      --btn-radius: 16px;
+      --sidebar-bg: rgba(15, 23, 42, 0.8);
+      --sidebar-text: #f8fafc;
+      --sidebar-text-muted: #94a3b8;
+      --sidebar-border: 1px solid rgba(255,255,255,0.1);
+      --font-main: 'Plus Jakarta Sans', sans-serif;
+      --table-hover-bg: rgba(255,255,255,0.05);
+      --table-border-color: rgba(255,255,255,0.05);
+    }
+
+    /* THEME GURU - NEUMORPHISM / VIBRANT MODERN */
+    body.theme-guru {
+      --bg-body: #e0e5ec; 
+      --text-main: #2d3748; 
+      --text-muted: #718096; 
+      --primary: #e53e3e; 
+      --secondary: #38a169; 
+      --glass-bg: #e0e5ec; 
+      --glass-border: none; 
+      --card-bg: #e0e5ec;
+      --card-border: none;
+      --card-shadow: 9px 9px 16px rgb(163,177,198,0.6), -9px -9px 16px rgba(255,255,255, 0.5);
+      --card-radius: 30px;
+      --btn-radius: 20px;
+      --sidebar-bg: #e0e5ec;
+      --sidebar-text: #2d3748;
+      --sidebar-text-muted: #718096;
+      --sidebar-border: none;
+      --font-main: 'Plus Jakarta Sans', sans-serif;
+      --table-hover-bg: #d1d9e6;
+      --table-border-color: #d1d9e6;
+    }
+
+    /* THEME OVERRIDES UNTUK BOOTSTRAP UTILITIES (Mencegah teks hilang di Dark Mode) */
+    body.theme-admin .bg-light, body.theme-kepsek .bg-light,
+    body.theme-admin .bg-white, body.theme-kepsek .bg-white { background-color: transparent !important; background: var(--card-bg) !important; color: var(--text-main) !important; }
+    body.theme-admin .text-dark, body.theme-kepsek .text-dark { color: var(--text-main) !important; }
+    body.theme-admin .text-muted, body.theme-kepsek .text-muted { color: var(--text-muted) !important; }
+    body.theme-admin .border, body.theme-kepsek .border { border-color: var(--card-border) !important; }
+    body.theme-admin .form-control, body.theme-kepsek .form-control,
+    body.theme-admin .form-select, body.theme-kepsek .form-select { background-color: var(--card-bg); color: var(--text-main); border: var(--card-border); }
+    body.theme-admin .form-control:focus, body.theme-kepsek .form-control:focus { background-color: var(--card-bg); color: var(--text-main); box-shadow: 0 0 0 4px rgba(255,255,255,0.1); }
+    
+    /* GURU THEME OVERRIDES (Sidebar Khusus) */
+    body.theme-guru .sidebar-brand h5 { color: var(--text-main) !important; }
+    body.theme-guru .menu-btn { color: var(--text-muted); }
+    body.theme-guru .menu-btn:hover { color: var(--primary); background: transparent; }
+    body.theme-guru .menu-btn.active { color: var(--primary); background: transparent; box-shadow: inset 4px 0 0 var(--primary); }
+    body.theme-guru .box-card::before { display: none; } /* Matikan garis atas default */
+    
+    /* ADMIN & KEPSEK THEME OVERRIDES (Sidebar & Tombol) */
+    body.theme-admin .box-card::before { background: linear-gradient(90deg, var(--primary), var(--secondary)); }
+    body.theme-kepsek .box-card { backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+    body.theme-kepsek .box-card::before { background: linear-gradient(90deg, var(--primary), var(--secondary)); }
+    
+    /* GLOBAL LAYOUT & UTILITIES */
+    body { font-family: var(--font-main); color: var(--text-main); background: var(--bg-body); min-height: 100vh; margin: 0; padding: 0; overflow-x: hidden; transition: background 0.5s ease, color 0.5s ease; }
     .hidden { display: none !important; }
     @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+    
     #authWrapper { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(-45deg, var(--dark-red), var(--primary-red), #2b3674, #1a2035); background-size: 400% 400%; animation: gradientBG 12s ease infinite; padding: 20px; }
     .auth-card { background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--glass-border); border-radius: 24px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); padding: 40px; width: 100%; max-width: 420px; animation: fadeInUp 0.6s ease-out; }
     .form-floating > .form-control { border-radius: 12px; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.9); }
     .form-floating > .form-control:focus { border-color: var(--primary-red); box-shadow: 0 0 0 4px rgba(158, 27, 34, 0.1); }
+    
     .app-container { display: flex; flex-direction: row; min-height: 100vh; width: 100%; position: relative; }
     .sidebar-wrapper { padding: 20px 0 20px 20px; display: flex; }
-    .sidebar { width: 270px; background: linear-gradient(180deg, var(--primary-red) 0%, var(--dark-red) 100%); color: white; border-radius: 24px; display: flex; flex-direction: column; flex-shrink: 0; box-shadow: 0 20px 40px rgba(106, 17, 22, 0.2); z-index: 1050; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); overflow: hidden; }
-    .sidebar-brand { padding: 30px 24px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .sidebar { width: 270px; background: var(--sidebar-bg); color: var(--sidebar-text); border-radius: var(--card-radius); display: flex; flex-direction: column; flex-shrink: 0; box-shadow: var(--card-shadow); border: var(--card-border); z-index: 1050; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); overflow: hidden; }
+    .sidebar-brand { padding: 30px 24px; text-align: center; border-bottom: var(--sidebar-border); }
     .sidebar-menu { padding: 20px 14px; flex-grow: 1; display: flex; flex-direction: column; gap: 6px; }
-    .menu-btn { width: 100%; background: transparent; border: none; padding: 12px 18px; color: rgba(255,255,255,0.7); text-align: left; font-weight: 500; border-radius: 14px; display: flex; align-items: center; gap: 14px; transition: all 0.3s ease; font-size: 0.95rem; }
+    .menu-btn { width: 100%; background: transparent; border: none; padding: 12px 18px; color: var(--sidebar-text-muted); text-align: left; font-weight: 500; border-radius: 14px; display: flex; align-items: center; gap: 14px; transition: all 0.3s ease; font-size: 0.95rem; }
     .menu-btn i { font-size: 1.2rem; transition: transform 0.3s; }
-    .menu-btn:hover { background: rgba(255,255,255,0.1); color: white; transform: translateX(5px); }
-    .menu-btn.active { background: rgba(255,255,255,0.15); color: white; font-weight: 600; box-shadow: inset 4px 0 0 white; }
+    .menu-btn:hover { background: rgba(255,255,255,0.1); color: var(--sidebar-text); transform: translateX(5px); }
+    .menu-btn.active { background: rgba(255,255,255,0.15); color: var(--sidebar-text); font-weight: 600; box-shadow: inset 4px 0 0 var(--sidebar-text); }
+    
     .main-viewport { flex-grow: 1; padding: 20px 30px; overflow-y: auto; height: 100vh; min-width: 0; }
     .view-section { display: none; }
     .view-section.active-view { display: block !important; animation: fadeInUp 0.4s ease-out; }
-    .premium-header { background: var(--glass-bg); backdrop-filter: blur(10px); border-radius: 20px; padding: 18px 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border: 1px solid white; }
-    .box-card { background: #ffffff; padding: 30px; border-radius: 24px; box-shadow: 0 15px 40px rgba(0,0,0,0.04); margin-bottom: 24px; border: none; position: relative; overflow: hidden; }
+    .premium-header { background: var(--card-bg); backdrop-filter: blur(10px); border-radius: var(--card-radius); padding: 18px 24px; box-shadow: var(--card-shadow); display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border: var(--card-border); }
+    
+    .box-card { background: var(--card-bg); padding: 30px; border-radius: var(--card-radius); box-shadow: var(--card-shadow); margin-bottom: 24px; border: var(--card-border); position: relative; overflow: hidden; transition: all 0.3s ease; }
     .box-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--primary-red), var(--secondary-red)); opacity: 0.8; }
-    .btn { border-radius: 12px; font-weight: 600; padding: 10px 20px; transition: 0.3s; }
-    .btn-danger { background: linear-gradient(135deg, var(--secondary-red) 0%, var(--dark-red) 100%); border: none; box-shadow: 0 8px 15px rgba(200, 35, 51, 0.2); }
-    .btn-danger:hover { transform: translateY(-2px); box-shadow: 0 12px 20px rgba(200, 35, 51, 0.3); background: linear-gradient(135deg, var(--primary-red) 0%, #4a090e 100%); }
-    .btn-primary { box-shadow: 0 8px 15px rgba(13, 110, 253, 0.2); }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 20px rgba(13, 110, 253, 0.3); }
-    .form-control, .form-select { border-radius: 12px; border: 1px solid #e2e8f0; padding: 10px 14px; background-color: #f8fafc; font-size: 0.95rem; }
-    .form-control:focus, .form-select:focus { border-color: var(--primary-red); background-color: #ffffff; box-shadow: 0 0 0 4px rgba(158, 27, 34, 0.1); }
+    
+    .btn { border-radius: var(--btn-radius); font-weight: 600; padding: 10px 20px; transition: 0.3s; }
+    
+    .form-control, .form-select { border-radius: var(--btn-radius); border: 1px solid #e2e8f0; padding: 10px 14px; font-size: 0.95rem; }
+    
     .nav-tabs-futuristic { border-bottom: none; gap: 10px; margin-bottom: 20px; }
-    .nav-tabs-futuristic .nav-link { color: var(--text-muted); font-weight: 600; border: none; padding: 12px 24px; border-radius: 12px; background: white; box-shadow: 0 4px 10px rgba(0,0,0,0.02); transition: all 0.3s; }
+    .nav-tabs-futuristic .nav-link { color: var(--text-muted); font-weight: 600; border: var(--card-border); padding: 12px 24px; border-radius: var(--btn-radius); background: var(--card-bg); box-shadow: var(--card-shadow); transition: all 0.3s; }
     .nav-tabs-futuristic .nav-link:hover { color: var(--text-main); transform: translateY(-2px); }
-    .nav-tabs-futuristic .nav-link.active { color: white; background: var(--primary-red); box-shadow: 0 8px 20px rgba(158, 27, 34, 0.2); }
-    .table { margin-bottom: 0; }
-    .table thead th { background-color: transparent !important; color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid #edf2f7; border-top: none; padding: 15px 10px; }
-    .table tbody td { vertical-align: middle; border-bottom: 1px solid #f1f5f9; padding: 16px 10px; color: var(--text-main); font-size: 0.9rem; }
+    .nav-tabs-futuristic .nav-link.active { color: #fff; background: var(--primary); box-shadow: var(--card-shadow); }
+    
+    .table { margin-bottom: 0; color: var(--text-main); }
+    .table thead th { background-color: transparent !important; color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid var(--table-border-color); border-top: none; padding: 15px 10px; }
+    .table tbody td { vertical-align: middle; border-bottom: 1px solid var(--table-border-color); padding: 16px 10px; font-size: 0.9rem; }
     .table tbody tr { transition: background-color 0.2s; }
-    .table tbody tr:hover { background-color: #f8fafc; }
-    .mobile-menu-toggle { display: none; background: white; border: 1px solid #e2e8f0; color: var(--text-main); border-radius: 10px; font-size: 1.2rem; padding: 6px 12px; cursor: pointer; transition: 0.3s; margin-right: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+    .table tbody tr:hover { background-color: var(--table-hover-bg); }
+    
+    .mobile-menu-toggle { display: none; background: transparent; border: 1px solid var(--text-muted); color: var(--text-main); border-radius: 10px; font-size: 1.2rem; padding: 6px 12px; cursor: pointer; transition: 0.3s; margin-right: 15px; box-shadow: var(--card-shadow); }
     @media (max-width: 992px) {
       .mobile-menu-toggle { display: block; }
       .sidebar-wrapper { position: fixed; left: -320px; top: 0; height: 100vh; padding: 15px; z-index: 1050; transition: left 0.4s ease; background: transparent; }
@@ -72,7 +193,11 @@
       .sidebar-overlay.active-mobile { display: block; animation: fadeIn 0.3s; }
     }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    #reader { border: none; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(32, 201, 151, 0.2); }
+    
+    /* EFEK SCANNER HUD (FUTURISTIK) */
+    #reader { border: 2px solid var(--primary); border-radius: var(--btn-radius); overflow: hidden; box-shadow: 0 10px 30px rgba(32, 201, 151, 0.2); position: relative; }
+    .scanner-hud::after { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--primary); box-shadow: 0 0 15px var(--primary); animation: scanLaser 2s infinite linear; z-index: 10; pointer-events: none; }
+    @keyframes scanLaser { 0% { top: 0; opacity: 0; } 10% { opacity: 1; } 50% { top: 100%; } 90% { opacity: 1; } 100% { top: 0; opacity: 0; } }
   </style>
 </head>
 <body onload="initApp()">
@@ -122,12 +247,11 @@
       <div id="forgotAlert" class="mt-3 text-center small fw-bold"></div>
     </div>
   </div>
-
   <div id="dashboardSection" class="app-container d-none">
     <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
     <div class="sidebar-wrapper">
       <div class="sidebar">
-        <div class="sidebar-brand"><h5 class="m-0 fw-bold text-white" style="letter-spacing: 1px;"><i class="bi bi-layers me-2"></i>JURNAL NAV</h5></div>
+        <div class="sidebar-brand"><h5 class="m-0 fw-bold" style="letter-spacing: 1px;"><i class="bi bi-layers me-2"></i>JURNAL NAV</h5></div>
         <div class="sidebar-menu">
           <button class="menu-btn d-none" id="menuLink_AbsenPegawai" onclick="switchMainView('absenPegawaiView', this)"><i class="bi bi-clock-history"></i> Presensi Pegawai</button>
           <button class="menu-btn d-none" id="menuLink_Jurnal" onclick="switchMainView('jurnalFormView', this)"><i class="bi bi-journal-text"></i> Isi Jurnal</button>
@@ -159,8 +283,8 @@
           <h5 class="mb-4 fw-bold text-primary"><i class="bi bi-clock-history me-2"></i>Kehadiran Pegawai</h5>
           <div class="alert alert-light border-start border-4 border-info small text-muted bg-transparent"><i class="bi bi-info-circle me-1"></i> Pastikan sensor GPS / Lokasi aktif. Sistem akan memvalidasi radius Anda.</div>
           <div class="row text-center mt-4 g-4">
-            <div class="col-md-6"><button class="btn btn-lg btn-primary fw-bold w-100 py-4" onclick="prosesAbsenPegawai('Masuk')" style="border-radius:20px;"><i class="bi bi-box-arrow-in-right d-block mb-2" style="font-size:2rem;"></i> CHECK - IN</button></div>
-            <div class="col-md-6"><button class="btn btn-lg btn-danger fw-bold w-100 py-4" onclick="prosesAbsenPegawai('Pulang')" style="border-radius:20px;"><i class="bi bi-box-arrow-right d-block mb-2" style="font-size:2rem;"></i> CHECK - OUT</button></div>
+            <div class="col-md-6"><button class="btn btn-lg btn-primary fw-bold w-100 py-4" onclick="prosesAbsenPegawai('Masuk')" style="border-radius:var(--btn-radius);"><i class="bi bi-box-arrow-in-right d-block mb-2" style="font-size:2rem;"></i> CHECK - IN</button></div>
+            <div class="col-md-6"><button class="btn btn-lg btn-danger fw-bold w-100 py-4" onclick="prosesAbsenPegawai('Pulang')" style="border-radius:var(--btn-radius);"><i class="bi bi-box-arrow-right d-block mb-2" style="font-size:2rem;"></i> CHECK - OUT</button></div>
           </div>
           <div class="text-center mt-5"><h6 id="lokasiStatus" class="fw-bold text-secondary"></h6></div>
         </div>
@@ -238,7 +362,7 @@
       
       <!-- SCANNER LIVE LANGSUNG -->
       <div class="view-section" id="scannerBarcodeView">
-        <div class="box-card border-top-0" style="position:relative; background: #fff;">
+        <div class="box-card border-top-0" style="position:relative;">
           <div style="position:absolute; top:0; left:0; width:100%; height:5px; background: linear-gradient(90deg, #20c997, #198754);"></div>
           <h5 class="mb-4 fw-bold text-success"><i class="bi bi-qr-code-scan me-2"></i>Scanner Absensi Murid</h5>
           <div class="row mb-4 g-3 justify-content-center">
@@ -247,7 +371,7 @@
           </div>
           <div class="text-center mb-4 position-relative">
              <div id="readerLoading" class="text-secondary fw-bold small mb-2 d-none"><div class="spinner-border spinner-border-sm me-1" role="status"></div> Menyiapkan Kamera...</div>
-             <div id="reader"></div>
+             <div id="reader" class="scanner-hud"></div>
           </div>
           <div class="text-center"><h4 id="scanResult" class="text-secondary fw-bold bg-light p-3 rounded-4 d-inline-block">Siap memindai...</h4></div>
         </div>
@@ -324,7 +448,6 @@
             <div class="col-md-4"><div class="form-floating"><input type="text" id="kopPengawasNama" class="form-control" placeholder="x"><label>Nama Pengawas Sekolah</label></div></div>
             <div class="col-md-4"><div class="form-floating"><input type="text" id="kopPengawasNip" class="form-control" placeholder="x"><label>NIP Pengawas Sekolah</label></div></div>
             <div class="col-md-4"><div class="form-floating"><input type="text" id="kopPengawasPangkat" class="form-control" placeholder="x"><label>Pangkat / Golongan</label></div></div>
-
             <h6 class="mt-4 fw-bold text-success border-bottom pb-2"><i class="bi bi-whatsapp me-2"></i>Konfigurasi Fonnte WA Gateway</h6>
             <div class="col-md-12"><div class="form-floating"><input type="text" id="kopTokenFonnte" class="form-control border-success" placeholder="x"><label class="text-success fw-bold">Token API Fonnte</label></div></div>
             <div class="col-md-6"><div class="form-floating"><textarea id="kopWaMasuk" class="form-control" placeholder="x" style="height: 120px"></textarea><label>Template WA Masuk (Tag: [NAMA], [KELAS], [WAKTU], [TANGGAL])</label></div></div>
@@ -356,7 +479,6 @@
       </div>
     </div>
   </div>
-
   <!-- AREA MODAL MAP GPS -->
   <div class="modal fade" id="modalTitikAbsen" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
@@ -391,7 +513,6 @@
       </div>
     </div>
   </div>
-
   <!-- MODAL EDIT DATA SISWA -->
   <div class="modal fade" id="modalEditSiswa" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
@@ -401,7 +522,6 @@
       </div>
     </div>
   </div>
-
   <!-- MODAL EDIT USER/PEGAWAI -->
   <div class="modal fade" id="modalEditUser" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
@@ -411,7 +531,6 @@
       </div>
     </div>
   </div>
-
   <script>
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbydQjP3YwTSWIdluKda_GiGKgcCkYymuznz1G3C-TQ3PGtA7gnWYljSJFGjcbAhxC0J/exec";
     
@@ -460,7 +579,13 @@
       
       callBackend('checkLogin', {username: user, password: pass}, function(res) {
           if(res.status === "success") {
-            session = res; document.getElementById("authWrapper").classList.add("d-none"); document.getElementById("dashboardSection").classList.remove("d-none"); document.getElementById("userNamaWorkspace").innerText = res.nama;
+            session = res; 
+            
+            // --- TERAPKAN TEMA BERDASARKAN ROLE DI SINI ---
+            document.body.className = "theme-" + res.role;
+            // ----------------------------------------------
+            
+            document.getElementById("authWrapper").classList.add("d-none"); document.getElementById("dashboardSection").classList.remove("d-none"); document.getElementById("userNamaWorkspace").innerText = res.nama;
             callBackend('getDaftarGuruDropdown', {}, function(guruList) {
               let ddl = document.getElementById("sGuruAssign");
               if(ddl && guruList) { ddl.innerHTML = '<option value="">-- Pilih Guru --</option>'; guruList.forEach(g => ddl.innerHTML += `<option value="${g.nama}">${g.nama}</option>`); if(session.role === "guru") { ddl.value = session.nama; ddl.disabled = true; } }
@@ -470,7 +595,7 @@
                     window.pegawaiListGlobal = pegawaiList; let container = document.getElementById("filterPegawaiContainer");
                     if(container) {
                         if(session.role === 'admin') {
-                            let html = `<div class="border p-2 bg-white rounded shadow-sm" style="max-height: 120px; overflow-y: auto; font-size: 0.85rem;"><div class="form-check mb-1"><input class="form-check-input" type="checkbox" value="SEMUA_GURU" id="chkSemuaGuru" onchange="handleAdminCheckboxes('SEMUA_GURU')"><label class="form-check-label fw-bold text-primary" for="chkSemuaGuru">Semua Guru</label></div><div class="form-check mb-1"><input class="form-check-input" type="checkbox" value="HANYA_KEPSEK" id="chkHanyaKepsek" onchange="handleAdminCheckboxes('HANYA_KEPSEK')"><label class="form-check-label fw-bold text-success" for="chkHanyaKepsek">Hanya Kepsek</label></div><hr class="my-1">`;
+                            let html = `<div class="border p-2 rounded shadow-sm" style="max-height: 120px; overflow-y: auto; font-size: 0.85rem;"><div class="form-check mb-1"><input class="form-check-input" type="checkbox" value="SEMUA_GURU" id="chkSemuaGuru" onchange="handleAdminCheckboxes('SEMUA_GURU')"><label class="form-check-label fw-bold text-primary" for="chkSemuaGuru">Semua Guru</label></div><div class="form-check mb-1"><input class="form-check-input" type="checkbox" value="HANYA_KEPSEK" id="chkHanyaKepsek" onchange="handleAdminCheckboxes('HANYA_KEPSEK')"><label class="form-check-label fw-bold text-success" for="chkHanyaKepsek">Hanya Kepsek</label></div><hr class="my-1">`;
                             pegawaiList.forEach((p, index) => { if (p.role !== 'admin' && p.role !== 'kepsek') html += `<div class="form-check"><input class="form-check-input chk-pegawai-item" type="checkbox" value="${p.nama}" data-nip="${p.nip}" id="chkPegawai_${index}" onchange="handleAdminCheckboxes('ITEM')"><label class="form-check-label" for="chkPegawai_${index}">${p.nama}</label></div>`; else if (p.role === 'kepsek') html += `<div class="form-check"><input class="form-check-input chk-pegawai-item" type="checkbox" value="${p.nama}" data-nip="${p.nip}" id="chkPegawai_${index}" onchange="handleAdminCheckboxes('ITEM')"><label class="form-check-label text-muted" for="chkPegawai_${index}">${p.nama} (Kepsek)</label></div>`; }); html += `</div>`; container.innerHTML = html;
                         } else if (session.role === 'kepsek') {
                             let html = `<select class="form-select" id="filterPegawaiSelect"><option value="">Semua Pegawai</option>`; pegawaiList.forEach(p => { if (p.role !== 'admin') html += `<option value="${p.nama}">${p.nama}</option>`; }); html += `</select>`; container.innerHTML = html;
@@ -510,7 +635,7 @@
       }, function(error) { alertBox.className = "mt-3 text-center small fw-bold text-danger"; alertBox.innerText = "Error Sistem: " + error.message; });
     }
     
-    function logout() { location.reload(); }
+    function logout() { document.body.className = ""; location.reload(); }
     
     function prosesAbsenPegawai(jenis) {
       const statusEl = document.getElementById("lokasiStatus"); statusEl.innerHTML = "<div class='spinner-border spinner-border-sm me-2' role='status'></div>Mendapatkan titik koordinat GPS Anda...";
@@ -607,7 +732,6 @@
       });
       tbody.innerHTML = html;
     }
-
     function cetakRekap() {
       let btn = document.getElementById("btnCetakRekap"); let originalText = btn.innerHTML; btn.innerHTML = "<div class='spinner-border spinner-border-sm me-2'></div>Rendering..."; btn.disabled = true;
       callBackend('getPengaturanKop', {}, function(kop) {
@@ -669,7 +793,6 @@
          btn.innerHTML = originalText; btn.disabled = false;
       });
     }
-
     function muatPengaturanKop() {
       callBackend('getPengaturanKop', {}, function(data) {
         if(data) {
@@ -686,7 +809,6 @@
         }
       });
     }
-
     function simpanKop() {
       let data = {
         namaSekolah: document.getElementById("kopNama").value, alamat: document.getElementById("kopAlamat").value,
@@ -698,7 +820,6 @@
       };
       callBackend('simpanPengaturanKop', data, function(msg){ alert(msg); });
     }
-
     function loadUsersData() {
       let tbody = document.getElementById("tabelUsersBody"); tbody.innerHTML = "<tr><td colspan='7' class='text-center text-muted py-4'><div class='spinner-border spinner-border-sm me-2'></div>Memuat data pengguna...</td></tr>";
       callBackend('getUsersDataAdmin', {}, function(users) {
@@ -795,7 +916,6 @@
       
       let btnAll = document.getElementById("btnBuatSemuaBarcode"); let originalText = btnAll.innerHTML;
       btnAll.innerHTML = "<div class='spinner-border spinner-border-sm me-2'></div>Rendering " + unrendered.length + " data..."; btnAll.disabled = true;
-
       for (let i = 0; i < window.dataSiswaBarcode.length; i++) {
         let s = window.dataSiswaBarcode[i];
         if (!s.qrCode || !s.qrCode.startsWith("data:image")) {
@@ -812,7 +932,6 @@
             let s = window.dataSiswaBarcode[idx]; let nisn = s.nisn;
             if (!nisn) throw new Error("NISN Kosong");
             let btn = document.getElementById("btnQr_" + idx); if(btn) { btn.innerHTML = "<div class='spinner-border spinner-border-sm'></div>"; btn.disabled = true; }
-
             var qr = new QRious({ value: String(nisn), size: 150 }); var url = qr.toDataURL('image/png');
             let container = document.getElementById("qrContainer_" + idx);
             if(container) {
@@ -820,7 +939,6 @@
                                        <button class="btn btn-sm btn-primary rounded-pill px-3 fw-bold shadow-sm" onclick="cetakSatuBarcode(${idx})"><i class="bi bi-printer-fill me-1"></i> Cetak Card</button>`;
             }
             window.dataSiswaBarcode[idx].qrCode = url; 
-
             // Simpan Base64 ke Kolom H (kolom ke 8) Google Sheets
             callBackend('simpanQRCode', {rowIndex: sheetRowIndex, qrBase64: url}, function(msg){
                 resolve(true);
