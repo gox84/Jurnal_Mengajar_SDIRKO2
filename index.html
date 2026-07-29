@@ -111,7 +111,7 @@
     .auth-card { padding: 40px; width: 100%; max-width: 420px; animation: fadeInUp 0.4s ease-out; }
 
     /* ==============================================================
-       2. TEMA 1: DEFAULT (MESH GRADIENT + GLASSMORPHISM) - VERSI OPTIMASI RINGAN
+       2. TEMA 1: DEFAULT (MESH GRADIENT + GLASSMORPHISM)
        ============================================================== */
     body.theme-default {
       background: linear-gradient(135deg, #a1c4fd, #c2e9fb); 
@@ -228,7 +228,6 @@
           <div class="d-flex flex-column"><span class="small fw-semibold mb-1 opacity-75">Selamat datang kembali,</span><h4 class="m-0 fw-bold" style="font-size:1.25rem;"><span id="userNamaWorkspace"></span></h4></div>
         </div>
         <div class="d-flex align-items-center gap-3">
-            <!-- TEMA SELECTOR BOOTSWATCH -->
             <div class="dropdown">
               <button class="btn btn-sm btn-outline-secondary dropdown-toggle rounded-pill fw-bold" type="button" data-bs-toggle="dropdown">
                 <i class="bi bi-palette me-1"></i> Tema UI
@@ -239,12 +238,9 @@
                 <li><button class="dropdown-item py-2" onclick="setAppTheme('vapor')">🟣 Vapor (Neon Cyberpunk)</button></li>
               </ul>
             </div>
-            
-            <!-- PERBAIKAN LOGO: Link wikipedia diubah menjadi tautan langsung utama dan ditambahkan kode onerror -->
             <div class="d-none d-md-block">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/a/a6/Logo_Tut_Wuri_Handayani.png" height="40" alt="Logo" onerror="this.style.display='none'">
             </div>
-
         </div>
       </div>
       
@@ -521,6 +517,18 @@
         localStorage.setItem('absensiUITheme', themeName);
     }
     
+    // ================= FUNGSI TEXT-TO-SPEECH (NOTIFIKASI SUARA) =================
+    function mainkanSuara(teks) {
+      if ('speechSynthesis' in window) {
+        var msg = new SpeechSynthesisUtterance();
+        msg.text = teks;
+        msg.lang = 'id-ID'; // Menggunakan suara bahasa Indonesia
+        msg.rate = 0.95;    // Kecepatan sedikit dilambatkan agar terdengar jelas
+        msg.pitch = 1;      // Nada suara standar
+        window.speechSynthesis.speak(msg);
+      }
+    }
+    
     function callBackend(action, payload, onSuccess, onFailure) {
       let requester = session.username ? session.username : ""; 
       fetch(WEB_APP_URL, {
@@ -623,14 +631,22 @@
     
     function logout() { location.reload(); }
     
+    // PEMANGGILAN NOTIFIKASI SUARA UNTUK PEGAWAI DI SINI
     function prosesAbsenPegawai(jenis) {
       const statusEl = document.getElementById("lokasiStatus"); statusEl.innerHTML = "<div class='spinner-border spinner-border-sm me-2' role='status'></div>Mendapatkan titik koordinat GPS Anda...";
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(pos) {
           let data = { nama: session.nama, jenis: jenis, lat: pos.coords.latitude, lng: pos.coords.longitude };
           callBackend('simpanAbsenPegawaiBackend', data, function(msg){
-              if(msg.indexOf("Gagal") > -1) { statusEl.innerHTML = "<i class='bi bi-exclamation-triangle me-1'></i> " + msg; statusEl.classList.add("text-danger"); } 
-              else { statusEl.innerHTML = "<i class='bi bi-check-circle me-1'></i> " + msg; statusEl.classList.remove("text-danger"); statusEl.classList.add("text-success"); }
+              if(msg.indexOf("Gagal") > -1) { 
+                  statusEl.innerHTML = "<i class='bi bi-exclamation-triangle me-1'></i> " + msg; statusEl.classList.add("text-danger"); 
+              } 
+              else { 
+                  statusEl.innerHTML = "<i class='bi bi-check-circle me-1'></i> " + msg; statusEl.classList.remove("text-danger"); statusEl.classList.add("text-success"); 
+                  // Mainkan suara berdasarkan jenis absen pegawai
+                  if (jenis === "Masuk") { mainkanSuara("Selamat Datang"); }
+                  else if (jenis === "Pulang") { mainkanSuara("Hati-hati di jalan"); }
+              }
           });
         }, function(error) { statusEl.innerHTML = "<i class='bi bi-exclamation-triangle me-1'></i> Gagal: Izinkan akses lokasi / GPS di browser Anda."; statusEl.classList.add("text-danger"); }, { enableHighAccuracy: true });
       } else { statusEl.innerText = "Geolocation tidak didukung di perangkat ini."; }
@@ -646,6 +662,7 @@
    
     function stopScanner() { if (html5QrCode) { try { if (html5QrCode.isScanning) { html5QrCode.stop().then(() => { html5QrCode.clear(); }).catch(e => console.log(e)); } else { html5QrCode.clear(); } } catch (error) { console.log("Penutupan scanner:", error); } } }
    
+    // PEMANGGILAN NOTIFIKASI SUARA UNTUK SISWA DI SINI
     function onScanSuccess(decodedText, decodedResult) {
       if(isProcessingScan) return; isProcessingScan = true; let modeAbsen = "Masuk"; let radioPulang = document.getElementById("modeSiswaPulang"); if(radioPulang && radioPulang.checked) modeAbsen = "Pulang";
       let resultEl = document.getElementById("scanResult"); resultEl.innerHTML = "<div class='spinner-border spinner-border-sm me-2'></div> Memproses absensi..."; resultEl.className = "text-warning fw-bold p-3 rounded-4 d-inline-block shadow";
@@ -653,8 +670,18 @@
       callBackend('absenMuridBackend', {nisn: decodedText, jenisAbsen: modeAbsen}, 
           function(msg) {
              resultEl.innerText = msg;
-             if(msg.indexOf("Sukses") > -1) { resultEl.className = "text-success fw-bold bg-success bg-opacity-25 p-3 rounded-4 d-inline-block shadow-sm"; resultEl.innerHTML = "<i class='bi bi-check-circle-fill me-2'></i>" + msg; } 
-             else { resultEl.className = "text-danger fw-bold bg-danger bg-opacity-25 p-3 rounded-4 d-inline-block shadow-sm"; resultEl.innerHTML = "<i class='bi bi-exclamation-triangle-fill me-2'></i>" + msg; }
+             if(msg.indexOf("Sukses") > -1) { 
+                 resultEl.className = "text-success fw-bold bg-success bg-opacity-25 p-3 rounded-4 d-inline-block shadow-sm"; 
+                 resultEl.innerHTML = "<i class='bi bi-check-circle-fill me-2'></i>" + msg; 
+                 
+                 // Mainkan suara berdasarkan pilihan radio button siswa
+                 if (modeAbsen === "Masuk") { mainkanSuara("Selamat Datang"); }
+                 else { mainkanSuara("Hati-hati di jalan"); }
+             } 
+             else { 
+                 resultEl.className = "text-danger fw-bold bg-danger bg-opacity-25 p-3 rounded-4 d-inline-block shadow-sm"; 
+                 resultEl.innerHTML = "<i class='bi bi-exclamation-triangle-fill me-2'></i>" + msg; 
+             }
              setTimeout(function() { resultEl.innerText = "Siap memindai..."; resultEl.className = "fw-bold p-3 rounded-4 d-inline-block shadow-sm"; resultEl.style.background = "rgba(128,128,128,0.1)"; isProcessingScan = false; }, 2000);
           }, function(error) {
              resultEl.innerHTML = "<i class='bi bi-x-circle-fill me-2'></i> Terjadi Kesalahan: " + error.message; resultEl.className = "text-danger fw-bold bg-danger bg-opacity-25 p-3 rounded-4 d-inline-block shadow-sm";
